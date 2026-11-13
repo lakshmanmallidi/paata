@@ -10,90 +10,80 @@ Holes are written as row + column, so `61j` is row 61, column j. Rows that are j
 
 - **ESP32-S3-Zero**: solder pin headers to both long edges (9 pins each). Pads **14, 15 and 16** sit inside the board and will not reach the breadboard, so solder a loose wire about 15 cm long to each.
 - **DAC**: solder a header to the 8-pin side only (VIN … Rout). Leave the six config pads on the other side empty.
-- **Display**: solder a 4-pin header to the SD pads (SD_CS, SD_MOSI, SD_MISO, SD_SCK). These take female-to-male jumpers.
-- **Jumpers**: about 25 male-to-male, and 4 female-to-male for the SD pads.
-- Power comes from the USB cable while on the breadboard. Leave the battery, charger and the 5V pin unconnected.
+- **Display**: solder a 4-pin header to the SD pads (SD_CS, SD_MOSI, SD_MISO, SD_SCK). These take male-to-female jumpers.
+- **Jumpers**: 15 male-to-male and 4 male-to-female. Several runs are long, so use 20 cm jumpers.
+- Power comes from the USB cable while on the breadboard. Leave the battery, charger and the 5V pin unconnected. The breadboard's power rails are not used.
 
 ## Where each part goes
 
 | Part | Holes | Orientation |
 |---|---|---|
 | ESP32-S3-Zero | rows 55–63, pins in columns c and g | USB port hanging off the right end. Row 63 is 5V (column g) and TX (column c). |
-| DAC | column f, rows 29–36 | Board body over columns e–b, headphone jack pointing left. Row 29 = Rout, row 36 = VIN. |
-| Encoder | column i, rows 39–43 | Standing upright, knob pointing toward you. Row 39 = GND, row 43 = CLK. |
-| Display | column a, rows 43–50 | Screen up, board hanging off the near edge of the breadboard. Row 43 = LED, row 50 = VCC. |
-| PREV button | across the centre gap, rows 4 and 6 | Legs in columns e and f. |
-| NEXT button | across the centre gap, rows 9 and 11 | Legs in columns e and f. |
+| DAC | column a, rows 29–36 | Board hanging off the near edge, headphone jack pointing left. Row 29 = Rout, row 36 = VIN. |
+| Encoder | column d, rows 35–39 | Standing upright, knob pointing toward you, over the DAC. Row 35 = GND, row 39 = CLK. |
+| Display | column a, rows 43–50 | Screen up, board hanging off the near edge. Row 43 = LED, row 50 = VCC. |
+| PREV button | across the centre gap, rows 28 and 30 | Legs in columns e and f. |
+| NEXT button | across the centre gap, rows 49 and 51 | Legs in columns e and f. |
 
-Keep rows 15–26 around the centre gap empty: the headphone plug lies there.
+Three connections need no jumper because the parts share a breadboard row:
+
+- **Rows 35 and 36**: the encoder's GND and + sit in the same rows as the DAC's GND and VIN, so one pair of power jumpers feeds both.
+- **Row 30**: the PREV button's ground leg shares the row of the DAC's `G` (audio ground) pin.
+- **Row 49**: the NEXT button's ground leg shares the row of the display's GND pin.
 
 If the ESP32 board's pin rows do not land in columns c and g on your breadboard, use whichever columns fit; only the row numbers matter.
 
 ## Jumpers
 
-### Power
+### Male-to-male (15)
 
-| From | To | Carries |
-|---|---|---|
-| 61j | top + rail | 3.3 V from the ESP32 |
-| 62j | top − rail | GND |
-| top − rail (row 2) | bottom − rail (row 2) | GND to the bottom rail |
-| 36j | top + rail | DAC VIN |
-| 35j | top − rail | DAC GND |
-| 40j | top + rail | Encoder + |
-| 39j | top − rail | Encoder GND |
-| 50e | 61i | Display VCC |
-| 49e | 62i | Display GND |
-| 6d | bottom − rail | PREV button GND |
-| 11d | bottom − rail | NEXT button GND |
+| # | From | To | Carries |
+|---|---|---|---|
+| 1 | 36e | 61j | 3.3 V to the DAC and encoder |
+| 2 | 35e | 62j | GND to the DAC and encoder |
+| 3 | 50d | 61i | 3.3 V to the display |
+| 4 | 49d | 62i | GND to the display |
+| 5 | 32e | 56h | DAC BCK → GPIO 5 |
+| 6 | 34e | 55h | DAC WSEL → GPIO 6 |
+| 7 | 33c | 55b | DAC DIN → GPIO 7 |
+| 8 | 43e | 57j | Display LED (backlight) → GPIO 4 |
+| 9 | 44b | 60b | Display SCK → GPIO 12 |
+| 10 | 45c | 59b | Display SDA → GPIO 11 |
+| 11 | 46c | 57b | Display A0 → GPIO 9 |
+| 12 | 47d | 56b | Display RESET → GPIO 8 |
+| 13 | 48c | 58b | Display CS → GPIO 10 |
+| 14 | 38e | 59j | Encoder DT → GPIO 2 |
+| 15 | 39e | 60j | Encoder CLK → GPIO 1 |
 
-### DAC (I2S)
+### Male-to-female (4), from the SD pads on the display
 
-| From | To | Signal |
-|---|---|---|
-| 32i | 56h | BCK → GPIO 5 |
-| 34h | 55h | WSEL → GPIO 6 |
-| 33g | 55b | DIN → GPIO 7 |
+| # | From pad | To | Signal |
+|---|---|---|---|
+| 1 | SD_SCK | 60a | GPIO 12 |
+| 2 | SD_MOSI | 59a | GPIO 11 |
+| 3 | SD_MISO | 61a | GPIO 13 |
+| 4 | SD_CS | 58j | GPIO 3 |
 
-### Display
-
-| From | To | Signal |
-|---|---|---|
-| 43e | 57i | LED (backlight) → GPIO 4 |
-| 44b | 60b | SCK → GPIO 12 |
-| 45c | 59b | SDA → GPIO 11 |
-| 46c | 57b | A0 → GPIO 9 |
-| 47d | 56b | RESET → GPIO 8 |
-| 48c | 58b | CS → GPIO 10 |
-
-### SD card (female-to-male jumpers from the pads)
-
-| From pad | To | Signal |
-|---|---|---|
-| SD_SCK | 60a | GPIO 12 |
-| SD_MOSI | 59a | GPIO 11 |
-| SD_MISO | 61a | GPIO 13 |
-| SD_CS | 58j | GPIO 3 |
-
-### Encoder and buttons
+### Wires soldered to the ESP32 pads (3)
 
 | From | To | Signal |
 |---|---|---|
-| 42j | 59j | Encoder DT → GPIO 2 |
-| 43j | 60j | Encoder CLK → GPIO 1 |
-| wire from pad 14 | 41j | Encoder SW |
-| wire from pad 15 | 4h | PREV button |
-| wire from pad 16 | 9h | NEXT button |
+| pad 14 | 37e | Encoder SW (click) |
+| pad 15 | 28g | PREV button |
+| pad 16 | 51g | NEXT button |
 
 ## Check before plugging in USB
 
-1. With a multimeter on continuity, confirm the top + rail and top − rail are **not** connected to each other.
-2. Confirm 3V3 (row 61) reaches DAC VIN (row 36), display VCC (row 50) and encoder + (row 40).
-3. On some breadboards the power rails are split in the middle. If yours are, add a short jumper across the break on the top +, top − and bottom − rails.
+With a multimeter on continuity:
+
+1. Confirm rows 61 (3V3) and 62 (GND) are **not** connected to each other.
+2. Confirm 3V3 (row 61) reaches DAC VIN and encoder + (row 36) and display VCC (row 50).
+3. Confirm the DAC's `G` pin (row 30) is connected to GND (row 62). If it is not, the PREV button will not work: run a jumper from 30d to 62h.
 
 ## If something does not work
 
 - **"SD card not found"**: the SD jumpers are long. Lower the SD speed in `firmware/src/main.cpp` from `20000000` to `4000000` and try again.
 - **Picture upside down**: change `tft.setRotation(0)` to `tft.setRotation(2)`.
 - **Knob scrolls the wrong way**: swap the jumpers in 59j and 60j.
+- **Encoder body touches the DAC's solder joints**: put a strip of tape over the joints, or use male-to-female jumpers on the encoder pins and leave it off the board.
 - **Button does nothing**: turn the button a quarter turn; its legs are joined in pairs.

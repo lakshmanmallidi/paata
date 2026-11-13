@@ -99,16 +99,16 @@ C = dict(bck="#1f77b4", wsel="#17becf", din="#8e44ad", sck="#ff7f0e", sda="#2ca0
          lead="#7a7a7a")
 
 # ---------- modules ----------
-# DAC: header in column f rows 29-36, body towards the viewer, jack pointing left
-rect(27.4, 6.9, 37.6, 13.9, fill="#22252b", stroke="#000", rx=4)
-rect(25.6, 8.9, 28.6, 11.9, fill="#3a3a3a", stroke="#000", rx=2)
-rect(14.6, 8.5, 25.6, 12.3, fill="none", stroke="#888", stroke_dasharray="5 4", rx=6)
-text(20.1, 10.4, "keep clear: headphone plug", size=9, fill="#666", dy=3)
+# DAC: header in column a rows 29-36, body hanging off the near edge, jack pointing left
+rect(27.4, 13.9, 37.6, 20.9, fill="#22252b", stroke="#000", rx=4)
+rect(25.6, 15.9, 28.6, 18.9, fill="#3a3a3a", stroke="#000", rx=2)
+rect(14.6, 15.5, 25.6, 19.3, fill="#ffffff", fill_opacity="0.6", stroke="#888", stroke_dasharray="5 4", rx=6)
+text(20.1, 17.4, "headphone plug", size=9, fill="#555", dy=3)
 for r, n in zip(range(29, 37), ["Rout", "G", "Lout", "BCK", "DIN", "WSEL", "GND", "VIN"]):
-    pin(r, "f")
-    text(r, 8.2, n, size=8, anchor="end", rot=-90, fill="#fff", dy=0, dx=3)
-text(32.5, 12.6, "PCM5102A DAC", size=10, fill="#fff", weight="bold")
-text(32.5, 13.5, "header on the 8-pin side only", size=7.5, fill="#cfcfcf")
+    pin(r, "a")
+    text(r, 15.25, n, size=8, anchor="end", rot=-90, fill="#fff", dx=3)
+text(32.5, 19.6, "PCM5102A DAC", size=10, fill="#fff", weight="bold")
+text(32.5, 20.5, "header on the 8-pin side only", size=7.5, fill="#cfcfcf")
 
 # MCU: rows 55-63, pins in columns g and c, USB to the right
 rect(54.4, 5.95, 63.6, 13.05, fill="#1f4e8c", stroke="#0c2a52", rx=4)
@@ -128,13 +128,13 @@ for x, n in ((55.0, "14"), (56.0, "15"), (57.0, "16")):
     text(x, 10.55, n, size=6.5, fill="#fff", dy=-6)
 
 # buttons across the trench
-for r, n in ((4, "PREV"), (9, "NEXT")):
+for r, n in ((28, "PREV"), (49, "NEXT")):
     rect(r - 0.25, 7.25, r + 2.25, 10.75, fill="#2d2d2d", stroke="#000", rx=2)
     add(f'<circle cx="{px(r + 1)}" cy="{py(9.0)}" r="9" fill="#555" stroke="#111"/>')
     for rr in (r, r + 2):
         pin(rr, "e", "#bbb")
         pin(rr, "f", "#bbb")
-    text(r + 1, 6.85, n, size=9, weight="bold", fill="#222")
+    text(r + 1, 9.0, n, size=8, weight="bold", fill="#fff", dy=3)
 
 # display: header in column a rows 43-50, body hanging off the near edge
 rect(39.6, 13.9, 53.4, 36.3, fill="#c62828", stroke="#7f1010", rx=4)
@@ -151,56 +151,46 @@ for n, x in sd_pads.items():
     text(x, 34.75, n, size=7, anchor="start", rot=-90, fill="#fff", dx=2.5)
 
 # ---------- wires ----------
-# power
-wire([(61, "j"), (61, "T+")], RED)
-wire([(62, "j"), (62, "T-")], BLK)
-wire([(2, "T-"), (2, "B-")], BLK)
-wire([(36, "j"), (36, "T+")], RED)
-wire([(35, "j"), (35, "T-")], BLK)
-wire([(40, "j"), (40, "T+")], RED)
-wire([(39, "j"), (39, "T-")], BLK)
-wire([(6, "d"), (6, "B-")], BLK)
-wire([(11, "d"), (11, "B-")], BLK)
+# power: the DAC and encoder share rows 35/36, fed straight from the MCU's GND and 3V3 rows
+wire([(35, "e"), (35, 1.4), (62, 1.4), (62, "j")], BLK)
+wire([(36, "e"), (36, 1.8), (61, 1.8), (61, "j")], RED)
+wire([(49, "d"), (48.4, 11.5), (48.4, 4.0), (62, 4.0), (62, "i")], BLK)
+wire([(50, "d"), (51.7, 11.5), (51.7, 4.5), (61, "i")], RED)
 # I2S
-wire([(34, "h"), (55, "h")], C["wsel"])
-wire([(32, "i"), (32, 5.05), (56, 5.05), (56, "h")], C["bck"])
-wire([(33, "g"), (38.2, 6.5), (38.2, 11.3), (54.0, 11.3), (54.0, 13.5), (55, "b")], C["din"])
+wire([(34, "e"), (34, 5.5), (55, "h")], C["wsel"])
+wire([(32, "e"), (32, 5.05), (56, 5.05), (56, "h")], C["bck"])
+wire([(33, "c"), (33, 13.2), (42.0, 13.2), (42.0, 11.1), (54.0, 11.1), (54.0, 13.5), (55, "b")], C["din"])
 # display: signals to the near side of the MCU
-outl = [("sck", 44, "b", 13.5, 51.0, 16.6, 60), ("sda", 45, "c", 12.9, 51.6, 16.2, 59),
-        ("cs", 48, "c", 12.5, 52.2, 15.8, 58), ("a0", 46, "c", 12.1, 52.8, 15.4, 57),
-        ("rst", 47, "d", 11.7, 53.4, 15.0, 56)]
+outl = [("sck", 44, "b", 13.5, 51.0, 16.6, 60), ("sda", 45, "c", 13.1, 51.6, 16.2, 59),
+        ("cs", 48, "c", 12.7, 52.2, 15.8, 58), ("a0", 46, "c", 12.3, 52.8, 15.4, 57),
+        ("rst", 47, "d", 11.9, 53.4, 15.0, 56)]
 for key, r, hole, lane, xd, lane2, rm in outl:
     wire([(r, hole), (r, lane), (xd, lane), (xd, lane2), (rm - 0.45, lane2), (rm - 0.45, 13.5), (rm, "b")], C[key])
-# display: backlight and power to the far side of the MCU
-wire([(49, "e"), (49, 10.1), (51.0, 10.1), (51.0, 3.95), (62, 3.95), (62, "i")], BLK)
-wire([(50, "e"), (51.8, 10.5), (51.8, 4.3), (61, 4.3), (61, "i")], RED)
-wire([(43, "e"), (43, 10.9), (52.6, 10.9), (52.6, 4.72), (57, 4.72), (57, "i")], C["led"])
+wire([(43, "e"), (43, 3.0), (57, 3.0), (57, "j")], C["led"])
 # encoder signals
-wire([(42, "j"), (42, 3.0), (59, 3.0), (59, "j")], C["dt"])
-wire([(43, "j"), (43, 2.45), (60, 2.45), (60, "j")], C["clk"])
+wire([(38, "e"), (38, 2.6), (59, 2.6), (59, "j")], C["dt"])
+wire([(39, "e"), (39, 2.2), (60, 2.2), (60, "j")], C["clk"])
 # SD card: female-to-male jumpers from the pads
 wire([(46.9, 35.3), (46.9, 37.2), (59, 37.2), (59, "a")], C["sd"], dashed=True)
 wire([(45.9, 35.3), (45.9, 37.8), (61, 37.8), (61, "a")], C["sd"], dashed=True)
 wire([(44.8, 35.3), (44.8, 38.4), (60, 38.4), (60, "a")], C["sd"], dashed=True)
 # flying leads shown as tagged stubs
-for x, yh, label, col in ((41, "j", "SW  ◂ pad 14", C["lead"]), (58, "j", "◂ SD_CS pad", C["sd"]),
-                          (4, "h", "◂ pad 15", C["lead"]), (9, "h", "◂ pad 16", C["lead"])):
+for x, yh, label, col in ((37, "e", "◂ pad 14 (SW)", C["lead"]), (58, "j", "◂ SD_CS pad", C["sd"]),
+                          (28, "g", "◂ pad 15", C["lead"]), (51, "g", "◂ pad 16", C["lead"])):
     wire([(x, yh), (x, -1.5)], col, dashed=True, width=2.4)
     text(x, -1.8, label, size=9, anchor="start", rot=-90, fill="#333", dx=3, weight="bold")
 add(f'<circle cx="{px(48.0)}" cy="{py(35.3)}" r="3.6" fill="{C["sd"]}" stroke="#1b1b1b" stroke-width="1"/>')
 text(48.7, 35.3, "→ row 58 j", size=8.5, fill="#fff", anchor="start", dy=3, weight="bold")
 
 # ---------- encoder (drawn last: it stands above the wires) ----------
-rect(38.6, 4.7, 43.4, 7.4, fill="#9aa0a6", fill_opacity="0.45", stroke="#555", rx=2)
-rect(40.0, 7.4, 42.0, 12.6, fill="#c8ccd0", fill_opacity="0.45", stroke="#666", stroke_dasharray="4 3", rx=3)
-rect(36.9, 4.25, 45.1, 4.75, fill="#111", stroke="#000")
-for r in range(39, 44):
-    pin(r, "i")
-for r, n in zip(range(39, 44), ["GND", "+", None, "DT", "CLK"]):
-    if n:
-        text(r, -1.8, n, size=9, anchor="start", rot=-90, fill="#333", dx=3)
-text(41, 13.3, "Encoder", size=9, weight="bold", fill="#222")
-text(41, 12.2, "knob", size=8, fill="#333")
+rect(34.6, 11.75, 39.4, 14.4, fill="#9aa0a6", fill_opacity="0.4", stroke="#555", rx=2)
+rect(36.3, 14.4, 37.7, 19.4, fill="#c8ccd0", fill_opacity="0.25", stroke="#666", stroke_dasharray="4 3", rx=3)
+rect(32.9, 11.25, 41.1, 11.75, fill="#111", stroke="#000")
+for r, n in zip(range(35, 40), ["GND", "+", "SW", "DT", "CLK"]):
+    pin(r, "d")
+    text(r, 12.05, n, size=7.5, anchor="end", rot=-90, fill="#111", dx=3, weight="bold")
+text(37, 18.9, "knob", size=7.5, fill="#fff")
+text(32.5, 12.0, "Encoder", size=9, weight="bold", fill="#222", anchor="end", dy=3)
 
 # ---------- legend ----------
 LX, LY = 30, 492
@@ -217,9 +207,9 @@ for i, (name, col, dashed) in enumerate(items):
     add(f'<line x1="{cx}" y1="{cy}" x2="{cx + 30}" y2="{cy}" stroke="#1b1b1b" stroke-opacity="0.55" stroke-width="4.6"{dash}/>')
     add(f'<line x1="{cx}" y1="{cy}" x2="{cx + 30}" y2="{cy}" stroke="{col}" stroke-width="3"{dash}/>')
     add(f'<text x="{cx + 37}" y="{cy + 4}" font-size="10.5" fill="#222">{name}</text>')
-notes = ["Dashed tags at the top: plug in the loose end of the wire named on the tag.",
+notes = ["Dashed tags at the top: plug the loose end of that wire into the hole below the tag.",
          "Pads 14, 15, 16 on the ESP32 board do not reach the breadboard: solder a wire to each.",
-         "Power comes from USB while on the breadboard; the 5V pin, battery and charger are not used."]
+         "Power comes from USB. The power rails, 5V pin, battery and charger are not used."]
 for i, n in enumerate(notes):
     add(f'<text x="{LX}" y="{LY + 118 + i * 14}" font-size="10" fill="#444">{n}</text>')
 
