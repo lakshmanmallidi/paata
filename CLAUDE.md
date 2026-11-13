@@ -32,26 +32,13 @@ Buttons:  PREV=15 NEXT=16
 ```
 
 ## Firmware
-- Arduino framework via **PlatformIO** (not Arduino IDE). Project lives in `firmware/`
-  (`platformio.ini`, `src/main.cpp`). Board `esp32-s3-devkitc-1` with
-  `board_build.arduino.memory_type = qio_qspi`, PSRAM enabled, 4 MB flash,
-  `huge_app.csv` partitions (3 MB app, no OTA), USB CDC on boot.
-- Platform is **pioarduino** `55.03.312` (Arduino core 3.3.x / ESP-IDF 5.5), not the
-  official `espressif32` platform: ESP32-audioI2S 4.x requires Arduino core >= 3.
-  pioarduino needs Python 3.10-3.14, so PlatformIO Core is installed with
-  `uv tool install --python 3.13 platformio` (Homebrew's build uses a newer Python
-  and fails).
-- Libraries: ESP32-audioI2S (schreibfaul1, pinned to 4.0.1), Adafruit ST7735/ST7789,
-  Adafruit GFX, ESP32Encoder (madhephaestus).
-- ESP32-audioI2S 4.x notes: events arrive through `Audio::audio_info_callback`
-  (`evt_id3data`, `evt_eof`, ...), not the old `audio_id3data()` / `audio_eof_mp3()`
-  functions. Output sample rate defaults to the file's own rate (`SR_ORIGIN`).
-- Build gotchas: the Adafruit ST7735 library pulls in the generic Arduino `SD`
-  library, which breaks the ESP32 build; `firmware/drop_stray_libs.py` deletes it
-  before each build. Do **not** use `lib_ignore = SD`: pioarduino then strips the
-  fatfs include path from its framework build script and the build fails until
-  `pioarduino-build.py` is restored from the `.esp32s3` backup beside it.
-- v1 (`firmware/src/main.cpp`; compiles, not yet flashed to hardware): FLAC/MP3/WAV/AAC/OGG from
+- Arduino framework via **PlatformIO** (not Arduino IDE), project in `firmware/`
+  (`platformio.ini`, `src/main.cpp`). Board `esp32-s3-devkitc-1`, QSPI PSRAM, 4 MB
+  flash, USB CDC on boot. Platform is **pioarduino** (Arduino core 3.x), which
+  ESP32-audioI2S 4.x requires.
+- Libraries: ESP32-audioI2S (schreibfaul1), Adafruit ST7735/ST7789, Adafruit GFX,
+  ESP32Encoder (madhephaestus).
+- v1 (`firmware/src/main.cpp`): FLAC/MP3/WAV/AAC/OGG from
   `/Music` on SD; folder browser; encoder = scroll/volume, click = select/pause,
   long-press = up/back; PREV/NEXT buttons; auto-advance; progress bar.
 - Build/flash/monitor from `firmware/`: `pio run -t upload && pio device monitor`. First flash:
