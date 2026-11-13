@@ -82,8 +82,9 @@ paata/
 ├── tools/        NAS-side Python scripts   MIT
 ├── README.md
 ├── LICENSE       GPL-3.0
-├── CLAUDE.md     this file
-└── docs/DESIGN_NOTES.md   full design history and the reasoning behind every choice — read it when a decision in this file needs context
+└── .claude/      everything for Claude Code: this file, skills, and
+                  docs/DESIGN_NOTES.md (full design history and the reasoning
+                  behind every choice — read it when a decision here needs context)
 ```
 Topics: esp32-s3 flac music-player dap audio i2s pcm5102 platformio arduino diy
 open-hardware portable-audio
