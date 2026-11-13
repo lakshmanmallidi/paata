@@ -32,7 +32,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 
 The PCM5102A has a line-level output. It drives in-ear monitors well; high-impedance headphones would need a separate headphone amplifier.
 
-Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). In short:
+Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). For a first build on a breadboard, [hardware/BREADBOARD.md](hardware/BREADBOARD.md) shows where each part goes and every jumper. In short:
 
 ```
 I2S DAC:   BCK=5   WSEL=6  DIN=7

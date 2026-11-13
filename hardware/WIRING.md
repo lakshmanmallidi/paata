@@ -2,6 +2,8 @@
 
 All logic is 3.3 V. GPIO numbers = the numbers printed on the S3-Zero.
 
+Building on a breadboard first? See [BREADBOARD.md](BREADBOARD.md) for part placement and a hole-by-hole jumper list.
+
 <img src="images/esp32-s3-zero.jpg" alt="Waveshare ESP32-S3-Zero, top side with pin labels" width="240">
 
 ## 1. Adafruit PCM5102A DAC  (I2S)
