@@ -128,7 +128,7 @@ for x, n in ((55.0, "14"), (56.0, "15"), (57.0, "16")):
     text(x, 10.55, n, size=6.5, fill="#fff", dy=-6)
 
 # buttons across the trench
-for r, n in ((28, "PREV"), (49, "NEXT")):
+for r, n in ((28, "BACK"), (49, "OK")):
     rect(r - 0.25, 7.25, r + 2.25, 10.75, fill="#2d2d2d", stroke="#000", rx=2)
     add(f'<circle cx="{px(r + 1)}" cy="{py(9.0)}" r="9" fill="#555" stroke="#111"/>')
     for rr in (r, r + 2):

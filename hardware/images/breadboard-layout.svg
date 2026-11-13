@@ -994,14 +994,14 @@
 <circle cx="440" cy="255.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
 <circle cx="468" cy="297.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
 <circle cx="468" cy="255.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
-<text x="454" y="279.0" font-size="8" text-anchor="middle" fill="#fff" font-weight="bold">PREV</text>
+<text x="454" y="279.0" font-size="8" text-anchor="middle" fill="#fff" font-weight="bold">BACK</text>
 <rect x="730.5" y="251.5" width="35.0" height="49.0" fill="#2d2d2d" stroke="#000" rx="2"/>
 <circle cx="748" cy="276.0" r="9" fill="#555" stroke="#111"/>
 <circle cx="734" cy="297.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
 <circle cx="734" cy="255.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
 <circle cx="762" cy="297.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
 <circle cx="762" cy="255.0" r="3.3" fill="#bbb" stroke="#5a4a10" stroke-width="0.8"/>
-<text x="748" y="279.0" font-size="8" text-anchor="middle" fill="#fff" font-weight="bold">NEXT</text>
+<text x="748" y="279.0" font-size="8" text-anchor="middle" fill="#fff" font-weight="bold">OK</text>
 <rect x="602.4" y="344.6" width="193.2" height="313.6" fill="#c62828" stroke="#7f1010" rx="4"/>
 <rect x="622.0" y="420.2" width="154.0" height="197.4" fill="#101418" stroke="#000" rx="2"/>
 <text x="699.0" y="508.4" font-size="12" text-anchor="middle" fill="#e8e8e8" font-weight="bold">1.8" ST7735 TFT</text>

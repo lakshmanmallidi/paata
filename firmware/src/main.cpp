@@ -32,8 +32,8 @@
 #define ENC_CLK    1
 #define ENC_DT     2
 #define ENC_SW    14
-#define BTN_PREV  15
-#define BTN_NEXT  16
+#define BTN_BACK  15
+#define BTN_OK    16
 
 // ---------- objects ----------
 Audio audio;
@@ -44,7 +44,8 @@ ESP32Encoder enc;
 enum Mode { BROWSE, PLAYING };
 Mode mode = BROWSE;
 
-String curDir = "/Music";
+String rootDir = "/Music";       // falls back to "/" if the card has no /Music
+String curDir = rootDir;
 struct Entry { String name; bool isDir; };
 std::vector<Entry> entries;
 int sel = 0, top = 0;
@@ -106,7 +107,7 @@ void drawHeader(const String& t) {
 
 void drawBrowser() {
   tft.fillScreen(C_BG);
-  String h = curDir == "/Music" ? "Music" : baseName(curDir);
+  String h = curDir == rootDir ? "Music" : baseName(curDir);
   drawHeader(h);
   tft.setTextSize(1);
   for (int i = 0; i < ROWS; i++) {
@@ -191,7 +192,7 @@ void onAudioInfo(Audio::msg_t m) {
 
 // ---------- input ----------
 struct Btn { int pin; bool last = true; uint32_t downAt = 0; bool longFired = false; };
-Btn bSw{ENC_SW}, bPrev{BTN_PREV}, bNext{BTN_NEXT};
+Btn bSw{ENC_SW}, bBack{BTN_BACK}, bOk{BTN_OK};
 
 // returns 0 none, 1 short press, 2 long press
 int pollBtn(Btn& b) {
@@ -219,8 +220,13 @@ void handleInput() {
     needRedraw = true;
   }
 
-  int sw = pollBtn(bSw);
-  if (sw == 1) {
+  // OK button and encoder click do the same thing: select / play-pause.
+  // BACK goes up a folder, or from the player back to the browser.
+  // Long-press while a track is loaded: OK = next track, BACK = previous track.
+  int ok = pollBtn(bOk), back = pollBtn(bBack);
+  if (pollBtn(bSw) == 1) ok = 1;
+
+  if (ok == 1) {
     if (mode == BROWSE && !entries.empty()) {
       Entry& e = entries[sel];
       if (e.isDir) { curDir = joinPath(curDir, e.name); loadDir(curDir); }
@@ -228,29 +234,29 @@ void handleInput() {
     } else if (mode == PLAYING) {
       audio.pauseResume(); paused = !paused; needRedraw = true;
     }
-  } else if (sw == 2) {
-    if (mode == BROWSE) {
-      if (curDir != "/Music") {
-        String up = curDir.substring(0, curDir.lastIndexOf('/'));
-        if (up.length() < 6) up = "/Music";
-        curDir = up; loadDir(curDir);
-      }
-    } else { mode = BROWSE; needRedraw = true; }   // music keeps playing
+  } else if (ok == 2 && trackIdx >= 0) {
+    playTrack(trackIdx + 1);
   }
 
-  if (pollBtn(bPrev) == 1 && trackIdx >= 0) {
-    if (audio.getAudioCurrentTime() > 3) audio.connecttoFS(SD, playlist[trackIdx].c_str());
+  if (back == 1) {
+    if (mode == PLAYING) { mode = BROWSE; needRedraw = true; }   // music keeps playing
+    else if (curDir != rootDir) {
+      String up = curDir.substring(0, curDir.lastIndexOf('/'));
+      if (up.length() < rootDir.length()) up = rootDir;
+      curDir = up; loadDir(curDir);
+    }
+  } else if (back == 2 && trackIdx >= 0) {
+    if (audio.getAudioCurrentTime() > 3) playTrack(trackIdx);   // restart the current track
     else playTrack(trackIdx - 1);
   }
-  if (pollBtn(bNext) == 1 && trackIdx >= 0) playTrack(trackIdx + 1);
 }
 
 // ---------- setup / loop ----------
 void setup() {
   Serial.begin(115200);
   pinMode(ENC_SW, INPUT_PULLUP);
-  pinMode(BTN_PREV, INPUT_PULLUP);
-  pinMode(BTN_NEXT, INPUT_PULLUP);
+  pinMode(BTN_BACK, INPUT_PULLUP);
+  pinMode(BTN_OK, INPUT_PULLUP);
 
   pinMode(TFT_BL, OUTPUT); digitalWrite(TFT_BL, HIGH);
   SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
@@ -267,7 +273,7 @@ void setup() {
     tft.fillScreen(C_BG); tft.setCursor(10, 70); tft.print("SD card not found");
     while (true) delay(1000);
   }
-  if (!SD.exists("/Music")) curDir = "/";
+  if (!SD.exists(rootDir)) { rootDir = "/"; curDir = rootDir; }
 
   Audio::audio_info_callback = onAudioInfo;
   audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);

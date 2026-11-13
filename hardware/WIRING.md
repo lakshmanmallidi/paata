@@ -62,8 +62,8 @@ The photo shows the back of the board: the display header along one edge, the SD
 
 | Button | S3-Zero |
 |---|---|
-| PREV | 15 |
-| NEXT | 16 |
+| BACK | 15 |
+| OK | 16 |
 
 ## 6. Power
 
@@ -76,6 +76,6 @@ Charge via the TP4056's USB-C. Flash firmware via the S3-Zero's USB-C.
 (For bench testing, skip the battery: just plug the S3-Zero into USB.)
 
 ## Controls
-Browser:  turn = scroll · click = open folder / play file · long-press = go up
-Playing:  turn = volume · click = pause/play · long-press = back to browser
-          PREV / NEXT buttons = previous / next track in the folder
+Browser:  turn = scroll · OK = open folder / play file · BACK = go up
+Playing:  turn = volume · OK = pause/play · BACK = back to browser
+Anywhere: hold OK = next track · hold BACK = previous track · knob click = OK

@@ -22,14 +22,14 @@ Holes are written as row + column, so `61j` is row 61, column j. Rows that are j
 | DAC | column a, rows 29–36 | Board hanging off the near edge, headphone jack pointing left. Row 29 = Rout, row 36 = VIN. |
 | Encoder | column d, rows 35–39 | Standing upright, knob pointing toward you, over the DAC. Row 35 = GND, row 39 = CLK. |
 | Display | column a, rows 43–50 | Screen up, board hanging off the near edge. Row 43 = LED, row 50 = VCC. |
-| PREV button | across the centre gap, rows 28 and 30 | Legs in columns e and f. |
-| NEXT button | across the centre gap, rows 49 and 51 | Legs in columns e and f. |
+| BACK button | across the centre gap, rows 28 and 30 | Legs in columns e and f. |
+| OK button | across the centre gap, rows 49 and 51 | Legs in columns e and f. |
 
 Three connections need no jumper because the parts share a breadboard row:
 
 - **Rows 35 and 36**: the encoder's GND and + sit in the same rows as the DAC's GND and VIN, so one pair of power jumpers feeds both.
-- **Row 30**: the PREV button's ground leg shares the row of the DAC's `G` (audio ground) pin.
-- **Row 49**: the NEXT button's ground leg shares the row of the display's GND pin.
+- **Row 30**: the BACK button's ground leg shares the row of the DAC's `G` (audio ground) pin.
+- **Row 49**: the OK button's ground leg shares the row of the display's GND pin.
 
 If the ESP32 board's pin rows do not land in columns c and g on your breadboard, use whichever columns fit; only the row numbers matter.
 
@@ -69,8 +69,8 @@ If the ESP32 board's pin rows do not land in columns c and g on your breadboard,
 | From | To | Signal |
 |---|---|---|
 | pad 14 | 37e | Encoder SW (click) |
-| pad 15 | 28g | PREV button |
-| pad 16 | 51g | NEXT button |
+| pad 15 | 28g | BACK button |
+| pad 16 | 51g | OK button |
 
 ## Check before plugging in USB
 
@@ -78,7 +78,7 @@ With a multimeter on continuity:
 
 1. Confirm rows 61 (3V3) and 62 (GND) are **not** connected to each other.
 2. Confirm 3V3 (row 61) reaches DAC VIN and encoder + (row 36) and display VCC (row 50).
-3. Confirm the DAC's `G` pin (row 30) is connected to GND (row 62). If it is not, the PREV button will not work: run a jumper from 30d to 62h.
+3. Confirm the DAC's `G` pin (row 30) is connected to GND (row 62). If it is not, the BACK button will not work: run a jumper from 30d to 62h.
 
 ## If something does not work
 

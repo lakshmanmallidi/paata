@@ -19,7 +19,7 @@ features (playlists, Wi-Fi sync, no 8,192-track cap). Owner listens on IEMs only
 | M274 / KY-040 rotary encoder | Pins: GND + SW DT CLK. 2 counts per detent. |
 | TP4056 USB-C charger w/ protection | B+/B− to battery, OUT+/OUT− to switch → S3-Zero 5V/GND. |
 | 3.7 V 950 mAh LiPo | Has its own protection PCB. Red = +, black = −. |
-| 6×6 mm tactile buttons | PREV, NEXT (to GND, internal pull-ups). |
+| 6×6 mm tactile buttons | BACK, OK (to GND, internal pull-ups). |
 
 ## Pin map (firmware must match this)
 ```
@@ -28,7 +28,7 @@ SPI:      SCK=12 MOSI=11 MISO=13
 TFT:      CS=10 DC(A0)=9 RST=8 BL(LED)=4
 SD:       CS=3  (shares SPI bus with TFT)
 Encoder:  CLK=1 DT=2 SW=14
-Buttons:  PREV=15 NEXT=16
+Buttons:  BACK=15 OK=16
 ```
 
 ## Firmware
@@ -39,8 +39,9 @@ Buttons:  PREV=15 NEXT=16
 - Libraries: ESP32-audioI2S (schreibfaul1), Adafruit ST7735/ST7789, Adafruit GFX,
   ESP32Encoder (madhephaestus).
 - v1 (`firmware/src/main.cpp`): FLAC/MP3/WAV/AAC/OGG from
-  `/Music` on SD; folder browser; encoder = scroll/volume, click = select/pause,
-  long-press = up/back; PREV/NEXT buttons; auto-advance; progress bar.
+  `/Music` on SD; folder browser; encoder = scroll (browser) / volume (playing);
+  OK = select / play-pause (encoder click does the same); BACK = up a folder / back
+  to browser; hold OK = next track, hold BACK = previous; auto-advance; progress bar.
 - Build/flash/monitor from `firmware/`: `pio run -t upload && pio device monitor`. First flash:
   hold B, tap R, release B. Board appears as `/dev/cu.usbmodem*` on macOS.
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
@@ -58,7 +59,7 @@ Buttons:  PREV=15 NEXT=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Case (decided 2026-11-14)
-- Layout **C**: knob on the top edge next to the headphone jack, PREV/NEXT on the
+- Layout **C**: knob on the top edge next to the headphone jack, BACK/OK on the
   right side, screen on the front. Target about 40 × 70 × 16 mm including the knob
   (the earlier 62×40 target ignored the 35 × 57 mm display board). Options drawing:
   `hardware/case/knob-placement-options.svg`.
