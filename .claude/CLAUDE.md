@@ -58,6 +58,12 @@ Buttons:  BACK=15 OK=16
 - Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
 
+## Bench build (decided 2026-11-14)
+- Owner is building without headers: wires soldered to the ESP32 and DAC pads,
+  jumper sockets on the display's and encoder's existing pins, only the two buttons
+  and power rails on a breadboard. Guide: `hardware/DIRECT_WIRING.md`.
+  `hardware/BREADBOARD.md` is kept as the header-based alternative for other builders.
+
 ## Case (decided 2026-11-14)
 - Layout **C**: knob on the top edge next to the headphone jack, BACK/OK on the
   right side, screen on the front. Target about 40 × 70 × 16 mm including the knob

@@ -2,7 +2,7 @@
 
 All logic is 3.3 V. GPIO numbers = the numbers printed on the S3-Zero.
 
-Building on a breadboard first? See [BREADBOARD.md](BREADBOARD.md) for part placement and a hole-by-hole jumper list.
+For a first build, pick one: [DIRECT_WIRING.md](DIRECT_WIRING.md) (no headers, wires soldered to the pads) or [BREADBOARD.md](BREADBOARD.md) (headers on every board, everything on a breadboard).
 
 <img src="images/esp32-s3-zero.jpg" alt="Waveshare ESP32-S3-Zero, top side with pin labels" width="240">
 
