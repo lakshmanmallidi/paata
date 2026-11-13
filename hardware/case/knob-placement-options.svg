@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 700" width="1020" height="700" font-family="Helvetica, Arial, sans-serif">
+<rect width="1020" height="700" fill="#fff"/>
+<text x="510.0" y="30" font-size="19" font-weight="bold" text-anchor="middle" fill="#111">Paata case — where the knob goes (front views, to scale)</text>
+<text x="510.0" y="50" font-size="11.5" text-anchor="middle" fill="#555">Dashed grey outline = a credit card (54 × 85.6 mm) for scale. Sizes are rough; the battery has not been measured yet.</text>
+<text x="175.0" y="80.0" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">A · Knob on the front</text>
+<rect x="40.0" y="95.0" width="270.0" height="428.0" fill="none" stroke="#aaa" stroke-dasharray="6 5" rx="15"/>
+<rect x="75.0" y="95.0" width="200.0" height="400.0" fill="#2f3440" stroke="#111" stroke-width="2" rx="20"/>
+<rect x="87.5" y="107.5" width="175.0" height="285.0" fill="none" stroke="#8a93a6" stroke-dasharray="4 4" rx="2"/>
+<rect x="105.0" y="162.5" width="140.0" height="175.0" fill="#0b1a2b" stroke="#5d7fa8" rx="2"/>
+<text x="175.0" y="242.5" font-size="11" text-anchor="middle" fill="#9db7d6" font-weight="normal">screen</text>
+<text x="175.0" y="260.0" font-size="9.5" text-anchor="middle" fill="#7f9bbd" font-weight="normal">28 × 35 mm</text>
+<text x="175.0" y="370.0" font-size="9" text-anchor="middle" fill="#8a93a6" font-weight="normal">display board</text>
+<circle cx="175" cy="440" r="40" fill="#b9bec7" stroke="#555" stroke-width="2"/>
+<circle cx="175" cy="440" r="10" fill="#8d939d"/>
+<circle cx="102.5" cy="440" r="15" fill="#555" stroke="#ddd"/>
+<text x="102.5" y="444.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="normal">◂</text>
+<circle cx="247.5" cy="440" r="15" fill="#555" stroke="#ddd"/>
+<text x="247.5" y="444.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="normal">▸</text>
+<text x="175.0" y="547.0" font-size="12.5" text-anchor="middle" fill="#0b4a8f" font-weight="bold">about 40 × 80 × 16 mm, knob stands 10 mm proud</text>
+<text x="175.0" y="567.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Easiest to use and to build.</text>
+<text x="175.0" y="583.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Longest case; knob sticks out of the face</text>
+<text x="175.0" y="599.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">and can turn by itself in a pocket.</text>
+<text x="510.0" y="80.0" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">B · Knob on the side</text>
+<rect x="375.0" y="95.0" width="270.0" height="428.0" fill="none" stroke="#aaa" stroke-dasharray="6 5" rx="15"/>
+<rect x="410.0" y="135.0" width="200.0" height="310.0" fill="#2f3440" stroke="#111" stroke-width="2" rx="20"/>
+<rect x="422.5" y="147.5" width="175.0" height="285.0" fill="none" stroke="#8a93a6" stroke-dasharray="4 4" rx="2"/>
+<rect x="440.0" y="202.5" width="140.0" height="175.0" fill="#0b1a2b" stroke="#5d7fa8" rx="2"/>
+<text x="510.0" y="282.5" font-size="11" text-anchor="middle" fill="#9db7d6" font-weight="normal">screen</text>
+<text x="510.0" y="300.0" font-size="9.5" text-anchor="middle" fill="#7f9bbd" font-weight="normal">28 × 35 mm</text>
+<text x="510.0" y="410.0" font-size="9" text-anchor="middle" fill="#8a93a6" font-weight="normal">display board</text>
+<rect x="610.0" y="175.0" width="40.0" height="75.0" fill="#b9bec7" stroke="#555" stroke-width="2" rx="3"/>
+<line x1="613" y1="190" x2="647" y2="190" stroke="#777"/>
+<line x1="613" y1="205" x2="647" y2="205" stroke="#777"/>
+<line x1="613" y1="220" x2="647" y2="220" stroke="#777"/>
+<line x1="613" y1="235" x2="647" y2="235" stroke="#777"/>
+<rect x="610.0" y="285.0" width="9.0" height="40.0" fill="#555" stroke="#111" rx="2"/>
+<text x="625.0" y="309.0" font-size="9" text-anchor="start" fill="#222" font-weight="normal">PREV</text>
+<rect x="610.0" y="345.0" width="9.0" height="40.0" fill="#555" stroke="#111" rx="2"/>
+<text x="625.0" y="369.0" font-size="9" text-anchor="start" fill="#222" font-weight="normal">NEXT</text>
+<text x="660.0" y="215.0" font-size="10" text-anchor="start" fill="#222" font-weight="normal">knob</text>
+<text x="510.0" y="547.0" font-size="12.5" text-anchor="middle" fill="#0b4a8f" font-weight="bold">about 48 × 62 × 16 mm including the knob</text>
+<text x="510.0" y="567.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Shortest case; thumb reaches knob and buttons.</text>
+<text x="510.0" y="583.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Buttons must be mounted sideways.</text>
+<text x="510.0" y="599.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Knob widens the pocket footprint.</text>
+<text x="845.0" y="80.0" font-size="14" text-anchor="middle" fill="#222" font-weight="bold">C · Knob on the top edge</text>
+<rect x="710.0" y="95.0" width="270.0" height="428.0" fill="none" stroke="#aaa" stroke-dasharray="6 5" rx="15"/>
+<rect x="745.0" y="135.0" width="200.0" height="310.0" fill="#2f3440" stroke="#111" stroke-width="2" rx="20"/>
+<rect x="757.5" y="147.5" width="175.0" height="285.0" fill="none" stroke="#8a93a6" stroke-dasharray="4 4" rx="2"/>
+<rect x="775.0" y="202.5" width="140.0" height="175.0" fill="#0b1a2b" stroke="#5d7fa8" rx="2"/>
+<text x="845.0" y="282.5" font-size="11" text-anchor="middle" fill="#9db7d6" font-weight="normal">screen</text>
+<text x="845.0" y="300.0" font-size="9.5" text-anchor="middle" fill="#7f9bbd" font-weight="normal">28 × 35 mm</text>
+<text x="845.0" y="410.0" font-size="9" text-anchor="middle" fill="#8a93a6" font-weight="normal">display board</text>
+<rect x="855.0" y="95.0" width="75.0" height="40.0" fill="#b9bec7" stroke="#555" stroke-width="2" rx="3"/>
+<line x1="870" y1="98" x2="870" y2="132" stroke="#777"/>
+<line x1="885" y1="98" x2="885" y2="132" stroke="#777"/>
+<line x1="900" y1="98" x2="900" y2="132" stroke="#777"/>
+<line x1="915" y1="98" x2="915" y2="132" stroke="#777"/>
+<text x="845.0" y="120.0" font-size="10" text-anchor="end" fill="#222" font-weight="normal">knob</text>
+<rect x="945.0" y="205.0" width="9.0" height="40.0" fill="#555" stroke="#111" rx="2"/>
+<text x="960.0" y="229.0" font-size="9" text-anchor="start" fill="#222" font-weight="normal">PREV</text>
+<rect x="945.0" y="265.0" width="9.0" height="40.0" fill="#555" stroke="#111" rx="2"/>
+<text x="960.0" y="289.0" font-size="9" text-anchor="start" fill="#222" font-weight="normal">NEXT</text>
+<text x="845.0" y="547.0" font-size="12.5" text-anchor="middle" fill="#0b4a8f" font-weight="bold">about 40 × 70 × 16 mm including the knob</text>
+<text x="845.0" y="567.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Slimmest in the pocket; knob sits next to</text>
+<text x="845.0" y="583.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">the headphone jack, protected by the cable.</text>
+<text x="845.0" y="599.0" font-size="11" text-anchor="middle" fill="#333" font-weight="normal">Two-handed use for scrolling.</text>
+</svg>

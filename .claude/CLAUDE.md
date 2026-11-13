@@ -54,8 +54,17 @@ Buttons:  PREV=15 NEXT=16
   battery voltage on screen
 - v3: Wi-Fi sync of `EchoMini/` folder from TrueNAS SMB share; optional DLNA/
   Navidrome client
-- Later: 3D-printed case (~62×40×16 mm target), optional ES9038Q2M+TPA6138 I2S
+- Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
+
+## Case (decided 2026-11-14)
+- Layout **C**: knob on the top edge next to the headphone jack, PREV/NEXT on the
+  right side, screen on the front. Target about 40 × 70 × 16 mm including the knob
+  (the earlier 62×40 target ignored the 35 × 57 mm display board). Options drawing:
+  `hardware/case/knob-placement-options.svg`.
+- Final build has no carrier board: modules without headers, wired point-to-point
+  with thin wire, each in a printed pocket; a small perf strip only for the
+  buttons. Encoder desoldered from its breakout. Battery not yet measured.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout

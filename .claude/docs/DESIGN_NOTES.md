@@ -179,6 +179,12 @@ Credit card = 85.6 × 54 × 0.8 mm. Echo Mini = 80 × 54.5 × 14.5. Paata target
 4 mm-thick cell. Battery and charger are included in those numbers.
 
 ### Case (later)
+**Decided 2026-11-14:** knob on the top edge (option C of
+`hardware/case/knob-placement-options.svg`), buttons on the right side, about
+40 × 70 × 16 mm. Chosen over a front knob (case 80 mm long, knob turns in a pocket) and
+a side knob (48 mm wide). Owner preferred slimness over one-handed scrolling. The layout
+sketched below predates this.
+
 3D-print. The 1.8" ST7735 is common enough that Printables/MakerWorld ESP32-MP3-player
 cases can be remixed. Layout: screen + knob + 2 buttons on the front; two USB-C openings
 (charge / flash) and the 3.5 mm jack on the side; S3-Zero, DAC and LiPo stacked behind
