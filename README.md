@@ -2,7 +2,7 @@
 
 A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu for "song".
 
-It plays music from a microSD card through an I2S DAC, with a small colour screen, a rotary knob and two buttons. No touchscreen, no phone app, no account.
+It plays music from an SD card through an I2S DAC, with a small colour screen, a rotary knob and two buttons. No touchscreen, no phone app, no account.
 
 > **Status: early.** The v1 firmware compiles, but has not yet been tested on assembled hardware. Expect changes to the wiring and the code.
 

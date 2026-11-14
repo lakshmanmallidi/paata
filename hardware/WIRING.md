@@ -21,7 +21,7 @@ Leave DE / FIL / MCK / MU / FM / 3V open (defaults are correct). Lout/G/Rout unu
 
 ## 2. 1.8" TFT (ST7735, 128x160) — display header
 
-<img src="images/st7735-tft-back.jpg" alt="Back of the 1.8 inch ST7735 TFT board: display header, microSD slot and SD pads" width="240">
+<img src="images/st7735-tft-back.jpg" alt="Back of the 1.8 inch ST7735 TFT board: display header, SD card slot and SD pads" width="240">
 
 The photo shows the back of the board: the display header along one edge, the SD pads along the opposite edge.
 
