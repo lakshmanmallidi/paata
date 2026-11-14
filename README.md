@@ -32,7 +32,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 
 The PCM5102A has a line-level output. It drives in-ear monitors well; high-impedance headphones would need a separate headphone amplifier.
 
-Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). For a first build there are two guides: [hardware/DIRECT_WIRING.md](hardware/DIRECT_WIRING.md) (no headers, wires soldered pad to pad) and [hardware/BREADBOARD.md](hardware/BREADBOARD.md) (everything on a breadboard). In short:
+Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). There are three build guides: [hardware/PERFBOARD.md](hardware/PERFBOARD.md) (everything on one perf board, the reference build), [hardware/DIRECT_WIRING.md](hardware/DIRECT_WIRING.md) (no headers, wires soldered pad to pad) and [hardware/BREADBOARD.md](hardware/BREADBOARD.md) (breadboard, for testing). In short:
 
 ```
 I2S DAC:   BCK=5   WSEL=6  DIN=7
@@ -91,7 +91,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 - **v1**: play from SD, browse folders, basic screen (current)
 - **v2**: album art from `cover.jpg`, `.m3u` playlists, backlight dimming, battery level
 - **v3**: Wi-Fi sync of a music folder from a NAS
-- **Later**: 3D-printed case (about 62 × 40 × 16 mm), optional higher-end DAC board
+- **Later**: 3D-printed case (about 78 × 93 × 19 mm), optional higher-end DAC board
 
 ## Repository layout
 

@@ -70,29 +70,25 @@ Buttons:  BACK=15 OK=16
 - Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
 
-## Bench build (decided 2026-11-14)
-- Owner is building without headers: wires soldered pad to pad on every board,
-  power daisy-chained, only the
-  two buttons on a breadboard. Owner's wire colours: red, black, yellow, blue, white,
-  turquoise. Guide and numbered wire list: `hardware/DIRECT_WIRING.md`.
-- Boards are wired in their box positions (draft): side column with the encoder board
-  on top (back side up, shaft through the front face) and ESP32 below (USB at the
-  bottom edge); display beside it; DAC on the display's back with the jack at the
-  top edge.
-  `hardware/BREADBOARD.md` is kept as the header-based alternative for other builders.
+## Build: one perf board (decided 2026-11-14)
+- Everything goes on the owner's 29 × 35 hole perf board (about 74 × 89 mm), parts on
+  pin headers, wires on the copper side in the owner's six colours (red, black, yellow,
+  blue, white, turquoise). Guide, hole positions and wire list: `hardware/PERFBOARD.md`
+  (drawing from `.claude/tools/perfboard_layout.py`).
+- Layout: DAC top-left (jack at top edge), ESP32 beside it (USB-C at top edge, pins in
+  c10/c16 rows 1–9), display top-right (header row 2, SD card sticking out of the right
+  side, deliberately outside the case), battery flat on the board below DAC/ESP32,
+  TP4056 bottom-left (USB-C at bottom edge), BACK/OK bottom-middle, encoder bottom-right
+  lying flat on a straight header, knob through the front face.
+- Encoder board has been trimmed narrower by the owner (new width not measured).
+- `hardware/DIRECT_WIRING.md` (header-less, pad to pad) and `hardware/BREADBOARD.md`
+  are earlier alternatives, kept for other builders.
 
-## Case (decided 2026-11-14)
-- Revised after measuring: about 62 × 64 mm footprint and 22–24 mm thick with the
-  current parts. The SD adapter adds a 19 mm side column, the encoder board (kept
-  whole) forces the knob onto the **front face** in that column, and the 10.9 mm
-  battery sets the thickness. The earlier "layout C" (knob on the top edge, 40 × 70 × 16)
-  no longer fits. Slimming options not yet decided: a flush half-length microSD
-  adapter, a thinner battery. `hardware/case/knob-placement-options.svg` is the old study.
-- Final build has no carrier board: modules without headers, wired point-to-point
-  with thin wire, each in a printed pocket; a small perf strip only for the
-  buttons. **Encoder stays on its 26 × 19 mm breakout** (owner's call, 2026-11-14).
-  Battery measured 10.4 mm thick (102535): stacked layout ≈ 22 mm thick with this cell,
-  ≈ 16 mm with a 503450. Measured part sizes are in docs/DESIGN_NOTES.md § Size.
+## Case (not designed yet)
+- Follows the perf board: about 78 × 93 mm, roughly 18–19 mm thick (battery beside the
+  parts, not under the board). Front face: screen, knob, two buttons. Earlier studies in
+  `hardware/case/` (knob-placement options, top-controls draft) are superseded.
+- Battery length and width still unmeasured; 35 × 25 mm assumed from the 102535 code.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout
