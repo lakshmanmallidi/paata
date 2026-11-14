@@ -141,7 +141,7 @@ rect(39.6, 13.9, 53.4, 36.3, fill="#c62828", stroke="#7f1010", rx=4)
 rect(41.0, 19.3, 52.0, 33.4, fill="#101418", stroke="#000", rx=2)
 text(46.5, 25.6, "1.8\" ST7735 TFT", size=12, fill="#e8e8e8", weight="bold")
 text(46.5, 26.8, "screen facing up", size=9.5, fill="#bdbdbd")
-text(46.5, 28.0, "(microSD slot underneath)", size=9.5, fill="#bdbdbd")
+text(46.5, 28.0, "(SD card slot underneath)", size=9.5, fill="#bdbdbd")
 for r, n in zip(range(43, 51), ["LED", "SCK", "SDA", "A0", "RESET", "CS", "GND", "VCC"]):
     pin(r, "a")
     text(r, 15.25, n, size=8, anchor="end", rot=-90, fill="#fff", dx=3)

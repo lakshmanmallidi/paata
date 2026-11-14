@@ -1006,7 +1006,7 @@
 <rect x="622.0" y="420.2" width="154.0" height="197.4" fill="#101418" stroke="#000" rx="2"/>
 <text x="699.0" y="508.4" font-size="12" text-anchor="middle" fill="#e8e8e8" font-weight="bold">1.8" ST7735 TFT</text>
 <text x="699.0" y="525.2" font-size="9.5" text-anchor="middle" fill="#bdbdbd" font-weight="normal">screen facing up</text>
-<text x="699.0" y="542.0" font-size="9.5" text-anchor="middle" fill="#bdbdbd" font-weight="normal">(microSD slot underneath)</text>
+<text x="699.0" y="542.0" font-size="9.5" text-anchor="middle" fill="#bdbdbd" font-weight="normal">(SD card slot underneath)</text>
 <circle cx="650" cy="353.0" r="3.3" fill="#c9a227" stroke="#5a4a10" stroke-width="0.8"/>
 <text x="653" y="363.5" font-size="8" text-anchor="end" fill="#fff" font-weight="normal" transform="rotate(-90 653 363.5)">LED</text>
 <circle cx="664" cy="353.0" r="3.3" fill="#c9a227" stroke="#5a4a10" stroke-width="0.8"/>
