@@ -73,21 +73,21 @@ Buttons:  BACK=15 OK=16
 ## Build: one perf board (decided 2026-11-14)
 - Everything goes on the owner's 29 × 35 hole perf board (about 74 × 89 mm), parts on
   pin headers, wires on the copper side in the owner's six colours (red, black, yellow,
-  blue, white, turquoise). Guide, hole positions and wire list: `hardware/PERFBOARD.md`
-  (drawing from `.claude/tools/perfboard_layout.py`).
+  blue, white, turquoise). `hardware/WIRING.md` has the one wiring diagram;
+  `hardware/PERFBOARD.md` has the layout, the solder-side connections drawing and the
+  wire list. All three drawings come from `.claude/tools/perfboard_layout.py`.
 - Layout: DAC top-left (jack at top edge), ESP32 beside it (USB-C at top edge, pins in
   c10/c16 rows 1–9), display top-right (header row 2, SD card sticking out of the right
   side, deliberately outside the case), battery flat on the board below DAC/ESP32,
   TP4056 bottom-left (USB-C at bottom edge), BACK/OK bottom-middle, encoder bottom-right
   lying flat on a straight header, knob through the front face.
 - Encoder board has been trimmed narrower by the owner (new width not measured).
-- `hardware/DIRECT_WIRING.md` (header-less, pad to pad) and `hardware/BREADBOARD.md`
-  are earlier alternatives, kept for other builders.
+- Breadboard, direct-wiring and case-study drawings were removed at the owner's request
+  (2026-11-14); do not re-add alternative layouts.
 
 ## Case (not designed yet)
 - Follows the perf board: about 78 × 93 mm, roughly 18–19 mm thick (battery beside the
-  parts, not under the board). Front face: screen, knob, two buttons. Earlier studies in
-  `hardware/case/` (knob-placement options, top-controls draft) are superseded.
+  parts, not under the board). Front face: screen, knob, two buttons.
 - Battery length and width still unmeasured; 35 × 25 mm assumed from the 102535 code.
 
 ## Library / NAS conventions

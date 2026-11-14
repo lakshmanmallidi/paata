@@ -195,11 +195,11 @@ battery gives roughly 70 × 40 × 22 mm; putting the battery beside the display 
 roughly 85–95 × 40 × 14 mm. A 503450 cell brings the stacked version to about 16 mm thick.
 
 ### Case (later)
-**Decided 2026-11-14:** knob on the top edge (option C of
-`hardware/case/knob-placement-options.svg`), buttons on the right side, about
-40 × 70 × 16 mm. Chosen over a front knob (case 80 mm long, knob turns in a pocket) and
-a side knob (48 mm wide). Owner preferred slimness over one-handed scrolling. The layout
-sketched below predates this.
+**Superseded 2026-11-14:** the case now follows the single perf board build
+(`hardware/PERFBOARD.md`): about 78 × 93 × 19 mm, knob and buttons on the front face,
+SD card sticking out of the right side. An earlier choice of a top-edge knob
+(40 × 70 × 16 mm) was dropped once the full-size SD slot and the encoder board were
+measured. The layout sketched below predates all of this.
 
 3D-print. The 1.8" ST7735 is common enough that Printables/MakerWorld ESP32-MP3-player
 cases can be remixed. Layout: screen + knob + 2 buttons on the front; two USB-C openings

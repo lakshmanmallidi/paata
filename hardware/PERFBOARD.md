@@ -1,12 +1,12 @@
 # Perf board build
 
-Everything on one 29 × 35 hole perf board (about 74 × 89 mm). The connections are the same as in [WIRING.md](WIRING.md); this page says which hole each part goes in and lists the wires.
+Everything on one 29 × 35 hole perf board (about 74 × 89 mm). What connects to what is in [WIRING.md](WIRING.md); this page says which hole each part goes in and where each wire is soldered.
 
-![Perf board layout](images/perfboard-layout.svg)
+Holes are written as column and row: `c10 r3` is column 10, row 3, counted from the top-left corner of the component side. Parts sit on the plain side and are soldered on the copper side.
 
-Holes are written as column and row: `c10 r3` is column 10, row 3, counted from the top-left corner of the component side. Parts sit on the plain side and are soldered on the copper side. The right-hand drawing shows the copper side, where left and right are swapped.
+## Layout
 
-## Where each part goes
+![Perf board layout, component side](images/perfboard-layout.svg)
 
 | Part | Holes | Notes |
 |---|---|---|
@@ -34,9 +34,11 @@ Why this arrangement:
 - **ESP32 pads 14, 15, 16**: these are flat pads on top of the board. Solder a wire to each and pass it down through c14, c15 and c16 in row 11.
 - If the DAC's jack does not clear the top edge, move the DAC up one row.
 
-## Wires
+## Connections
 
-All wires run on the copper side, pad to pad.
+All wires run on the copper side, pad to pad. The drawing shows that side, so left and right are swapped compared with the layout above. Each pin is filled with the colour of its wire and labelled with the wire numbers from the tables below.
+
+![Perf board connections, solder side](images/perfboard-connections.svg)
 
 ### Power
 
