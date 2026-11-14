@@ -144,11 +144,12 @@ power-hungry headphones, not IEMs.
 Advice given: build with the PCM5102A, listen for a week, only then decide.
 
 ### Display + storage
-- **1.8" ST7735 128×160 V1.1 red board (₹309)** with microSD slot on the back. Replaces the
+- **1.8" ST7735 128×160 V1.1 red board (₹309)** with full-size SD slot on the back. Replaces the
   earlier 1.44" screen + separate SD module. Display header: LED SCK SDA A0 RESET CS GND VCC
   (U1 regulator → 3.3 or 5 V OK). SD pads SD_CS SD_MOSI SD_MISO SD_SCK must be soldered;
   they are NOT internally joined to the display's SDA/SCK, join them at the ESP32.
-  Earlier belief that the slot is full-size SD was wrong: it's microSD.
+  The slot is full-size SD (confirmed 2026-11-14 with a Samsung microSD→SD adapter in it);
+  the card protrudes ~20 mm from the board edge, which the case must allow for.
 - SD over SPI reads ~10–20 Mbit/s; 16/44.1 FLAC needs ~1 Mbit/s, 24/96 ~3 Mbit/s. Not the
   bottleneck; FLAC decode CPU is. Shared SPI with the display is fine because audio is
   buffered in PSRAM. SDIO (4-bit) is not possible on this board; irrelevant for now.
@@ -159,24 +160,39 @@ Advice given: build with the PCM5102A, listen for a week, only then decide.
 
 ### Controls
 - **M274 (KY-040) rotary encoder**: GND + SW DT CLK. Volume, scroll, click = select/pause.
-  Chosen over a potentiometer (analog scratchiness, no menu use). Can be desoldered from the
-  breakout later and mounted bare (12 × 12 mm) for a thinner case.
+  Chosen over a potentiometer (analog scratchiness, no menu use). **Owner keeps it on its
+  26 × 19 mm breakout** (decided 2026-11-14); R1–R3 on the back are 10 kΩ pull-ups, not
+  diodes, so a bare encoder would work on the ESP32's internal pull-ups, but it's not worth
+  the desoldering. Headers may be removed and wires soldered to the encoder pins.
 - Two 6 × 6 mm tactile buttons: PREV, NEXT.
 
 ### Power
 - **TP4056 USB-C 1 A with protection (₹19)**: B+/B− battery, OUT+/OUT− → slide switch →
   S3-Zero 5V. Charge via the TP4056's port; flash via the S3-Zero's port. 1 A is a bit high
   for a 950 mAh cell; R3 1.2 kΩ → 2 kΩ drops it to ~0.5 A (optional).
-- **3.7 V 950 mAh LiPo** with its own protection PCB. ESP32+DAC+TFT draw ~80–100 mA →
-  ~10 h. Li-ion 18650 (2,500–3,500 mAh, 25–35 h) or 14500 (~800 mAh) are electrically
+- **3.7 V 950 mAh LiPo, size code 102535 → 10.4 × 25 × 35 mm (caliper-measured
+  2026-11-14)**, with its own protection PCB. Thicker than the 6 mm first assumed; the slim
+  alternative is a 503450 cell (5 × 34 × 50 mm, 1000 mAh, ~₹250). ESP32+DAC+TFT draw
+  ~80–100 mA → ~10 h. Li-ion 18650 (2,500–3,500 mAh, 25–35 h) or 14500 (~800 mAh) are electrically
   identical options but change the case size; LiPo pouch keeps it thin.
 - S3-Zero's LDO accepts 3.6–5 V on the 5V pin, so no boost converter is needed. Never use a
   LiFePO4 cell with a TP4056.
 
-### Size
-Credit card = 85.6 × 54 × 0.8 mm. Echo Mini = 80 × 54.5 × 14.5. Paata target ≈ 62 × 40 ×
-16 mm (half a credit card footprint), trimmable to ~60 × 38 × 13 with a bare encoder and a
-4 mm-thick cell. Battery and charger are included in those numbers.
+### Size — measured 2026-11-14 (ruler / caliper)
+| Part | L × W × H mm |
+|---|---|
+| 1.8" TFT board | 57 × 34 × 4 (≈8 at the SD slot; card adds ~20 mm beyond the edge) |
+| ESP32-S3 Zero | 25 × 18 × 4 |
+| Adafruit PCM5102A | 27 × 19 × 3 (+6 for the jack) |
+| Encoder breakout | 26 × 19, shaft 20 |
+| TP4056 | 27 × 17 × 3 |
+| Battery 102535 | 35 × 25 × 10.4 |
+
+Credit card = 85.6 × 54 × 0.8 mm. Echo Mini = 80 × 54.5 × 14.5.
+The earlier "62 × 40 × 16" target assumed a 6 mm cell and ignored the display board; it
+does not hold. With the parts in hand, stacking TFT / (S3 + DAC side by side, 52 × 19) /
+battery gives roughly 70 × 40 × 22 mm; putting the battery beside the display instead gives
+roughly 85–95 × 40 × 14 mm. A 503450 cell brings the stacked version to about 16 mm thick.
 
 ### Case (later)
 **Decided 2026-11-14:** knob on the top edge (option C of

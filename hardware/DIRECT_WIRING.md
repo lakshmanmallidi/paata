@@ -1,6 +1,6 @@
 # Direct wiring (no headers)
 
-Paata built with wires soldered straight to the pads, in the positions the boards will take in the case. Nothing has headers except the encoder, which keeps the pins it came with (solder the wires onto them). Only the two buttons sit on a breadboard for now.
+Paata built with wires soldered straight to the pads, in the positions the boards will take in the case. No board has headers: every wire goes straight into a pad. Only the two buttons sit on a breadboard for now.
 
 The connections are the same as in [WIRING.md](WIRING.md). If you would rather use headers and a full breadboard, see [BREADBOARD.md](BREADBOARD.md).
 
@@ -8,7 +8,8 @@ The connections are the same as in [WIRING.md](WIRING.md). If you would rather u
 
 ## How to read the diagram
 
-- You are looking at the **back** of the build: the display lies screen-down on the desk, and the other boards are component side up.
+- You are looking at the **back** of the build: the display lies screen-down on the desk, and the ESP32 and DAC are component side up.
+- The encoder stays on its small board, which lies **back side up** with the shaft pointing down through the front of the case. Seen this way its pads read CLK, DT, SW, +, GND, with GND nearest the mounting holes.
 - The boards are drawn in their real orientation but spread apart. The small inset shows how they close up.
 - Each tag is one wire. Its colour is the wire colour and its number matches the list below; the same number appears at both ends.
 - Power is daisy-chained from board to board, so a few pads take two wires.
@@ -82,3 +83,4 @@ With a multimeter on continuity:
 - **"SD card not found"**: lower the SD speed in `firmware/src/main.cpp` from `20000000` to `4000000`. If it still fails, check the three small resistors next to the SD slot (R1–R3); on some of these boards they are too large for a 3.3 V bus and need bridging.
 - **Picture upside down**: change `tft.setRotation(0)` to `tft.setRotation(2)`.
 - **Knob scrolls the wrong way**: swap wires 14 and 15 at the encoder.
+- **Knob does nothing**: check which end of the encoder's pad row is GND; it is the pad nearest the two mounting holes.
