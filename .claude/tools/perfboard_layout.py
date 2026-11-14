@@ -2,7 +2,7 @@
 """Draws the three build drawings in hardware/images/:
 
   wiring-diagram.svg         what connects to what (pins grouped by job)
-  perfboard-layout.svg       component side of the board (22 x 35 holes used)
+  perfboard-layout.svg       component side of the board (23 x 35 holes used)
   perfboard-connections.svg  solder side (mirrored) with every wire drawn, in three steps
 
 Board coordinates are in hole pitches (2.54 mm); hole (c, r) = column c, row r,
@@ -14,59 +14,60 @@ IMG = Path(__file__).resolve().parents[2] / "hardware/images"
 COL = {"red": "#d92b2b", "black": "#222", "yellow": "#f2c81e", "blue": "#2f6fdd",
        "white": "#ffffff", "turq": "#22c7b8", None: "#d9a441"}
 FONT = 'font-family="Helvetica, Arial, sans-serif"'
-COLS, ROWS = 22, 35
+COLS, ROWS = 23, 35
 
 # ------------------------------------------------------------------- pins
 # (col, row, name, label side)
 pins = []
-pins += [(2, 27 + i, n, "r") for i, n in enumerate(["7", "8", "9", "10", "11", "12", "13", "RX", "TX"])]
-pins += [(8, 27 + i, n, "l") for i, n in enumerate(["6", "5", "4", "3", "2", "1", "3V3", "GND", "5V"])]
+pins += [(1, 27 + i, n, "r") for i, n in enumerate(["7", "8", "9", "10", "11", "12", "13", "RX", "TX"])]
+pins += [(7, 27 + i, n, "l") for i, n in enumerate(["6", "5", "4", "3", "2", "1", "3V3", "GND", "5V"])]
 pins += [(8, 4 + i, n, "l") for i, n in enumerate(["Rout", "G", "Lout", "BCK", "DIN", "WSEL", "GND", "VIN"])]
-pins += [(12 + i, 2, n, "d") for i, n in enumerate(["LED", "SCK", "SDA", "A0", "RST", "CS", "GND", "VCC"])]
-pins += [(14 + i, 23, n, "d") for i, n in enumerate(["SCK", "MISO", "MOSI", "CS"])]
-pins += [(16 + i, 26, n, "u") for i, n in enumerate(["CLK", "DT", "SW", "+", "GND"])]
+pins += [(13 + i, 2, n, "d") for i, n in enumerate(["LED", "SCK", "SDA", "A0", "RST", "CS", "GND", "VCC"])]
+pins += [(15 + i, 23, n, "d") for i, n in enumerate(["SCK", "MISO", "MOSI", "CS"])]
+pins += [(10 + i, 26, n, "u") for i, n in enumerate(["CLK", "DT", "SW", "+", "GND"])]
 pins += [(2, 17, "BACK", "u"), (4, 20, "GND", "d"), (6, 17, "OK", "u"), (8, 20, "GND", "d"),
-         (12, 33, "", "d"), (13, 33, "", "d"), (14, 33, "", "d"),
-         (11, 27, "14", "r"), (2, 25, "15", "u"), (5, 25, "16", "u")]
-back_pins = [(12.7, 14.7, "OUT−", "r"), (12.7, 16.5, "B−", "r"), (12.7, 18.3, "B+", "r"), (12.7, 20.1, "OUT+", "r")]
+         (5, 23, "", "d"), (6, 23, "", "d"), (7, 23, "", "d"),
+         (8, 25, "14", "r"), (2, 25, "15", "u"), (5, 21, "16", "r"),
+         (17, 25, "OUT−", "d"), (18, 25, "B−", "d"), (21, 25, "B+", "d"), (22, 25, "OUT+", "d")]
+back_pins = []
 
 # ------------------------------------------------------------------ wires
 # id: (colour, step, tag position along the longest segment, points)
 wires = {
     # step 1: power
-    "R1": ("red", 0, .82, [(8, 33), (8.35, 32.6), (8.35, 11.4), (8, 11)]),
-    "R2": ("red", 0, .65, [(8, 11), (8.35, 10.6), (8.35, 3.45), (19, 3.45), (19, 2)]),
-    "R3": ("red", 0, .3, [(8, 33), (10.7, 33), (10.7, 28.0), (19, 28.0), (19, 26)]),
-    "K1": ("black", 0, .6, [(12.7, 14.7), (9.3, 14.7), (9.3, 33.6), (8, 34)]),
-    "K2": ("black", 0, .5, [(12.7, 14.7), (12.3, 15.3), (8.8, 15.3), (8.8, 19.6), (8, 20)]),
-    "K3": ("black", 0, .5, [(8, 20), (7.5, 19.4), (7.0, 19.4), (7.0, 10.4), (7.6, 10.4), (8, 10)]),
-    "K4": ("black", 0, .3, [(8, 10), (7.5, 9.5), (7.5, 2.95), (18, 2.95), (18, 2)]),
+    "R1": ("red", 0, .75, [(7, 33), (7.6, 32.5), (8.4, 32.5), (8.4, 11.4), (8, 11)]),
+    "R2": ("red", 0, .65, [(8, 11), (8.4, 10.6), (8.4, 3.45), (20, 3.45), (20, 2)]),
+    "R3": ("red", 0, .5, [(7, 33), (13, 33), (13, 26)]),
+    "K1": ("black", 0, .5, [(17, 25), (17, 34), (7, 34)]),
+    "K2": ("black", 0, .6, [(14, 26), (13.6, 25.0), (8.8, 25.0), (8.8, 20.4), (8, 20)]),
+    "K3": ("black", 0, .5, [(8, 20), (7.5, 19.5), (7.0, 19.5), (7.0, 10.4), (7.6, 10.4), (8, 10)]),
+    "K4": ("black", 0, .3, [(8, 10), (7.5, 9.5), (7.5, 2.95), (19, 2.95), (19, 2)]),
     "K5": ("black", 0, .5, [(8, 20), (7.6, 20.5), (4.4, 20.5), (4, 20)]),
-    "K6": ("black", 0, .65, [(8, 34), (8.5, 34.4), (11.3, 34.4), (11.3, 28.7), (20, 28.7), (20, 26)]),
-    "B1": ("red", 0, .5, [(14, 33), (21.9, 33), (21.9, 21.6), (11.3, 21.6), (11.3, 20.1), (12.7, 20.1)]),
-    "B2": ("red", 0, .5, [(8, 35), (13, 35), (13, 33)]),
+    "K6": ("black", 0, .5, [(17, 25), (16.6, 25.6), (14.4, 25.6), (14, 26)]),
+    "B1": ("red", 0, .3, [(22, 25), (21.6, 24.1), (7.4, 24.1), (7, 23)]),
+    "B2": ("red", 0, .5, [(6, 23), (5.6, 23.6), (5.6, 35), (7, 35)]),
     # step 2: display and SD
-    "3": ("yellow", 1, .2, [(2, 30), (1.2, 30), (1.2, 0.55), (17, 0.55), (17, 2)]),
-    "5": ("white", 1, .3, [(2, 28), (2.5, 28), (2.5, 0.85), (16, 0.85), (16, 2)]),
-    "4": ("turq", 1, .42, [(2, 29), (2.85, 29), (2.85, 1.15), (15, 1.15), (15, 2)]),
-    "2": ("blue", 1, .54, [(2, 31), (3.2, 31), (3.2, 1.45), (14, 1.45), (14, 2)]),
-    "1": ("yellow", 1, .66, [(2, 32), (3.55, 32), (3.55, 1.72), (13, 1.72), (13, 2)]),
-    "6": ("white", 1, .5, [(8, 29), (8.6, 29), (8.6, 25.5), (7.2, 25.5), (7.2, 3.35), (12, 3.35), (12, 2)]),
-    "7": ("turq", 1, .2, [(8, 30), (9.3, 30), (9.3, 22.1), (17, 22.1), (17, 23)]),
-    "10": ("blue", 1, .4, [(2, 31), (2.4, 31.5), (9.8, 31.5), (9.8, 22.5), (16, 22.5), (16, 23)]),
-    "9": ("yellow", 1, .55, [(2, 32), (2.4, 32.5), (10.3, 32.5), (10.3, 24.0), (14, 24.0), (14, 23)]),
-    "8": ("white", 1, .75, [(2, 33), (2.4, 33.5), (10.8, 33.5), (10.8, 24.5), (15, 24.5), (15, 23)]),
+    "3": ("yellow", 1, .2, [(1, 30), (0.6, 29.6), (0.6, 0.55), (18, 0.55), (18, 2)]),
+    "5": ("white", 1, .3, [(1, 28), (1.5, 28), (1.5, 0.85), (17, 0.85), (17, 2)]),
+    "4": ("turq", 1, .42, [(1, 29), (2.5, 29), (2.5, 1.15), (16, 1.15), (16, 2)]),
+    "2": ("blue", 1, .54, [(1, 31), (2.9, 31), (2.9, 1.45), (15, 1.45), (15, 2)]),
+    "1": ("yellow", 1, .66, [(1, 32), (3.3, 32), (3.3, 1.72), (14, 1.72), (14, 2)]),
+    "6": ("white", 1, .5, [(7, 29), (6.6, 29), (6.6, 3.35), (13, 3.35), (13, 2)]),
+    "7": ("turq", 1, .2, [(7, 30), (8.3, 30), (8.3, 22.1), (18, 22.1), (18, 23)]),
+    "10": ("blue", 1, .35, [(1, 31), (1.4, 31.5), (8.65, 31.5), (8.65, 22.5), (17, 22.5), (17, 23)]),
+    "9": ("yellow", 1, .25, [(1, 32), (1.4, 32.5), (9.0, 32.5), (9.0, 24.0), (15, 24.0), (15, 23)]),
+    "8": ("white", 1, .45, [(1, 33), (1.4, 33.5), (9.4, 33.5), (9.4, 24.5), (16, 24.5), (16, 23)]),
     # step 3: DAC, encoder, buttons
-    "12": ("yellow", 2, .3, [(8, 27), (8.4, 27), (8.4, 26), (7.6, 26), (7.6, 9), (8, 9)]),
-    "11": ("blue", 2, .5, [(8, 28), (8.8, 28), (8.8, 25.5), (7.2, 25.5), (7.2, 7), (8, 7)]),
-    "13": ("turq", 2, .7, [(2, 27), (6.8, 27), (6.8, 8), (8, 8)]),
+    "12": ("yellow", 2, .3, [(7, 27), (7.5, 26.6), (7.5, 9.4), (8, 9)]),
+    "11": ("blue", 2, .5, [(7, 28), (6.6, 28), (6.6, 7), (8, 7)]),
+    "13": ("turq", 2, .7, [(1, 27), (1.5, 26.5), (4.6, 26.5), (4.6, 8), (8, 8)]),
     "17": ("blue", 2, .5, [(2, 25), (2.4, 24.6), (2.4, 17.4), (2, 17)]),
-    "18": ("yellow", 2, .5, [(5, 25), (5, 17), (6, 17)]),
-    "15": ("yellow", 2, .6, [(8, 31), (9.4, 31), (9.4, 27.8), (17, 27.8), (17, 26)]),
-    "14": ("turq", 2, .35, [(8, 32), (10, 32), (10, 28.5), (16, 28.5), (16, 26)]),
-    "16": ("white", 2, .5, [(11, 27), (11, 24.8), (18, 24.8), (18, 26)]),
+    "18": ("yellow", 2, .5, [(5, 21), (5, 17), (6, 17)]),
+    "15": ("yellow", 2, .5, [(7, 31), (8.2, 31), (8.2, 27.3), (11, 27.3), (11, 26)]),
+    "14": ("turq", 2, .5, [(7, 32), (8.6, 32), (8.6, 28.0), (10, 28.0), (10, 26)]),
+    "16": ("white", 2, .5, [(8, 25), (8, 24.7), (12, 24.7), (12, 26)]),
 }
-leads = [("red", [(13.7, 13.8), (13.7, 18.3), (12.7, 18.3)]), ("black", [(13.3, 13.8), (13.3, 16.5), (12.7, 16.5)])]
+leads = [("red", [(21, 15.8), (21, 25)]), ("black", [(18.6, 15.8), (18.6, 24.4), (18, 25)])]
 STEPS = ["Step 1: power (red and black)", "Step 2: display and SD card", "Step 3: DAC, encoder, buttons"]
 
 
@@ -102,14 +103,14 @@ def draw_board(o, ox, oy, P, mirror, step=None):
     soft = "#333" if mirror else "#dfe8f5"
     metal = .3 if mirror else 1.0
     if not mirror:
-        box(22.5, 9.3, 30.0, 18.8, "#e9edf2", "#7a8799", 4)
-        t(26.3, 13.5, "SD card", 13, fill="#333", weight="bold")
-        t(26.3, 14.5, "sticks out of the case", 11, fill="#555")
-    box(9.2, 1.33, 22.6, 24.2, "#c8372d", "#7d1d17", 4, op, mirror)                 # display
+        box(23.5, 9.3, 31.0, 18.8, "#e9edf2", "#7a8799", 4)
+        t(27.3, 13.5, "SD card", 13, fill="#333", weight="bold")
+        t(27.3, 14.5, "sticks out of the case", 11, fill="#555")
+    box(10.2, 1.33, 23.6, 24.2, "#c8372d", "#7d1d17", 4, op, mirror)                # display
     if not mirror:
-        box(10.0, 4.6, 21.8, 20.6, "#15171a", "#000", 3)
-        t(15.9, 11.6, "Display", 18, fill=lab, weight="bold")
-        t(15.9, 12.7, "screen up, header at the top", 11.5, fill=soft)
+        box(11.0, 4.6, 22.8, 20.6, "#15171a", "#000", 3)
+        t(16.9, 11.6, "Display", 18, fill=lab, weight="bold")
+        t(16.9, 12.7, "screen up, header at the top", 11.5, fill=soft)
     box(0.52, 1.0, 8.48, 12.0, "#1d1d22", "#000", 4, op, mirror)                    # DAC
     box(3.0, -0.4, 6.0, 3.3, "#9a9a9a", "#555", 3, metal, mirror)
     if not mirror:
@@ -117,36 +118,37 @@ def draw_board(o, ox, oy, P, mirror, step=None):
         t(3.0, 7.5, "DAC", 17, fill=lab, weight="bold")
     else:
         t(4.3, 5.0, "DAC", 12, fill="#555")
-    box(1.48, 26.2, 8.52, 35.63, "#1f4f9c", "#0d2c5e", 4, op, mirror)               # ESP32
-    box(3.4, 33.5, 6.6, 36.2, "#c9c9c9", "#666", 3, metal, mirror)
+    box(0.48, 26.2, 7.52, 35.63, "#1f4f9c", "#0d2c5e", 4, op, mirror)               # ESP32
+    box(2.4, 33.5, 5.6, 36.2, "#c9c9c9", "#666", 3, metal, mirror)
     if not mirror:
-        t(5, 35.0, "USB-C", 10.5)
-        t(5, 30.5, "ESP32", 15, fill=lab, weight="bold")
-        t(5, 31.6, "flashing port", 10.5, fill=soft)
-        t(3.6, 26.75, "pads 14 15 16", 8.5, "start", soft)
+        t(4, 35.0, "USB-C", 10.5)
+        t(4, 30.5, "ESP32", 15, fill=lab, weight="bold")
+        t(4, 31.6, "flashing port", 10.5, fill=soft)
+        t(2.6, 26.75, "pads 14 15 16", 8.5, "start", soft)
     else:
-        t(5, 36.0, "ESP32", 12, fill="#555", halo=False)
-    box(11.4, 32.35, 14.6, 33.65, "#444", "#000", 2, op, mirror)                    # switch
-    t(13, 31.6, "switch" if mirror else "power switch", 10.5, fill="#333")
+        t(4, 36.0, "ESP32", 12, fill="#555", halo=False)
+    box(4.4, 22.35, 7.6, 23.65, "#444", "#000", 2, op, mirror)                      # switch
+    t(3.2 if mirror else 6, 23.0 if mirror else 24.4, "switch" if mirror else "power switch", 10.5, fill="#333")
     for c0 in (1.6, 5.6):                                                             # buttons
         box(c0, 16.6, c0 + 2.8, 20.4, "#2d2d2d", "#000", 4, op, mirror)
         if not mirror:
             o.append(f'<circle cx="{X(c0 + 1.4):.1f}" cy="{Y(18.5):.1f}" r="{.75 * P}" fill="#777" stroke="#000"/>')
-    box(14.9, 25.4, 22.4, 35.6, "#16181c", "#000", 4, op, mirror)                   # encoder, 19 x 26 mm
+    box(8.7, 25.4, 16.2, 35.6, "#16181c", "#000", 4, op, mirror)                    # encoder, 19 x 26 mm
+    box(16.6, 25.4, 23.4, 35.9, "#1f6aa8", "#0d3a61", 4, op, mirror)                # charger
+    box(18.2, 33.3, 21.8, 36.2, "#c9c9c9", "#666", 3, metal, mirror)
     if not mirror:
         for rad, f in ((2.6, "#9aa0a8"), (1.1, "#d5d8dc")):
-            o.append(f'<circle cx="{X(18.65):.1f}" cy="{Y(31.0):.1f}" r="{rad * P}" fill="{f}" stroke="#444"/>')
-        t(18.65, 34.6, "Encoder, knob up", 12.5, fill=lab, weight="bold")
+            o.append(f'<circle cx="{X(12.45):.1f}" cy="{Y(31.0):.1f}" r="{rad * P}" fill="{f}" stroke="#444"/>')
+        t(12.45, 34.7, "Encoder, knob up", 12, fill=lab, weight="bold")
+        t(20, 34.8, "USB-C", 10.5)
+        t(20, 29.5, "Charger", 15, fill=lab, weight="bold")
+        t(20, 30.6, "charging port", 10.5, fill=soft)
     else:
-        t(18.65, 32.0, "Encoder", 12, fill="#555")
-        box(9.0, 4.0, 22.8, 13.8, "#b9bec6", "#6d7480", 6, .9)                      # battery (this side)
-        t(15.9, 8.6, "Battery", 15, weight="bold", halo=False)
-        t(15.9, 9.8, "on this side", 10.5, fill="#333", halo=False)
-        box(11.8, 14.2, 22.3, 21.0, "#1f6aa8", "#0d3a61", 4, .92)                   # charger (this side)
-        box(19.6, 15.8, 23.0, 19.4, "#c9c9c9", "#666", 3)
-        t(21.3, 17.6, "USB-C", 9.5, halo=False)
-        t(17.3, 17.2, "Charger", 14, fill="#fff", weight="bold", halo=False)
-        t(17.3, 18.3, "on this side", 10, fill="#dfe8f5", halo=False)
+        t(12.45, 32.0, "Encoder", 12, fill="#555")
+        t(20, 31.0, "Charger", 12, fill="#555")
+        box(9.6, 6.0, 23.4, 15.8, "#b9bec6", "#6d7480", 6, .9)                      # battery (this side)
+        t(16.5, 10.6, "Battery", 15, weight="bold", halo=False)
+        t(16.5, 11.8, "on this side", 10.5, fill="#333", halo=False)
 
     used = {}
     if step is not None:
@@ -172,7 +174,7 @@ def draw_board(o, ox, oy, P, mirror, step=None):
             o.append(f'<rect x="{x - w / 2:.1f}" y="{y - 8:.1f}" width="{w}" height="16" rx="4" fill="#fff" stroke="#222"/>')
             o.append(f'<text x="{x:.1f}" y="{y + 3.6:.1f}" font-size="10.5" text-anchor="middle" font-weight="bold">{wid}</text>')
 
-    dark = {(2, 17), (4, 20), (6, 17), (8, 20), (11, 27), (2, 25), (5, 25)}
+    dark = {(2, 17), (4, 20), (6, 17), (8, 20), (8, 25), (2, 25), (5, 21)}
     for c, r, n, side in pins + (back_pins if mirror else []):
         hit = (c, r) in used
         if mirror and not hit:
@@ -201,7 +203,7 @@ def layout():
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" {FONT}>',
          f'<rect width="{W}" height="{H}" fill="#fbfaf7"/>',
          f'<text x="{W / 2}" y="38" font-size="21" text-anchor="middle" font-weight="bold">Perf board layout: component side</text>',
-         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–22 left to right, rows 1–35 top to bottom. Battery and charger are on the other side.</text>']
+         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–23 left to right, rows 1–35 top to bottom. Only the battery is on the other side, behind the display.</text>']
     draw_board(o, 50, 110, P, False)
     o.append("</svg>")
     (IMG / "perfboard-layout.svg").write_text("\n".join(o))

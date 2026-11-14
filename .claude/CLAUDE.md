@@ -71,26 +71,25 @@ Buttons:  BACK=15 OK=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Build: one perf board (decided 2026-11-14)
-- Everything goes on the owner's perf board (29 × 35 holes; the layout uses 22 × 35,
-  about 56 × 89 mm), parts on pin headers, wires on the solder side in the owner's six
+- Everything goes on the owner's perf board (29 × 35 holes; the layout uses 23 × 35,
+  about 58 × 89 mm), parts on pin headers, wires on the solder side in the owner's six
   colours (red, black, yellow, blue, white, turquoise). `hardware/WIRING.md` has the one
-  wiring diagram; `hardware/PERFBOARD.md` has the layout, the solder-side connections
+  wiring diagram; `hardware/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
   `.claude/tools/perfboard_layout.py`.
-- Component side: DAC top-left (jack at top edge), BACK/OK below it, ESP32 bottom-left
-  (USB-C at bottom edge, pins in c2/c8 rows 27–35), display top-right (header row 2, SD
-  card sticking out of the right side, deliberately outside the case), encoder
-  bottom-right lying flat on a straight header, knob through the front face.
-- Solder side (owner's call, to save width): battery behind the display's upper half,
-  charger behind its lower half with USB-C at the right edge.
-- Encoder board trimmed by the owner to 19 × 26 mm; header at its top end (row 26).
+- Component side: DAC top-left (jack at top edge), BACK/OK and the power switch below
+  it, display top-right (header row 2, SD card sticking out of the right side,
+  deliberately outside the case). Bottom row, left to right (owner's idea): ESP32
+  (USB-C at bottom edge, pins c1/c7 rows 27–35), encoder (19 × 26 mm, header row 26,
+  knob through the front face), TP4056 charger (USB-C at bottom edge).
+- Solder side: only the battery, behind the display (owner's call, to save width).
 - The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
   "made no sense"); the connections drawing is three back views, one wire group each.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
 ## Case (not designed yet)
-- Follows the perf board: about 60 × 93 mm and roughly 30 mm thick (about 27 mm bare:
+- Follows the perf board: about 62 × 93 mm and roughly 30 mm thick (about 27 mm bare:
   parts in front, battery behind). Front face: screen, knob, two buttons.
 - Battery length and width still unmeasured; 35 × 25 mm assumed from the 102535 code.
 
