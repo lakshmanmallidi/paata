@@ -71,27 +71,27 @@ Buttons:  BACK=15 OK=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Build: one perf board (decided 2026-11-14)
-- Everything except the buttons and power switch goes on the owner's perf board (29 × 35 holes; the layout uses 23 × 35,
-  about 58 × 89 mm), parts on pin headers, wires on the solder side in the owner's six
+- Everything except the buttons and power switch goes on the owner's perf board (cut to 22 × 34 holes, about 56 × 87 mm), parts on pin headers, wires on the solder side in the owner's six
   colours (red, black, yellow, blue, white, turquoise). `hardware/WIRING.md` has the one
   wiring diagram; `hardware/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
   `.claude/tools/perfboard_layout.py`.
-- Component side: DAC top-left (jack at top edge), battery flat below it (c1–c10,
-  rows 13–26; owner test-fitted it 2026-11-14, "fits snug"), display top-right (header row 2, SD card sticking out of the right side,
-  deliberately outside the case). Bottom row, left to right (owner's idea): ESP32
-  (USB-C at bottom edge, pins c1/c7 rows 27–35), encoder (19 × 26 mm, header row 26,
-  knob through the front face), TP4056 charger (USB-C at bottom edge).
-- Solder side: wires only. BACK/OK sit on a separate 7 × 4 hole board under the lid
-  (three flying leads: pad 15, pad 16, GND); the slide switch goes in a case side wall
-  on two flying leads (owner's call, 2026-11-14).
+- Headers are soldered (2026-11-14); hole positions in `hardware/PERFBOARD.md` and the
+  generator were read from the owner's photo of the back, so treat them as fixed:
+  display header r1 c13–20, SD pads r22 c15–18, DAC c8 r2–9 (and c2 r3–8, unwired),
+  ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
+  c16/17/20/21 (OUT+ B+ B− OUT−, read from photos, owner to confirm). Battery lies flat
+  on the front between DAC and ESP32. Unidentified joints at c15 r25, c17 r21, c18 r21.
+- Back: wires only. SCK/MOSI run ESP32 → SD pads → display. Front (soldered from
+  above): pad 14 → encoder SW, pads 15/16 and GND → button board (7 × 4 holes, under the
+  lid), charger OUT+ → slide switch in a case wall → ESP32 5V, battery leads → B+/B−.
 - The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
   "made no sense"); the connections drawing is three back views, one wire group each.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
 ## Case (not designed yet)
-- Follows the perf board: about 62 × 93 mm. The battery (10.9 mm) is the tallest part
+- Follows the perf board: about 60 × 91 mm. The battery (10.9 mm) is the tallest part
   on the front, so the lid sits about 12 mm above the board. Front face: screen, knob,
   two buttons; slide switch in a side wall.
 - Open: where the button board goes. Over the battery it needs about 6 mm more height

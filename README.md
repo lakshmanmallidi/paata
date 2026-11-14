@@ -91,7 +91,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 - **v1**: play from SD, browse folders, basic screen (current)
 - **v2**: album art from `cover.jpg`, `.m3u` playlists, backlight dimming, battery level
 - **v3**: Wi-Fi sync of a music folder from a NAS
-- **Later**: 3D-printed case (about 62 × 93 mm), optional higher-end DAC board
+- **Later**: 3D-printed case (about 60 × 91 mm), optional higher-end DAC board
 
 ## Repository layout
 
