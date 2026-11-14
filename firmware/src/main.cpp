@@ -31,7 +31,7 @@
 
 #define ENC_CLK    1
 #define ENC_DT     2
-#define ENC_SW    44   // header pin RX; UART0 is unused because serial goes over USB
+#define ENC_SW    14   // inner pad 14
 
 // ---------- objects ----------
 Audio audio;

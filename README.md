@@ -38,7 +38,7 @@ I2S DAC:   BCK=5   WSEL=6  DIN=7
 SPI bus:   SCK=12  MOSI=11 MISO=13
 Screen:    CS=10   DC=9    RST=8   Backlight=4
 SD card:   CS=3    (shares the SPI bus with the screen)
-Encoder:   CLK=1   DT=2    SW=44 (the RX pin)
+Encoder:   CLK=1   DT=2    SW=14
 ```
 
 The SD pads on the back of the screen board are not connected to the display header; they need their own four wires.

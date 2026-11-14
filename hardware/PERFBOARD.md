@@ -76,9 +76,6 @@ SCK and MOSI go from the ESP32 to the SD pads and carry on from there to the dis
 | 13 | turquoise | GPIO 7 `c1 r25` | DAC DIN `c8 r6` |
 | 14 | turquoise | GPIO 1 `c7 r30` | Encoder CLK `c8 r25` |
 | 15 | yellow | GPIO 2 `c7 r29` | Encoder DT `c9 r25` |
-| 16 | white | RX (GPIO 44) `c1 r32` | Encoder SW `c10 r25`, along the bottom edge under the ESP32 |
-
-The ESP32's inner pads 14, 15 and 16 are not used.
 
 ## Connections on the front
 
@@ -86,6 +83,7 @@ These are soldered from above, after the back is done and tested.
 
 | Wire | Colour | From | To |
 |---|---|---|---|
+| 16 | white | ESP32 pad 14 | Encoder SW, top of the pin at `c10 r25` |
 | B1 | red | Charger OUT+ pad | Power switch, middle pin |
 | | red | Battery + | Charger B+ pad |
 | | black | Battery − | Charger B− pad |
@@ -101,6 +99,6 @@ With a multimeter on continuity:
 1. 3V3 (`c7 r31`) and GND (`c7 r32`) are **not** connected to each other.
 2. 3V3 reaches DAC VIN, display VCC and encoder +.
 3. GND reaches DAC GND, display GND, encoder GND and charger OUT−.
-4. RX (`c1 r32`) connects to GND only while the knob is pressed.
+4. Pad 14 connects to GND only while the knob is pressed.
 
 Then plug USB into the ESP32 with the power switch off, and flash.

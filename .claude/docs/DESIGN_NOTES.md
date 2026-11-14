@@ -166,9 +166,8 @@ Advice given: build with the PCM5102A, listen for a week, only then decide.
   the desoldering. Headers may be removed and wires soldered to the encoder pins.
 - Two 6 × 6 mm tactile buttons were planned (BACK, OK). **Dropped 2026-11-15** at the owner's
   suggestion: no room on the perf board, and the encoder switch covers them (click = OK,
-  hold = back, hold and turn = skip). SW moved from inner pad 14 to the RX header pin
-  (GPIO 44) so nothing is soldered to the inner pads; RX rather than TX because the ROM
-  drives TX at boot.
+  hold = back, hold and turn = skip). SW stays on inner pad 14 (a move to the RX header
+  pin, GPIO 44, was tried and reverted the same day at the owner's request).
 
 ### Power
 - **TP4056 USB-C 1 A with protection (₹19)**: B+/B− battery, OUT+/OUT− → slide switch →

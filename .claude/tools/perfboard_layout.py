@@ -60,7 +60,6 @@ wires = {
     "13": ("turq", 2, .5, [(1, 25), (1, 9.6), (3.5, 9.6), (3.5, 6), (8, 6)]),
     "15": ("yellow", 2, .5, [(7, 29), (9, 29), (9, 25)]),
     "14": ("turq", 2, .5, [(7, 30), (8, 30), (8, 25)]),
-    "16": ("white", 2, .45, [(1, 32), (1.6, 32.5), (10, 32.5), (10, 25)]),
 }
 leads = []
 STEPS = ["Step 1: power (red and black)", "Step 2: display and SD card", "Step 3: DAC and encoder"]
@@ -123,6 +122,7 @@ def draw_board(o, ox, oy, P, mirror, step=None):
         t(4, 33.0, "USB-C", 10.5)
         t(4, 28.5, "ESP32", 15, fill=lab, weight="bold")
         t(4, 29.6, "flashing port", 10.5, fill=soft)
+        t(2.0, 24.75, "pad 14 inside", 8.5, "start", soft)
     else:
         t(4, 34.1, "ESP32", 12, fill="#555", halo=False)
     box(7.55, 24.3, 14.9, 34.5, "#16181c", "#000", 4, op, mirror)                   # encoder, 19 x 26 mm
@@ -301,7 +301,7 @@ def wiring():
     box(130, 442, 200, 150, "#16181c")
     t(190, 480, "Encoder", 15, fill="#fff", weight="bold")
     for y, pin, name, col, tag in ((470, "1", "CLK", "turq", "14"), (510, "2", "DT", "yellow", "15"),
-                                   (550, "RX", "SW", "white", "16")):
+                                   (550, "14", "SW", "white", "16")):
         wire([(330, y), (EL, y)], col, tag, (445, y))
         t(318, y, name, 12, "end", "#fff", "bold"); epin("l", y, pin)
     chip(142, 540, "+  R3", "red"); chip(142, 568, "GND  K1", "black")

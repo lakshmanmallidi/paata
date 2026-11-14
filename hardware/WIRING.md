@@ -54,11 +54,11 @@ The photo shows the back of the board: the display header along one edge, the SD
 |---|---|
 | GND | GND |
 | +   | 3V3 |
-| SW  | RX (GPIO 44) |
+| SW  | 14 |
 | DT  | 2 |
 | CLK | 1 |
 
-The encoder's switch is the only button. It uses the RX header pin, which is free because serial goes over USB.
+The encoder's switch is the only button. Pad 14 is one of the inner pads on the S3-Zero, so its wire is soldered from above.
 
 ## 5. Power
 

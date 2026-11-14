@@ -38,8 +38,9 @@ I2S:      BCK=5  WSEL/LRC=6  DIN=7
 SPI:      SCK=12 MOSI=11 MISO=13
 TFT:      CS=10 DC(A0)=9 RST=8 BL(LED)=4
 SD:       CS=3  (shares SPI bus with TFT)
-Encoder:  CLK=1 DT=2 SW=44 (header pin RX; UART0 unused, serial is USB CDC)
-No push buttons; inner pads 14/15/16 unused (owner's decision, 2026-11-15).
+Encoder:  CLK=1 DT=2 SW=14
+No push buttons; inner pads 15/16 unused (owner's decision, 2026-11-15). SW stays on
+inner pad 14: the owner turned down moving it to the RX header pin.
 ```
 
 ## Firmware
@@ -81,8 +82,8 @@ No push buttons; inner pads 14/15/16 unused (owner's decision, 2026-11-15).
   ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
   c16/17/20/21 (OUT+ B+ B− OUT−, read from photos, owner to confirm). Battery lies flat
   on the front between DAC and ESP32. Unidentified joints at c15 r25, c17 r21, c18 r21.
-- Back: wires only. SCK/MOSI run ESP32 → SD pads → display; encoder SW → RX pin
-  (c1 r32). Front (soldered from above): charger OUT+ → slide switch in a case wall →
+- Back: wires only. SCK/MOSI run ESP32 → SD pads → display. Front (soldered from
+  above): pad 14 → encoder SW, charger OUT+ → slide switch in a case wall →
   ESP32 5V, battery leads → B+/B−.
 - The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
   "made no sense"); the connections drawing is three back views, one wire group each.

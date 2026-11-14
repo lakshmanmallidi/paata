@@ -89,7 +89,7 @@
 <text x="445" y="554.0" font-size="11.5" text-anchor="middle" fill="#111" font-weight="bold">16</text>
 <text x="318" y="554.2" font-size="12" text-anchor="end" fill="#fff" font-weight="bold">SW</text>
 <circle cx="560" cy="550" r="6" fill="#d9a441" stroke="#222"/>
-<text x="574" y="554.5" font-size="13" text-anchor="start" fill="#fff" font-weight="bold">RX</text>
+<text x="574" y="554.5" font-size="13" text-anchor="start" fill="#fff" font-weight="bold">14</text>
 <rect x="142" y="529" width="49.0" height="22" rx="11" fill="#d92b2b" stroke="#222"/>
 <text x="166.5" y="543.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">+  R3</text>
 <rect x="142" y="557" width="62.199999999999996" height="22" rx="11" fill="#222" stroke="#222"/>

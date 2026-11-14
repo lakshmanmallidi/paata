@@ -804,6 +804,7 @@
 <text x="170.0" y="1138.7" font-size="10.5" text-anchor="middle" fill="#111" font-weight="normal">USB-C</text>
 <text x="170.0" y="1005.2" font-size="15" text-anchor="middle" fill="#fff" font-weight="bold">ESP32</text>
 <text x="170.0" y="1036.7" font-size="10.5" text-anchor="middle" fill="#dfe8f5" font-weight="normal">flashing port</text>
+<text x="110.0" y="890.5" font-size="8.5" text-anchor="start" fill="#dfe8f5" font-weight="normal">pad 14 inside</text>
 <rect x="276.5" y="874.0" width="220.5" height="306.0" rx="4" fill="#16181c" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
 <rect x="503.0" y="871.0" width="204.0" height="312.0" rx="4" fill="#1f6aa8" fill-opacity="0.93" stroke="#0d3a61" stroke-width="1.2"/>
 <rect x="551.0" y="1114.0" width="108.0" height="87.0" rx="3" fill="#c9c9c9" fill-opacity="1.0" stroke="#666" stroke-width="1.2"/>
