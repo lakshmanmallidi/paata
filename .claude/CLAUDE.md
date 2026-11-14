@@ -15,7 +15,7 @@ features (playlists, Wi-Fi sync, no 8,192-track cap). Owner listens on IEMs only
 |---|---|
 | Waveshare ESP32-S3-Zero | ESP32-S3FH4R2, 4 MB flash, 2 MB QSPI PSRAM, USB-C. GPIO 21 = RGB LED (avoid). Header pins 1–16, TX(43), RX(44). |
 | Adafruit PCM5102A I2S DAC | Pins: VIN GND WSEL DIN BCK Lout G Rout. Config pads DE/FIL/MCK/MU/FM/3V left open. Line-level out, fine for IEMs. |
-| 1.8" ST7735 TFT 128×160 V1.1 (red board) | Display header: LED SCK SDA A0 RESET CS GND VCC. microSD slot on back with pads SD_CS SD_MOSI SD_MISO SD_SCK (must be soldered). |
+| 1.8" ST7735 TFT 128×160 V1.1 (red board) | Display header: LED SCK SDA A0 RESET CS GND VCC. **Full-size SD** slot on back (not microSD; the card sticks out about 20 mm on one side) with pads SD_CS SD_MOSI SD_MISO SD_SCK (must be soldered). |
 | M274 / KY-040 rotary encoder | Pins: GND + SW DT CLK. 2 counts per detent. |
 | TP4056 USB-C charger w/ protection | B+/B− to battery, OUT+/OUT− to switch → S3-Zero 5V/GND. |
 | 3.7 V 950 mAh LiPo | Has its own protection PCB. Red = +, black = −. |
@@ -59,12 +59,17 @@ Buttons:  BACK=15 OK=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Bench build (decided 2026-11-14)
-- Owner is building without headers: wires soldered to the ESP32 and DAC pads,
-  jumper sockets on the display's and encoder's existing pins, only the two buttons
-  and power rails on a breadboard. Guide: `hardware/DIRECT_WIRING.md`.
+- Owner is building without headers: wires soldered pad to pad on every board (the
+  encoder keeps its pins, wires soldered onto them), power daisy-chained, only the
+  two buttons on a breadboard. Owner's wire colours: red, black, yellow, blue, white,
+  turquoise. Guide and numbered wire list: `hardware/DIRECT_WIRING.md`.
+- Boards are wired in their box positions (draft): side column with DAC on top
+  (jack at the top edge) and ESP32 below (USB at the bottom edge), display beside it.
   `hardware/BREADBOARD.md` is kept as the header-based alternative for other builders.
 
 ## Case (decided 2026-11-14)
+- The full-size SD card protruding 20 mm widens the case to about 60 × 66 mm (draft);
+  the earlier 40 mm width no longer holds. Battery position is still open.
 - Layout **C**: knob on the top edge next to the headphone jack, BACK/OK on the
   right side, screen on the front. Target about 40 × 70 × 16 mm including the knob
   (the earlier 62×40 target ignored the 35 × 57 mm display board). Options drawing:

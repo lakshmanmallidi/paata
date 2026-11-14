@@ -8,7 +8,7 @@ It plays music from a microSD card through an I2S DAC, with a small colour scree
 
 ## Features (v1)
 
-- Plays FLAC, MP3, WAV, AAC and Ogg files from the `/Music` folder of a microSD card
+- Plays FLAC, MP3, WAV, AAC and Ogg files from the `/Music` folder of an SD card
 - Folder browser on a 1.8" 128×160 screen
 - Rotary encoder for scrolling and volume
 - BACK and OK buttons, automatic advance to the next track in the folder
@@ -23,7 +23,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 |---|---|
 | Waveshare ESP32-S3-Zero (4 MB flash, 2 MB PSRAM) | Microcontroller |
 | Adafruit PCM5102A I2S DAC breakout | Audio out (line level, 3.5 mm jack) |
-| 1.8" ST7735 TFT, 128×160, with microSD slot on the back | Screen and storage |
+| 1.8" ST7735 TFT, 128×160, with SD card slot on the back | Screen and storage |
 | KY-040 / M274 rotary encoder | Scroll, volume, select |
 | 2 × 6×6 mm tactile buttons | Back, OK |
 | TP4056 USB-C charger module with protection | Charging |
@@ -32,7 +32,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 
 The PCM5102A has a line-level output. It drives in-ear monitors well; high-impedance headphones would need a separate headphone amplifier.
 
-Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). For a first build there are two guides: [hardware/DIRECT_WIRING.md](hardware/DIRECT_WIRING.md) (no headers, wires soldered to the pads) and [hardware/BREADBOARD.md](hardware/BREADBOARD.md) (everything on a breadboard). In short:
+Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). For a first build there are two guides: [hardware/DIRECT_WIRING.md](hardware/DIRECT_WIRING.md) (no headers, wires soldered pad to pad) and [hardware/BREADBOARD.md](hardware/BREADBOARD.md) (everything on a breadboard). In short:
 
 ```
 I2S DAC:   BCK=5   WSEL=6  DIN=7
