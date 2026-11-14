@@ -164,7 +164,11 @@ Advice given: build with the PCM5102A, listen for a week, only then decide.
   26 × 19 mm breakout** (decided 2026-11-14); R1–R3 on the back are 10 kΩ pull-ups, not
   diodes, so a bare encoder would work on the ESP32's internal pull-ups, but it's not worth
   the desoldering. Headers may be removed and wires soldered to the encoder pins.
-- Two 6 × 6 mm tactile buttons: PREV, NEXT.
+- Two 6 × 6 mm tactile buttons were planned (BACK, OK). **Dropped 2026-11-15** at the owner's
+  suggestion: no room on the perf board, and the encoder switch covers them (click = OK,
+  hold = back, hold and turn = skip). SW moved from inner pad 14 to the RX header pin
+  (GPIO 44) so nothing is soldered to the inner pads; RX rather than TX because the ROM
+  drives TX at boot.
 
 ### Power
 - **TP4056 USB-C 1 A with protection (₹19)**: B+/B− battery, OUT+/OUT− → slide switch →
@@ -196,7 +200,7 @@ roughly 85–95 × 40 × 14 mm. A 503450 cell brings the stacked version to abou
 
 ### Case (later)
 **Superseded 2026-11-14:** the case now follows the single perf board build
-(`hardware/PERFBOARD.md`): about 60 × 91 mm, all parts including the battery on the front of the board, buttons on a small board under the lid, slide switch in a side wall, knob and buttons on the front face,
+(`hardware/PERFBOARD.md`): about 60 × 91 mm, all parts including the battery on the front of the board, slide switch in a side wall, screen and knob on the front face (no push buttons since 2026-11-15),
 SD card sticking out of the right side. An earlier choice of a top-edge knob
 (40 × 70 × 16 mm) was dropped once the full-size SD slot and the encoder board were
 measured. The layout sketched below predates all of this.

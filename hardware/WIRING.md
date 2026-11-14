@@ -54,20 +54,13 @@ The photo shows the back of the board: the display header along one edge, the SD
 |---|---|
 | GND | GND |
 | +   | 3V3 |
-| SW  | 14 |
+| SW  | RX (GPIO 44) |
 | DT  | 2 |
 | CLK | 1 |
 
-## 5. Push buttons (one leg to GPIO, other leg to GND)
+The encoder's switch is the only button. It uses the RX header pin, which is free because serial goes over USB.
 
-<img src="images/tactile-buttons.jpg" alt="6x6 mm tactile push buttons" width="240">
-
-| Button | S3-Zero |
-|---|---|
-| BACK | 15 |
-| OK | 16 |
-
-## 6. Power
+## 5. Power
 
 <img src="images/tp4056-charger.jpg" alt="TP4056 USB-C charger module with protection" width="240"> <img src="images/lipo-battery.jpg" alt="3.7 V 950 mAh LiPo cell with protection PCB" width="240">
 
@@ -78,6 +71,6 @@ Charge via the TP4056's USB-C. Flash firmware via the S3-Zero's USB-C.
 (For bench testing, skip the battery: just plug the S3-Zero into USB.)
 
 ## Controls
-Browser:  turn = scroll · OK = open folder / play file · BACK = go up
-Playing:  turn = volume · OK = pause/play · BACK = back to browser
-Anywhere: hold OK = next track · hold BACK = previous track · knob click = OK
+Browser:  turn = scroll · click = open folder / play file · hold = go up
+Playing:  turn = volume · click = pause/play · hold = back to browser
+Anywhere: hold and turn = next / previous track

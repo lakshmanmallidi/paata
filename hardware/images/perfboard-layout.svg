@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 1250" width="1020" height="1250" font-family="Helvetica, Arial, sans-serif">
 <rect width="1020" height="1250" fill="#fbfaf7"/>
 <text x="510.0" y="38" font-size="21" text-anchor="middle" font-weight="bold">Perf board layout: component side</text>
-<text x="510.0" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–22 left to right, rows 1–34 top to bottom, matching the soldered board. Buttons go on a small board on the lid, the power switch on the case wall.</text>
+<text x="510.0" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–22 left to right, rows 1–34 top to bottom, matching the soldered board. The power switch goes in the case wall.</text>
 <rect x="60.5" y="155.5" width="669.0" height="1029.0" rx="6" fill="#d8b98a" fill-opacity="1.0" stroke="#8a6a3a" stroke-width="1.2"/>
 <circle cx="80.0" cy="175.0" r="2.2" fill="#8a6a3a"/>
 <circle cx="80.0" cy="205.0" r="2.2" fill="#8a6a3a"/>
@@ -804,7 +804,6 @@
 <text x="170.0" y="1138.7" font-size="10.5" text-anchor="middle" fill="#111" font-weight="normal">USB-C</text>
 <text x="170.0" y="1005.2" font-size="15" text-anchor="middle" fill="#fff" font-weight="bold">ESP32</text>
 <text x="170.0" y="1036.7" font-size="10.5" text-anchor="middle" fill="#dfe8f5" font-weight="normal">flashing port</text>
-<text x="110.0" y="890.5" font-size="8.5" text-anchor="start" fill="#dfe8f5" font-weight="normal">pads 14 15 16</text>
 <rect x="276.5" y="874.0" width="220.5" height="306.0" rx="4" fill="#16181c" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
 <rect x="503.0" y="871.0" width="204.0" height="312.0" rx="4" fill="#1f6aa8" fill-opacity="0.93" stroke="#0d3a61" stroke-width="1.2"/>
 <rect x="551.0" y="1114.0" width="108.0" height="87.0" rx="3" fill="#c9c9c9" fill-opacity="1.0" stroke="#666" stroke-width="1.2"/>
@@ -942,58 +941,4 @@
 <text x="650.0" y="154" font-size="10" text-anchor="middle" fill="#333" stroke="#f1e2c6" stroke-width="3" paint-order="stroke">20</text>
 <text x="680.0" y="154" font-size="10" text-anchor="middle" fill="#333" stroke="#f1e2c6" stroke-width="3" paint-order="stroke">21</text>
 <text x="710.0" y="154" font-size="10" text-anchor="middle" fill="#333" stroke="#f1e2c6" stroke-width="3" paint-order="stroke">22</text>
-<text x="865" y="778" font-size="15" text-anchor="middle" font-weight="bold">Button board (on the lid)</text>
-<text x="865" y="797" font-size="11" text-anchor="middle" fill="#444">7 × 4 holes, seen from the button side</text>
-<rect x="757" y="812" width="216" height="126" rx="5" fill="#d8b98a" stroke="#8a6a3a" stroke-width="1.2"/>
-<circle cx="775" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="775" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="775" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="775" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="805" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="805" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="805" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="805" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="835" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="835" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="835" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="835" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="865" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="865" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="865" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="865" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="895" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="895" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="895" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="895" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="925" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="925" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="925" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="925" cy="920" r="2.2" fill="#8a6a3a"/>
-<circle cx="955" cy="830" r="2.2" fill="#8a6a3a"/>
-<circle cx="955" cy="860" r="2.2" fill="#8a6a3a"/>
-<circle cx="955" cy="890" r="2.2" fill="#8a6a3a"/>
-<circle cx="955" cy="920" r="2.2" fill="#8a6a3a"/>
-<polyline points="835,920 895,920" fill="none" stroke="#222" stroke-width="4.5" stroke-linecap="round"/>
-<rect x="769.6" y="839.6" width="70.8" height="70.8" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>
-<circle cx="805" cy="875.0" r="21.0" fill="#777" stroke="#000"/>
-<text x="805" y="879.0" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">BACK</text>
-<rect x="889.6" y="839.6" width="70.8" height="70.8" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>
-<circle cx="925" cy="875.0" r="21.0" fill="#777" stroke="#000"/>
-<text x="925" y="879.0" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">OK</text>
-<circle cx="775" cy="830" r="6.9" fill="#2f6fdd" stroke="#222" stroke-width="1.2"/>
-<circle cx="775" cy="920" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="835" cy="830" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="835" cy="920" r="6.9" fill="#222" stroke="#222" stroke-width="1.2"/>
-<circle cx="895" cy="830" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="895" cy="920" r="6.9" fill="#222" stroke="#222" stroke-width="1.2"/>
-<circle cx="955" cy="830" r="6.9" fill="#f2c81e" stroke="#222" stroke-width="1.2"/>
-<circle cx="955" cy="920" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="765" cy="960" r="6" fill="#2f6fdd" stroke="#222"/>
-<text x="779" y="964" font-size="11.5" fill="#222">17 blue: BACK leg to ESP32 pad 15</text>
-<circle cx="765" cy="981" r="6" fill="#f2c81e" stroke="#222"/>
-<text x="779" y="985" font-size="11.5" fill="#222">18 yellow: OK leg to ESP32 pad 16</text>
-<circle cx="765" cy="1002" r="6" fill="#222" stroke="#222"/>
-<text x="779" y="1006" font-size="11.5" fill="#222">K5 black: both ground legs, joined, to GND</text>
-<text x="759" y="1031" font-size="11" fill="#444">Legs stick out of the top and bottom sides.</text>
-<text x="759" y="1050" font-size="11" fill="#444">Unused legs are soldered but not wired.</text>
 </svg>

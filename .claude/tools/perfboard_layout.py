@@ -60,6 +60,7 @@ wires = {
     "13": ("turq", 2, .5, [(1, 25), (1, 9.6), (3.5, 9.6), (3.5, 6), (8, 6)]),
     "15": ("yellow", 2, .5, [(7, 29), (9, 29), (9, 25)]),
     "14": ("turq", 2, .5, [(7, 30), (8, 30), (8, 25)]),
+    "16": ("white", 2, .45, [(1, 32), (1.6, 32.5), (10, 32.5), (10, 25)]),
 }
 leads = []
 STEPS = ["Step 1: power (red and black)", "Step 2: display and SD card", "Step 3: DAC and encoder"]
@@ -122,7 +123,6 @@ def draw_board(o, ox, oy, P, mirror, step=None):
         t(4, 33.0, "USB-C", 10.5)
         t(4, 28.5, "ESP32", 15, fill=lab, weight="bold")
         t(4, 29.6, "flashing port", 10.5, fill=soft)
-        t(2.0, 24.75, "pads 14 15 16", 8.5, "start", soft)
     else:
         t(4, 34.1, "ESP32", 12, fill="#555", halo=False)
     box(7.55, 24.3, 14.9, 34.5, "#16181c", "#000", 4, op, mirror)                   # encoder, 19 x 26 mm
@@ -196,41 +196,10 @@ def layout():
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" {FONT}>',
          f'<rect width="{W}" height="{H}" fill="#fbfaf7"/>',
          f'<text x="{W / 2}" y="38" font-size="21" text-anchor="middle" font-weight="bold">Perf board layout: component side</text>',
-         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–22 left to right, rows 1–34 top to bottom, matching the soldered board. Buttons go on a small board on the lid, the power switch on the case wall.</text>']
+         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–22 left to right, rows 1–34 top to bottom, matching the soldered board. The power switch goes in the case wall.</text>']
     draw_board(o, 50, 145, P, False)
-    button_board(o, 775, 830, P)
     o.append("</svg>")
     (IMG / "perfboard-layout.svg").write_text("\n".join(o))
-
-
-def button_board(o, x0, y0, P):
-    """Small 7 x 4 hole board for BACK and OK, seen from the button side."""
-    hx = lambda c: x0 + (c - 1) * P
-    hy = lambda r: y0 + (r - 1) * P
-    o.append(f'<text x="{hx(4)}" y="{y0 - 52}" font-size="15" text-anchor="middle" font-weight="bold">Button board (on the lid)</text>')
-    o.append(f'<text x="{hx(4)}" y="{y0 - 33}" font-size="11" text-anchor="middle" fill="#444">7 × 4 holes, seen from the button side</text>')
-    o.append(f'<rect x="{hx(1) - 18}" y="{hy(1) - 18}" width="{6 * P + 36}" height="{3 * P + 36}" rx="5" fill="#d8b98a" stroke="#8a6a3a" stroke-width="1.2"/>')
-    for c in range(1, 8):
-        for r in range(1, 5):
-            o.append(f'<circle cx="{hx(c)}" cy="{hy(r)}" r="{P * .075:.1f}" fill="#8a6a3a"/>')
-    link = f'{hx(3)},{hy(4)} {hx(5)},{hy(4)}'
-    o.append(f'<polyline points="{link}" fill="none" stroke="#222" stroke-width="4.5" stroke-linecap="round"/>')
-    for c, name in ((2, "BACK"), (6, "OK")):
-        o.append(f'<rect x="{hx(c) - 1.18 * P}" y="{hy(2.5) - 1.18 * P}" width="{2.36 * P}" height="{2.36 * P}" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>')
-        o.append(f'<circle cx="{hx(c)}" cy="{hy(2.5)}" r="{.7 * P}" fill="#777" stroke="#000"/>')
-        o.append(f'<text x="{hx(c)}" y="{hy(2.5) + 4}" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">{name}</text>')
-    legs = {(1, 1): "blue", (3, 4): "black", (7, 1): "yellow", (5, 4): "black"}
-    for c in (1, 3, 5, 7):
-        for r in (1, 4):
-            o.append(f'<circle cx="{hx(c)}" cy="{hy(r)}" r="{P * .23:.1f}" fill="{COL[legs.get((c, r))]}" stroke="#222" stroke-width="1.2"/>')
-    notes = [("blue", "17 blue: BACK leg to ESP32 pad 15"), ("yellow", "18 yellow: OK leg to ESP32 pad 16"),
-             ("black", "K5 black: both ground legs, joined, to GND")]
-    for i, (c, s) in enumerate(notes):
-        y = hy(4) + 44 + i * 21
-        o.append(f'<circle cx="{hx(1) - 10}" cy="{y - 4}" r="6" fill="{COL[c]}" stroke="#222"/>')
-        o.append(f'<text x="{hx(1) + 4}" y="{y}" font-size="11.5" fill="#222">{s}</text>')
-    o.append(f'<text x="{hx(1) - 16}" y="{hy(4) + 44 + 3 * 21 + 4}" font-size="11" fill="#444">Legs stick out of the top and bottom sides.</text>')
-    o.append(f'<text x="{hx(1) - 16}" y="{hy(4) + 44 + 4 * 21 + 2}" font-size="11" fill="#444">Unused legs are soldered but not wired.</text>')
 
 
 def connections():
@@ -261,7 +230,7 @@ def connections():
 
 # ------------------------------------------------------------ wiring diagram
 def wiring():
-    W, H = 1300, 850
+    W, H = 1300, 790
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" {FONT}>',
          f'<rect width="{W}" height="{H}" fill="#fbfaf7"/>']
 
@@ -292,7 +261,7 @@ def wiring():
                  "The number on each wire matches the wire list.", 13, fill="#444")
 
     EL, ER = 560, 740
-    box(EL, 95, ER - EL, 680, "#1f4f9c", "#0d2c5e")
+    box(EL, 95, ER - EL, 500, "#1f4f9c", "#0d2c5e")
     t(650, 430, "ESP32-S3-Zero", 17, fill="#fff", weight="bold")
 
     def epin(side, y, s):
@@ -332,17 +301,10 @@ def wiring():
     box(130, 442, 200, 150, "#16181c")
     t(190, 480, "Encoder", 15, fill="#fff", weight="bold")
     for y, pin, name, col, tag in ((470, "1", "CLK", "turq", "14"), (510, "2", "DT", "yellow", "15"),
-                                   (550, "14", "SW", "white", "16")):
+                                   (550, "RX", "SW", "white", "16")):
         wire([(330, y), (EL, y)], col, tag, (445, y))
         t(318, y, name, 12, "end", "#fff", "bold"); epin("l", y, pin)
     chip(142, 540, "+  R3", "red"); chip(142, 568, "GND  K1", "black")
-
-    # buttons
-    for y, pin, name, col, tag, g in ((650, "15", "BACK", "blue", "17", "K5"), (715, "16", "OK", "yellow", "18", "K5")):
-        box(230, y - 22, 100, 44, "#2d2d2d", "#000", 6)
-        t(280, y, name, 13, fill="#fff", weight="bold")
-        wire([(330, y), (EL, y)], col, tag, (445, y)); epin("l", y, pin)
-        chip(218, y, f"GND  {g}", "black", "end")
 
     # display + SD
     DX = 980
@@ -366,9 +328,9 @@ def wiring():
         t(DX + 12, y, name, 12, "start", "#fff", "bold"); epin("r", y, pin)
     chip(DX + 12, 362, "VCC  R2", "red"); chip(DX + 110, 362, "GND  K4", "black")
 
-    nx, ny = 800, 640
+    nx, ny = 130, 650
     chip(nx, ny, "red pill", "red"); t(nx + 78, ny, "= 3.3 V, chained from the ESP32 3V3 pin (wires R1–R3)", 12.5, "start")
-    chip(nx, ny + 32, "black pill", "black"); t(nx + 88, ny + 32, "= GND, chained from the charger OUT− pad (wires K1–K5)", 12.5, "start")
+    chip(nx, ny + 32, "black pill", "black"); t(nx + 88, ny + 32, "= GND, chained from the charger OUT− pad (wires K1–K4)", 12.5, "start")
     t(nx, ny + 64, "Pins 12 and 11: one wire to the SD slot (9, 10), which carries on to the display (1, 2).", 12.5, "start")
     t(nx, ny + 96, "Flash through the ESP32's USB-C. Charge through the charger's USB-C.", 12.5, "start", "#444")
     o.append("</svg>")

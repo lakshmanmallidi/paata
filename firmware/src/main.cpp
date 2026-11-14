@@ -1,7 +1,7 @@
 /*
  * Paata firmware v1 — FLAC / MP3 / WAV / AAC / OGG player
  * Hardware: Waveshare ESP32-S3-Zero, Adafruit PCM5102A (I2S),
- *           1.8" ST7735 128x160 TFT with SD slot, KY-040/M274 encoder, 2 buttons.
+ *           1.8" ST7735 128x160 TFT with SD slot, KY-040/M274 encoder (its push switch is the only button).
  * Build:    PlatformIO, see ../platformio.ini  (pio run -t upload && pio device monitor)
  */
 
@@ -31,9 +31,7 @@
 
 #define ENC_CLK    1
 #define ENC_DT     2
-#define ENC_SW    14
-#define BTN_BACK  15
-#define BTN_OK    16
+#define ENC_SW    44   // header pin RX; UART0 is unused because serial goes over USB
 
 // ---------- objects ----------
 Audio audio;
@@ -192,7 +190,7 @@ void onAudioInfo(Audio::msg_t m) {
 
 // ---------- input ----------
 struct Btn { int pin; bool last = true; uint32_t downAt = 0; bool longFired = false; };
-Btn bSw{ENC_SW}, bBack{BTN_BACK}, bOk{BTN_OK};
+Btn bSw{ENC_SW};
 
 // returns 0 none, 1 short press, 2 long press
 int pollBtn(Btn& b) {
@@ -205,10 +203,36 @@ int pollBtn(Btn& b) {
   return r;
 }
 
+void goBack() {
+  if (mode == PLAYING) { mode = BROWSE; needRedraw = true; }   // music keeps playing
+  else if (curDir != rootDir) {
+    String up = curDir.substring(0, curDir.lastIndexOf('/'));
+    if (up.length() < rootDir.length()) up = rootDir;
+    curDir = up; loadDir(curDir);
+  }
+}
+
+// One control, the encoder:
+//   turn           scroll (browser) / volume (playing)
+//   click          open folder, play file / play-pause
+//   hold           back: up a folder, or from the player to the browser
+//   hold and turn  next / previous track
 void handleInput() {
-  long d = enc.getCount(); enc.clearCount();
+  long d = enc.getCount();
   int steps = d / 2;                         // KY-040 gives 2 counts per detent
-  if (steps) {
+  if (steps) enc.setCount(d - steps * 2);    // keep a half-step for the next pass
+
+  int sw = pollBtn(bSw);
+  bool held = !bSw.last;
+
+  if (steps && held) {
+    bSw.longFired = true;                    // this press is a skip, not a click or a hold
+    if (trackIdx >= 0) {
+      if (steps > 0) playTrack(trackIdx + 1);
+      else if (audio.getAudioCurrentTime() > 3) playTrack(trackIdx);   // restart the current track
+      else playTrack(trackIdx - 1);
+    }
+  } else if (steps) {
     if (mode == BROWSE && !entries.empty()) {
       sel = constrain(sel + steps, 0, (int)entries.size() - 1);
       if (sel < top) top = sel;
@@ -220,13 +244,7 @@ void handleInput() {
     needRedraw = true;
   }
 
-  // OK button and encoder click do the same thing: select / play-pause.
-  // BACK goes up a folder, or from the player back to the browser.
-  // Long-press while a track is loaded: OK = next track, BACK = previous track.
-  int ok = pollBtn(bOk), back = pollBtn(bBack);
-  if (pollBtn(bSw) == 1) ok = 1;
-
-  if (ok == 1) {
+  if (sw == 1) {
     if (mode == BROWSE && !entries.empty()) {
       Entry& e = entries[sel];
       if (e.isDir) { curDir = joinPath(curDir, e.name); loadDir(curDir); }
@@ -234,20 +252,8 @@ void handleInput() {
     } else if (mode == PLAYING) {
       audio.pauseResume(); paused = !paused; needRedraw = true;
     }
-  } else if (ok == 2 && trackIdx >= 0) {
-    playTrack(trackIdx + 1);
-  }
-
-  if (back == 1) {
-    if (mode == PLAYING) { mode = BROWSE; needRedraw = true; }   // music keeps playing
-    else if (curDir != rootDir) {
-      String up = curDir.substring(0, curDir.lastIndexOf('/'));
-      if (up.length() < rootDir.length()) up = rootDir;
-      curDir = up; loadDir(curDir);
-    }
-  } else if (back == 2 && trackIdx >= 0) {
-    if (audio.getAudioCurrentTime() > 3) playTrack(trackIdx);   // restart the current track
-    else playTrack(trackIdx - 1);
+  } else if (sw == 2) {
+    goBack();
   }
 }
 
@@ -255,8 +261,6 @@ void handleInput() {
 void setup() {
   Serial.begin(115200);
   pinMode(ENC_SW, INPUT_PULLUP);
-  pinMode(BTN_BACK, INPUT_PULLUP);
-  pinMode(BTN_OK, INPUT_PULLUP);
 
   pinMode(TFT_BL, OUTPUT); digitalWrite(TFT_BL, HIGH);
   SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);

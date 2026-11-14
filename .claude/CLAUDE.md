@@ -16,10 +16,9 @@ features (playlists, Wi-Fi sync, no 8,192-track cap). Owner listens on IEMs only
 | Waveshare ESP32-S3-Zero | ESP32-S3FH4R2, 4 MB flash, 2 MB QSPI PSRAM, USB-C. GPIO 21 = RGB LED (avoid). Header pins 1–16, TX(43), RX(44). |
 | Adafruit PCM5102A I2S DAC | Pins: VIN GND WSEL DIN BCK Lout G Rout. Config pads DE/FIL/MCK/MU/FM/3V left open. Line-level out, fine for IEMs. |
 | 1.8" ST7735 TFT 128×160 V1.1 (red board) | Display header: LED SCK SDA A0 RESET CS GND VCC. **Full-size SD** slot on back (not microSD; the card sticks out about 20 mm on one side) with pads SD_CS SD_MOSI SD_MISO SD_SCK (must be soldered). |
-| M274 / KY-040 rotary encoder | Pins: GND + SW DT CLK. 2 counts per detent. |
+| M274 / KY-040 rotary encoder | Pins: GND + SW DT CLK. 2 counts per detent. Its switch is the only button. |
 | TP4056 USB-C charger w/ protection | B+/B− to battery, OUT+/OUT− to switch → S3-Zero 5V/GND. |
 | 3.7 V 950 mAh LiPo, 102535 = 10.4 × 25 × 35 mm (measured) | Has its own protection PCB. Red = +, black = −. Thick; a 503450 (5 mm) cell is the slim swap. |
-| 6×6 mm tactile buttons | BACK, OK (to GND, internal pull-ups). |
 
 ## Measured sizes (owner's calipers, 2026-11-14)
 | Part | Size (mm) |
@@ -39,8 +38,8 @@ I2S:      BCK=5  WSEL/LRC=6  DIN=7
 SPI:      SCK=12 MOSI=11 MISO=13
 TFT:      CS=10 DC(A0)=9 RST=8 BL(LED)=4
 SD:       CS=3  (shares SPI bus with TFT)
-Encoder:  CLK=1 DT=2 SW=14
-Buttons:  BACK=15 OK=16
+Encoder:  CLK=1 DT=2 SW=44 (header pin RX; UART0 unused, serial is USB CDC)
+No push buttons; inner pads 14/15/16 unused (owner's decision, 2026-11-15).
 ```
 
 ## Firmware
@@ -51,9 +50,9 @@ Buttons:  BACK=15 OK=16
 - Libraries: ESP32-audioI2S (schreibfaul1), Adafruit ST7735/ST7789, Adafruit GFX,
   ESP32Encoder (madhephaestus).
 - v1 (`firmware/src/main.cpp`): FLAC/MP3/WAV/AAC/OGG from
-  `/Music` on SD; folder browser; encoder = scroll (browser) / volume (playing);
-  OK = select / play-pause (encoder click does the same); BACK = up a folder / back
-  to browser; hold OK = next track, hold BACK = previous; auto-advance; progress bar.
+  `/Music` on SD; folder browser; encoder only: turn = scroll (browser) /
+  volume (playing); click = select / play-pause; hold (600 ms) = up a folder / back to
+  browser; hold and turn = next / previous track; auto-advance; progress bar.
 - Build/flash/monitor from `firmware/`: `pio run -t upload && pio device monitor`. First flash:
   hold B, tap R, release B. Board appears as `/dev/cu.usbmodem*` on macOS.
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
@@ -71,7 +70,7 @@ Buttons:  BACK=15 OK=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Build: one perf board (decided 2026-11-14)
-- Everything except the buttons and power switch goes on the owner's perf board (cut to 22 × 34 holes, about 56 × 87 mm), parts on pin headers, wires on the solder side in the owner's six
+- Everything except the power switch goes on the owner's perf board (cut to 22 × 34 holes, about 56 × 87 mm), parts on pin headers, wires on the solder side in the owner's six
   colours (red, black, yellow, blue, white, turquoise). `hardware/WIRING.md` has the one
   wiring diagram; `hardware/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
@@ -82,9 +81,9 @@ Buttons:  BACK=15 OK=16
   ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
   c16/17/20/21 (OUT+ B+ B− OUT−, read from photos, owner to confirm). Battery lies flat
   on the front between DAC and ESP32. Unidentified joints at c15 r25, c17 r21, c18 r21.
-- Back: wires only. SCK/MOSI run ESP32 → SD pads → display. Front (soldered from
-  above): pad 14 → encoder SW, pads 15/16 and GND → button board (7 × 4 holes, under the
-  lid), charger OUT+ → slide switch in a case wall → ESP32 5V, battery leads → B+/B−.
+- Back: wires only. SCK/MOSI run ESP32 → SD pads → display; encoder SW → RX pin
+  (c1 r32). Front (soldered from above): charger OUT+ → slide switch in a case wall →
+  ESP32 5V, battery leads → B+/B−.
 - The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
   "made no sense"); the connections drawing is three back views, one wire group each.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
@@ -92,10 +91,8 @@ Buttons:  BACK=15 OK=16
 
 ## Case (not designed yet)
 - Follows the perf board: about 60 × 91 mm. The battery (10.9 mm) is the tallest part
-  on the front, so the lid sits about 12 mm above the board. Front face: screen, knob,
-  two buttons; slide switch in a side wall.
-- Open: where the button board goes. Over the battery it needs about 6 mm more height
-  (button body plus board), which recesses the screen.
+  on the front, so the lid sits about 12 mm above the board. Front face: screen and
+  knob; slide switch in a side wall.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout

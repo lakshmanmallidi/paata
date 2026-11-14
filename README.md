@@ -2,7 +2,7 @@
 
 A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu for "song".
 
-It plays music from an SD card through an I2S DAC, with a small colour screen, a rotary knob and two buttons. No touchscreen, no phone app, no account.
+It plays music from an SD card through an I2S DAC, with a small colour screen and a single rotary knob. No touchscreen, no phone app, no account.
 
 > **Status: early.** The v1 firmware compiles, but has not yet been tested on assembled hardware. Expect changes to the wiring and the code.
 
@@ -10,8 +10,8 @@ It plays music from an SD card through an I2S DAC, with a small colour screen, a
 
 - Plays FLAC, MP3, WAV, AAC and Ogg files from the `/Music` folder of an SD card
 - Folder browser on a 1.8" 128×160 screen
-- Rotary encoder for scrolling and volume
-- BACK and OK buttons, automatic advance to the next track in the folder
+- One rotary encoder does everything: turn, click, hold, hold and turn
+- Automatic advance to the next track in the folder
 - Title, artist, track number, elapsed time and progress bar
 - Runs from a single LiPo cell, charged over USB-C
 
@@ -24,8 +24,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 | Waveshare ESP32-S3-Zero (4 MB flash, 2 MB PSRAM) | Microcontroller |
 | Adafruit PCM5102A I2S DAC breakout | Audio out (line level, 3.5 mm jack) |
 | 1.8" ST7735 TFT, 128×160, with SD card slot on the back | Screen and storage |
-| KY-040 / M274 rotary encoder | Scroll, volume, select |
-| 2 × 6×6 mm tactile buttons | Back, OK |
+| KY-040 / M274 rotary encoder | Scroll, volume, select, back, skip |
 | TP4056 USB-C charger module with protection | Charging |
 | 3.7 V LiPo cell (950 mAh used here) with protection PCB | Power |
 | Slide switch | On / off |
@@ -39,8 +38,7 @@ I2S DAC:   BCK=5   WSEL=6  DIN=7
 SPI bus:   SCK=12  MOSI=11 MISO=13
 Screen:    CS=10   DC=9    RST=8   Backlight=4
 SD card:   CS=3    (shares the SPI bus with the screen)
-Encoder:   CLK=1   DT=2    SW=14
-Buttons:   BACK=15 OK=16
+Encoder:   CLK=1   DT=2    SW=44 (the RX pin)
 ```
 
 The SD pads on the back of the screen board are not connected to the display header; they need their own four wires.
@@ -80,11 +78,10 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 | | Browsing | Playing |
 |---|---|---|
 | Turn knob | Scroll | Volume |
-| Click knob | Same as OK | Same as OK |
-| OK | Open folder / play file | Pause / resume |
-| BACK | Up one folder | Back to browser (music keeps playing) |
-| Hold OK | Next track | Next track |
-| Hold BACK | Previous track (restarts the current one after 3 s) | same |
+| Click knob | Open folder / play file | Pause / resume |
+| Hold knob | Up one folder | Back to browser (music keeps playing) |
+| Hold and turn right | Next track | Next track |
+| Hold and turn left | Previous track (restarts the current one after 3 s) | same |
 
 ## Roadmap
 

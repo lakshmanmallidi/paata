@@ -1,6 +1,6 @@
 # Perf board build
 
-Everything except the two buttons and the power switch sits on one perf board, 22 columns × 34 rows of holes (about 56 × 87 mm). The buttons go on a small board of their own under the lid, and the switch goes in the case wall. What connects to what is in [WIRING.md](WIRING.md); this page says which hole each pin is in and where each wire is soldered.
+Everything except the power switch sits on one perf board, 22 columns × 34 rows of holes (about 56 × 87 mm). The switch goes in the case wall. There are no push buttons: the encoder's own switch does their job. What connects to what is in [WIRING.md](WIRING.md); this page says which hole each pin is in and where each wire is soldered.
 
 Holes are written as column and row: `c7 r31` is column 7, row 31, counted from the top-left corner of the component side. All parts sit on the component side; the back carries only wires.
 
@@ -26,18 +26,6 @@ Ports: headphone jack on the top edge, flashing port and charging port on the bo
 - **Charger pads**: the order OUT+ `c16`, B+ `c17`, B− `c20`, OUT− `c21` was read from photos. Confirm it against the labels printed on the charger before soldering any power wire.
 - **Unidentified joints**: the photo shows solder at `c15 r25` (beside OUT+) and at `c17 r21` and `c18 r21` (above the SD pads). Check with a multimeter that none of them is bridged to the pin next to it.
 - **Neighbouring pins**: check that no two neighbouring header pins are bridged, above all on the ESP32 columns.
-
-## Button board
-
-A piece of perf board 7 × 4 holes (the small drawing beside the layout). Each 6 × 6 mm button has legs on two opposite sides; turn both buttons so the legs point to the top and bottom of the small board. A button then takes holes two columns apart and three rows apart: BACK in c1 and c3, OK in c5 and c7, rows 1 and 4.
-
-Wire two diagonally opposite legs of each button, which works whichever way the button is turned:
-
-- BACK: top-left leg to ESP32 pad 15 (blue), bottom-right leg to ground.
-- OK: top-right leg to ESP32 pad 16 (yellow), bottom-left leg to ground.
-- The two ground legs are two holes apart: join them with a short wire and run one black wire to the charger's OUT− pad (wire K5).
-
-Solder the other four legs for strength and leave them unwired. Make the three wires about 8 cm long so the lid can be opened.
 
 ## Connections on the back
 
@@ -88,6 +76,9 @@ SCK and MOSI go from the ESP32 to the SD pads and carry on from there to the dis
 | 13 | turquoise | GPIO 7 `c1 r25` | DAC DIN `c8 r6` |
 | 14 | turquoise | GPIO 1 `c7 r30` | Encoder CLK `c8 r25` |
 | 15 | yellow | GPIO 2 `c7 r29` | Encoder DT `c9 r25` |
+| 16 | white | RX (GPIO 44) `c1 r32` | Encoder SW `c10 r25`, along the bottom edge under the ESP32 |
+
+The ESP32's inner pads 14, 15 and 16 are not used.
 
 ## Connections on the front
 
@@ -95,10 +86,6 @@ These are soldered from above, after the back is done and tested.
 
 | Wire | Colour | From | To |
 |---|---|---|---|
-| 16 | white | ESP32 pad 14 | Encoder SW, top of the pin at `c10 r25` |
-| 17 | blue | ESP32 pad 15 | BACK button |
-| 18 | yellow | ESP32 pad 16 | OK button |
-| K5 | black | Charger OUT− pad | Button board ground |
 | B1 | red | Charger OUT+ pad | Power switch, middle pin |
 | | red | Battery + | Charger B+ pad |
 | | black | Battery − | Charger B− pad |
@@ -113,7 +100,7 @@ With a multimeter on continuity:
 
 1. 3V3 (`c7 r31`) and GND (`c7 r32`) are **not** connected to each other.
 2. 3V3 reaches DAC VIN, display VCC and encoder +.
-3. GND reaches DAC GND, display GND, encoder GND, charger OUT− and one leg of each button.
-4. Each button connects its signal wire to GND only while pressed.
+3. GND reaches DAC GND, display GND, encoder GND and charger OUT−.
+4. RX (`c1 r32`) connects to GND only while the knob is pressed.
 
 Then plug USB into the ESP32 with the power switch off, and flash.
