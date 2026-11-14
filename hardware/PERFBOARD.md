@@ -1,8 +1,8 @@
 # Perf board build
 
-Everything on one 29 × 35 hole perf board (about 74 × 89 mm). What connects to what is in [WIRING.md](WIRING.md); this page says which hole each part goes in and where each wire is soldered.
+Everything on one perf board, 22 columns × 35 rows of holes (about 56 × 89 mm). What connects to what is in [WIRING.md](WIRING.md); this page says which hole each part goes in and where each wire is soldered.
 
-Holes are written as column and row: `c10 r3` is column 10, row 3, counted from the top-left corner of the component side. Parts sit on the plain side and are soldered on the copper side.
+Holes are written as column and row: `c8 r33` is column 8, row 33, counted from the top-left corner of the component side. The DAC, ESP32, display, buttons and encoder sit on the component side. The battery and charger sit on the solder side, behind the display.
 
 ## Layout
 
@@ -10,33 +10,30 @@ Holes are written as column and row: `c10 r3` is column 10, row 3, counted from 
 
 | Part | Holes | Notes |
 |---|---|---|
-| ESP32-S3-Zero | pins in c10 and c16, rows 1–9 | USB-C at the top edge. Row 1 is 5V (c10) and TX (c16). |
 | DAC | 8-pin side in c8, rows 4–11 | Jack at the top edge. Row 4 = Rout, row 11 = VIN. |
-| Display | 8-pin header in row 2, c20–c27; SD pads in row 23, c22–c25 | Screen up. c20 = LED, c27 = VCC. Its right edge hangs about 2 mm past the board, and the SD card sticks out beyond that. |
-| Battery | c2–c15, rows 14–23 | Lying flat, on double-sided foam tape. |
-| Charger (TP4056) | c1–c7, rows 25–35 | USB-C at the bottom edge, battery pads towards the battery. Foam tape; its pads do not sit on the hole grid. |
-| Power switch | c9–c11, row 26 | |
-| BACK button | c11–c13, rows 29–32 | |
-| OK button | c16–c18, rows 29–32 | |
-| Encoder | 5-pin header in row 35, c24–c28 | Knob up. c24 = GND, c28 = CLK. |
+| Display | 8-pin header in row 2, c12–c19; SD pads in row 23, c14–c17 | Screen up. c12 = LED, c19 = VCC. The SD card sticks out of the right side. |
+| BACK button | c2–c4, rows 17–20 | |
+| OK button | c6–c8, rows 17–20 | |
+| ESP32-S3-Zero | pins in c2 and c8, rows 27–35 | USB-C at the bottom edge. Row 27 is GPIO 7 (c2) and GPIO 6 (c8). |
+| Power switch | c10–c12, row 29 | |
+| Encoder | 5-pin header in row 35, c17–c21 | Knob up. c17 = GND, c21 = CLK. |
+| Charger (TP4056) | solder side, behind c12–c22, rows 4–10 | USB-C at the right edge, above the SD card. |
+| Battery | solder side, behind c9–c22, rows 12–21 | |
 
-Why this arrangement:
-
-- **Ports**: headphone jack and the ESP32's USB-C (flashing) on the top edge, charging port on the bottom edge, SD card out of the right side. Nothing blocks a port.
-- **Short wires**: the ESP32 sits between the DAC and the display with the right pins facing each one. The three audio wires are one or two holes long, and the display wires are 3–4 cm.
-- **Thin**: the battery lies beside the parts instead of under the board, so the build is about 13 mm thick without a case.
+Ports: headphone jack on the top edge, flashing port on the bottom edge, charging port and SD card on the right side.
 
 ## Before soldering
 
 - Fit pin headers to the ESP32 (2 × 9), the DAC (8-pin side), the display (8-pin and 4-pin) and the encoder (5-pin, straight). Test-fit every part in its holes before soldering anything.
-- **Display**: check that the 8-pin header and the SD pads both drop into holes at the same time. If the SD pads are off the grid, leave them without pins and use four short wires. The display rests on its SD socket, so the pins only need to reach through the board.
+- **Display**: check that the 8-pin header and the SD pads both drop into holes at the same time. If the SD pads are off the grid, leave them without pins and use four short wires.
 - **Encoder**: only one end has pins. Put a piece of foam tape under the other end.
-- **ESP32 pads 14, 15, 16**: these are flat pads on top of the board. Solder a wire to each and pass it down through c14, c15 and c16 in row 11.
+- **ESP32 pads 14, 15, 16**: these are flat pads on top of the board. Solder a wire to each and pass it down through c3, c4 and c5 in row 25.
+- **Battery and charger**: fit them last, after all wires are soldered and tested. Trim the solder joints flat, keep wires out from under the battery where possible, and put a piece of thin card between the board and the battery before taping it down. Nothing sharp should press on the cell.
 - If the DAC's jack does not clear the top edge, move the DAC up one row.
 
 ## Connections
 
-All wires run on the copper side, pad to pad. The drawing shows that side, so left and right are swapped compared with the layout above. Each pin is filled with the colour of its wire and labelled with the wire numbers from the tables below.
+All wires run on the solder side, pad to pad. The drawing shows that side, so left and right are swapped compared with the layout above. Each pin is filled with the colour of its wire and labelled with the wire numbers from the tables below.
 
 ![Perf board connections, solder side](images/perfboard-connections.svg)
 
@@ -44,19 +41,19 @@ All wires run on the copper side, pad to pad. The drawing shows that side, so le
 
 | Wire | Colour | From | To |
 |---|---|---|---|
-| R1 | red | ESP32 3V3 `c10 r3` | DAC VIN `c8 r11` |
-| R2 | red | ESP32 3V3 `c10 r3` | Display VCC `c27 r2` |
-| R3 | red | Display VCC `c27 r2` | Encoder + `c25 r35` |
-| K1 | black | ESP32 GND `c10 r2` | DAC GND `c8 r10` |
-| K2 | black | ESP32 GND `c10 r2` | Display GND `c26 r2` |
-| K3 | black | Display GND `c26 r2` | Encoder GND `c24 r35` |
-| K4 | black | Encoder GND `c24 r35` | OK button `c18 r32` |
-| K5 | black | OK button `c18 r32` | BACK button `c13 r32` |
-| K6 | black | Charger OUT− | ESP32 GND `c10 r2` |
-| B1 | red | Charger OUT+ | Switch `c10 r26` |
-| B2 | red | Switch `c9 r26` | ESP32 5V `c10 r1` |
+| R1 | red | ESP32 3V3 `c8 r33` | DAC VIN `c8 r11` |
+| R2 | red | DAC VIN `c8 r11` | Display VCC `c19 r2` |
+| R3 | red | ESP32 3V3 `c8 r33` | Encoder + `c18 r35` |
+| K1 | black | ESP32 GND `c8 r34` | OK button `c8 r20` |
+| K2 | black | OK button `c8 r20` | DAC GND `c8 r10` |
+| K3 | black | DAC GND `c8 r10` | Display GND `c18 r2` |
+| K4 | black | OK button `c8 r20` | BACK button `c4 r20` |
+| K5 | black | ESP32 GND `c8 r34` | Encoder GND `c17 r35` |
+| K6 | black | Charger OUT− | ESP32 GND `c8 r34` |
+| B1 | red | Charger OUT+ | Switch `c11 r29` |
+| B2 | red | Switch `c10 r29` | ESP32 5V `c8 r35` |
 
-Three wires meet at ESP32 GND. Bridge `c10 r2` to the empty hole `c9 r2` with solder to get a second landing point; do the same at `c9 r3` for 3V3.
+Three wires meet at ESP32 GND and at the OK button's ground leg. Bridge each to an empty neighbouring hole with solder (`c9 r34`, `c8 r21`) to get a second landing point.
 
 The battery's red wire goes to charger **B+** and its black wire to **B−**.
 
@@ -66,32 +63,34 @@ Keep the power switch off while a USB cable is plugged into the ESP32.
 
 | # | Colour | From | To |
 |---|---|---|---|
-| 1 | yellow | GPIO 12 `c16 r4` | Display SCK `c21 r2` |
-| 2 | blue | GPIO 11 `c16 r5` | Display SDA `c22 r2` |
-| 3 | yellow | GPIO 10 `c16 r6` | Display CS `c25 r2` |
-| 4 | turquoise | GPIO 9 `c16 r7` | Display A0 `c23 r2` |
-| 5 | white | GPIO 8 `c16 r8` | Display RESET `c24 r2` |
-| 6 | white | GPIO 4 `c10 r7` | Display LED `c20 r2` |
-| 7 | turquoise | GPIO 3 `c10 r6` | SD_CS `c25 r23` |
-| 8 | white | GPIO 13 `c16 r3` | SD_MISO `c23 r23` |
-| 9 | yellow | Display SCK `c21 r2` | SD_SCK `c22 r23` |
-| 10 | blue | Display SDA `c22 r2` | SD_MOSI `c24 r23` |
-| 11 | blue | GPIO 5 `c10 r8` | DAC BCK `c8 r7` |
-| 12 | yellow | GPIO 6 `c10 r9` | DAC WSEL `c8 r9` |
-| 13 | turquoise | GPIO 7 `c16 r9` | DAC DIN `c8 r8` |
-| 14 | turquoise | GPIO 1 `c10 r4` | Encoder CLK `c28 r35` |
-| 15 | yellow | GPIO 2 `c10 r5` | Encoder DT `c27 r35` |
-| 16 | white | Pad 14 `c14 r11` | Encoder SW `c26 r35` |
-| 17 | blue | Pad 15 `c15 r11` | BACK button `c11 r29` |
-| 18 | yellow | Pad 16 `c16 r11` | OK button `c16 r29` |
+| 1 | yellow | GPIO 12 `c2 r32` | Display SCK `c13 r2` |
+| 2 | blue | GPIO 11 `c2 r31` | Display SDA `c14 r2` |
+| 3 | yellow | GPIO 10 `c2 r30` | Display CS `c17 r2` |
+| 4 | turquoise | GPIO 9 `c2 r29` | Display A0 `c15 r2` |
+| 5 | white | GPIO 8 `c2 r28` | Display RESET `c16 r2` |
+| 6 | white | GPIO 4 `c8 r29` | Display LED `c12 r2` |
+| 7 | turquoise | GPIO 3 `c8 r30` | SD_CS `c17 r23` |
+| 8 | white | GPIO 13 `c2 r33` | SD_MISO `c15 r23` |
+| 9 | yellow | GPIO 12 `c2 r32` | SD_SCK `c14 r23` |
+| 10 | blue | GPIO 11 `c2 r31` | SD_MOSI `c16 r23` |
+| 11 | blue | GPIO 5 `c8 r28` | DAC BCK `c8 r7` |
+| 12 | yellow | GPIO 6 `c8 r27` | DAC WSEL `c8 r9` |
+| 13 | turquoise | GPIO 7 `c2 r27` | DAC DIN `c8 r8` |
+| 14 | turquoise | GPIO 1 `c8 r32` | Encoder CLK `c21 r35` |
+| 15 | yellow | GPIO 2 `c8 r31` | Encoder DT `c20 r35` |
+| 16 | white | Pad 14 `c3 r25` | Encoder SW `c19 r35` |
+| 17 | blue | Pad 15 `c4 r25` | BACK button `c2 r17` |
+| 18 | yellow | Pad 16 `c5 r25` | OK button `c6 r17` |
 
 Each button uses two diagonally opposite legs, so its orientation does not matter.
+
+Run the display and DAC wires up the left side of the board (columns 1–8), clear of the area the battery and charger will cover.
 
 ## Check before powering up
 
 With a multimeter on continuity:
 
-1. 3V3 (`c10 r3`) and GND (`c10 r2`) are **not** connected to each other.
+1. 3V3 (`c8 r33`) and GND (`c8 r34`) are **not** connected to each other.
 2. 3V3 reaches DAC VIN, display VCC and encoder +.
 3. GND reaches DAC GND, display GND, encoder GND and one leg of each button.
 
