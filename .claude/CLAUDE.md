@@ -81,9 +81,11 @@ Buttons:  BACK=15 OK=16
   (USB-C at bottom edge, pins in c2/c8 rows 27–35), display top-right (header row 2, SD
   card sticking out of the right side, deliberately outside the case), encoder
   bottom-right lying flat on a straight header, knob through the front face.
-- Solder side (owner's call, to save width): charger behind the display's upper half
-  with USB-C at the right edge, battery behind its lower half.
-- Encoder board has been trimmed narrower by the owner (new width not measured).
+- Solder side (owner's call, to save width): battery behind the display's upper half,
+  charger behind its lower half with USB-C at the right edge.
+- Encoder board trimmed by the owner to 19 × 26 mm; header at its top end (row 26).
+- The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
+  "made no sense"); the connections drawing is three back views, one wire group each.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
