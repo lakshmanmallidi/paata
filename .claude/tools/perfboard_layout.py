@@ -25,9 +25,7 @@ pins += [(8, 4 + i, n, "l") for i, n in enumerate(["Rout", "G", "Lout", "BCK", "
 pins += [(13 + i, 2, n, "d") for i, n in enumerate(["LED", "SCK", "SDA", "A0", "RST", "CS", "GND", "VCC"])]
 pins += [(15 + i, 23, n, "d") for i, n in enumerate(["SCK", "MISO", "MOSI", "CS"])]
 pins += [(10 + i, 26, n, "u") for i, n in enumerate(["CLK", "DT", "SW", "+", "GND"])]
-pins += [(2, 17, "BACK", "u"), (4, 20, "GND", "d"), (6, 17, "OK", "u"), (8, 20, "GND", "d"),
-         (5, 23, "", "d"), (6, 23, "", "d"), (7, 23, "", "d"),
-         (8, 25, "14", "r"), (2, 25, "15", "u"), (5, 21, "16", "r"),
+pins += [(8, 27, "14", "r"), (8, 35, "GND", "r"),
          (17, 25, "OUT−", "d"), (18, 25, "B−", "d"), (21, 25, "B+", "d"), (22, 25, "OUT+", "d")]
 back_pins = []
 
@@ -39,13 +37,12 @@ wires = {
     "R2": ("red", 0, .65, [(8, 11), (8.4, 10.6), (8.4, 3.45), (20, 3.45), (20, 2)]),
     "R3": ("red", 0, .5, [(7, 33), (13, 33), (13, 26)]),
     "K1": ("black", 0, .5, [(17, 25), (17, 34), (7, 34)]),
-    "K2": ("black", 0, .6, [(14, 26), (13.6, 25.0), (8.8, 25.0), (8.8, 20.4), (8, 20)]),
-    "K3": ("black", 0, .5, [(8, 20), (7.5, 19.5), (7.0, 19.5), (7.0, 10.4), (7.6, 10.4), (8, 10)]),
+    "K2": ("black", 0, .5, [(17, 25), (16.6, 25.6), (14.4, 25.6), (14, 26)]),
+    "K3": ("black", 0, .4, [(14, 26), (13.6, 25.0), (7.0, 25.0), (7.0, 10.4), (7.6, 10.4), (8, 10)]),
     "K4": ("black", 0, .3, [(8, 10), (7.5, 9.5), (7.5, 2.95), (19, 2.95), (19, 2)]),
-    "K5": ("black", 0, .5, [(8, 20), (7.6, 20.5), (4.4, 20.5), (4, 20)]),
-    "K6": ("black", 0, .5, [(17, 25), (16.6, 25.6), (14.4, 25.6), (14, 26)]),
-    "B1": ("red", 0, .3, [(22, 25), (21.6, 24.1), (7.4, 24.1), (7, 23)]),
-    "B2": ("red", 0, .5, [(6, 23), (5.6, 23.6), (5.6, 35), (7, 35)]),
+    "K5": ("black", 0, .5, [(7, 34), (8, 35)]),            # then through the hole to the button board
+    "B1": ("red", 0, .5, [(22, 25), (24.6, 25)]),          # flying lead to the switch on the case wall
+    "B2": ("red", 0, .5, [(7, 35), (7, 36.6)]),            # flying lead from the switch
     # step 2: display and SD
     "3": ("yellow", 1, .2, [(1, 30), (0.6, 29.6), (0.6, 0.55), (18, 0.55), (18, 2)]),
     "5": ("white", 1, .3, [(1, 28), (1.5, 28), (1.5, 0.85), (17, 0.85), (17, 2)]),
@@ -61,14 +58,12 @@ wires = {
     "12": ("yellow", 2, .3, [(7, 27), (7.5, 26.6), (7.5, 9.4), (8, 9)]),
     "11": ("blue", 2, .5, [(7, 28), (6.6, 28), (6.6, 7), (8, 7)]),
     "13": ("turq", 2, .7, [(1, 27), (1.5, 26.5), (4.6, 26.5), (4.6, 8), (8, 8)]),
-    "17": ("blue", 2, .5, [(2, 25), (2.4, 24.6), (2.4, 17.4), (2, 17)]),
-    "18": ("yellow", 2, .5, [(5, 21), (5, 17), (6, 17)]),
-    "15": ("yellow", 2, .5, [(7, 31), (8.2, 31), (8.2, 27.3), (11, 27.3), (11, 26)]),
-    "14": ("turq", 2, .5, [(7, 32), (8.6, 32), (8.6, 28.0), (10, 28.0), (10, 26)]),
-    "16": ("white", 2, .5, [(8, 25), (8, 24.7), (12, 24.7), (12, 26)]),
+    "15": ("yellow", 2, .5, [(7, 31), (8.5, 31), (8.5, 27.6), (11, 27.6), (11, 26)]),
+    "14": ("turq", 2, .5, [(7, 32), (8.9, 32), (8.9, 28.3), (10, 28.3), (10, 26)]),
+    "16": ("white", 2, .5, [(8, 27), (8.4, 24.9), (12, 24.9), (12, 26)]),
 }
-leads = [("red", [(21, 15.8), (21, 25)]), ("black", [(18.6, 15.8), (18.6, 24.4), (18, 25)])]
-STEPS = ["Step 1: power (red and black)", "Step 2: display and SD card", "Step 3: DAC, encoder, buttons"]
+leads = []
+STEPS = ["Step 1: power (red and black)", "Step 2: display and SD card", "Step 3: DAC and encoder"]
 
 
 def draw_board(o, ox, oy, P, mirror, step=None):
@@ -127,12 +122,12 @@ def draw_board(o, ox, oy, P, mirror, step=None):
         t(2.6, 26.75, "pads 14 15 16", 8.5, "start", soft)
     else:
         t(4, 36.0, "ESP32", 12, fill="#555", halo=False)
-    box(4.4, 22.35, 7.6, 23.65, "#444", "#000", 2, op, mirror)                      # switch
-    t(3.2 if mirror else 6, 23.0 if mirror else 24.4, "switch" if mirror else "power switch", 10.5, fill="#333")
-    for c0 in (1.6, 5.6):                                                             # buttons
-        box(c0, 16.6, c0 + 2.8, 20.4, "#2d2d2d", "#000", 4, op, mirror)
-        if not mirror:
-            o.append(f'<circle cx="{X(c0 + 1.4):.1f}" cy="{Y(18.5):.1f}" r="{.75 * P}" fill="#777" stroke="#000"/>')
+    box(0.5, 12.3, 10.1, 26.0, "#b9bec6", "#6d7480", 6, op, mirror)                 # battery, on the front
+    if not mirror:
+        t(5.3, 18.6, "Battery", 17, weight="bold")
+        t(5.3, 19.8, "on the front, leads to the charger", 10.5, fill="#333")
+    else:
+        t(5.3, 19.0, "Battery", 12, fill="#555")
     box(8.7, 25.4, 16.2, 35.6, "#16181c", "#000", 4, op, mirror)                    # encoder, 19 x 26 mm
     box(16.6, 25.4, 23.4, 35.9, "#1f6aa8", "#0d3a61", 4, op, mirror)                # charger
     box(18.2, 33.3, 21.8, 36.2, "#c9c9c9", "#666", 3, metal, mirror)
@@ -146,9 +141,6 @@ def draw_board(o, ox, oy, P, mirror, step=None):
     else:
         t(12.45, 32.0, "Encoder", 12, fill="#555")
         t(20, 31.0, "Charger", 12, fill="#555")
-        box(9.6, 6.0, 23.4, 15.8, "#b9bec6", "#6d7480", 6, .9)                      # battery (this side)
-        t(16.5, 10.6, "Battery", 15, weight="bold", halo=False)
-        t(16.5, 11.8, "on this side", 10.5, fill="#333", halo=False)
 
     used = {}
     if step is not None:
@@ -174,7 +166,7 @@ def draw_board(o, ox, oy, P, mirror, step=None):
             o.append(f'<rect x="{x - w / 2:.1f}" y="{y - 8:.1f}" width="{w}" height="16" rx="4" fill="#fff" stroke="#222"/>')
             o.append(f'<text x="{x:.1f}" y="{y + 3.6:.1f}" font-size="10.5" text-anchor="middle" font-weight="bold">{wid}</text>')
 
-    dark = {(2, 17), (4, 20), (6, 17), (8, 20), (8, 25), (2, 25), (5, 21)}
+    dark = set()
     for c, r, n, side in pins + (back_pins if mirror else []):
         hit = (c, r) in used
         if mirror and not hit:
@@ -203,10 +195,41 @@ def layout():
     o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" {FONT}>',
          f'<rect width="{W}" height="{H}" fill="#fbfaf7"/>',
          f'<text x="{W / 2}" y="38" font-size="21" text-anchor="middle" font-weight="bold">Perf board layout: component side</text>',
-         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–23 left to right, rows 1–35 top to bottom. Only the battery is on the other side, behind the display.</text>']
+         f'<text x="{W / 2}" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–23 left to right, rows 1–35 top to bottom. Nothing is mounted on the other side. The buttons go on their own small board on the lid, the power switch on the case wall.</text>']
     draw_board(o, 50, 110, P, False)
+    button_board(o, 805, 800, P)
     o.append("</svg>")
     (IMG / "perfboard-layout.svg").write_text("\n".join(o))
+
+
+def button_board(o, x0, y0, P):
+    """Small 7 x 4 hole board for BACK and OK, seen from the button side."""
+    hx = lambda c: x0 + (c - 1) * P
+    hy = lambda r: y0 + (r - 1) * P
+    o.append(f'<text x="{hx(4)}" y="{y0 - 52}" font-size="15" text-anchor="middle" font-weight="bold">Button board (on the lid)</text>')
+    o.append(f'<text x="{hx(4)}" y="{y0 - 33}" font-size="11" text-anchor="middle" fill="#444">7 × 4 holes, seen from the button side</text>')
+    o.append(f'<rect x="{hx(1) - 18}" y="{hy(1) - 18}" width="{6 * P + 36}" height="{3 * P + 36}" rx="5" fill="#d8b98a" stroke="#8a6a3a" stroke-width="1.2"/>')
+    for c in range(1, 8):
+        for r in range(1, 5):
+            o.append(f'<circle cx="{hx(c)}" cy="{hy(r)}" r="{P * .075:.1f}" fill="#8a6a3a"/>')
+    link = f'{hx(3)},{hy(4)} {hx(5)},{hy(4)}'
+    o.append(f'<polyline points="{link}" fill="none" stroke="#222" stroke-width="4.5" stroke-linecap="round"/>')
+    for c, name in ((2, "BACK"), (6, "OK")):
+        o.append(f'<rect x="{hx(c) - 1.18 * P}" y="{hy(2.5) - 1.18 * P}" width="{2.36 * P}" height="{2.36 * P}" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>')
+        o.append(f'<circle cx="{hx(c)}" cy="{hy(2.5)}" r="{.7 * P}" fill="#777" stroke="#000"/>')
+        o.append(f'<text x="{hx(c)}" y="{hy(2.5) + 4}" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">{name}</text>')
+    legs = {(1, 1): "blue", (3, 4): "black", (7, 1): "yellow", (5, 4): "black"}
+    for c in (1, 3, 5, 7):
+        for r in (1, 4):
+            o.append(f'<circle cx="{hx(c)}" cy="{hy(r)}" r="{P * .23:.1f}" fill="{COL[legs.get((c, r))]}" stroke="#222" stroke-width="1.2"/>')
+    notes = [("blue", "17 blue: BACK leg to ESP32 pad 15"), ("yellow", "18 yellow: OK leg to ESP32 pad 16"),
+             ("black", "K5 black: both ground legs, joined, to GND")]
+    for i, (c, s) in enumerate(notes):
+        y = hy(4) + 44 + i * 21
+        o.append(f'<circle cx="{hx(1) - 10}" cy="{y - 4}" r="6" fill="{COL[c]}" stroke="#222"/>')
+        o.append(f'<text x="{hx(1) + 4}" y="{y}" font-size="11.5" fill="#222">{s}</text>')
+    o.append(f'<text x="{hx(1) - 16}" y="{hy(4) + 44 + 3 * 21 + 4}" font-size="11" fill="#444">Legs stick out of the top and bottom sides.</text>')
+    o.append(f'<text x="{hx(1) - 16}" y="{hy(4) + 44 + 4 * 21 + 2}" font-size="11" fill="#444">Unused legs are soldered but not wired.</text>')
 
 
 def connections():
@@ -223,7 +246,7 @@ def connections():
         o.append(f'<text x="{ox + (COLS + 1) * P / 2}" y="104" font-size="17" text-anchor="middle" font-weight="bold">{title}</text>')
         draw_board(o, ox, 135, P, True, i)
     ky = H - 30
-    key = [("red", "red: 3.3 V and battery +"), ("black", "black: GND"), ("yellow", "yellow"), ("blue", "blue"),
+    key = [("red", "red: 3.3 V and switch leads"), ("black", "black: GND"), ("yellow", "yellow"), ("blue", "blue"),
            ("white", "white"), ("turq", "turquoise")]
     for i, (c, s) in enumerate(key):
         x = 60 + i * 210
@@ -311,10 +334,10 @@ def wiring():
                                    (550, "14", "SW", "white", "16")):
         wire([(330, y), (EL, y)], col, tag, (445, y))
         t(318, y, name, 12, "end", "#fff", "bold"); epin("l", y, pin)
-    chip(142, 540, "+  R3", "red"); chip(142, 568, "GND  K6", "black")
+    chip(142, 540, "+  R3", "red"); chip(142, 568, "GND  K2", "black")
 
     # buttons
-    for y, pin, name, col, tag, g in ((650, "15", "BACK", "blue", "17", "K5"), (715, "16", "OK", "yellow", "18", "K2")):
+    for y, pin, name, col, tag, g in ((650, "15", "BACK", "blue", "17", "K5"), (715, "16", "OK", "yellow", "18", "K5")):
         box(230, y - 22, 100, 44, "#2d2d2d", "#000", 6)
         t(280, y, name, 13, fill="#fff", weight="bold")
         wire([(330, y), (EL, y)], col, tag, (445, y)); epin("l", y, pin)
@@ -344,7 +367,7 @@ def wiring():
 
     nx, ny = 800, 640
     chip(nx, ny, "red pill", "red"); t(nx + 78, ny, "= 3.3 V, chained from the ESP32 3V3 pin (wires R1–R3)", 12.5, "start")
-    chip(nx, ny + 32, "black pill", "black"); t(nx + 88, ny + 32, "= GND, chained from the charger OUT− pad (wires K1–K6)", 12.5, "start")
+    chip(nx, ny + 32, "black pill", "black"); t(nx + 88, ny + 32, "= GND, chained from the charger OUT− pad (wires K1–K5)", 12.5, "start")
     t(nx, ny + 64, "Pins 12 and 11 each take two wires: one to the display, one to the SD slot.", 12.5, "start")
     t(nx, ny + 96, "Flash through the ESP32's USB-C. Charge through the charger's USB-C.", 12.5, "start", "#444")
     o.append("</svg>")

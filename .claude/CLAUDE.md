@@ -71,27 +71,31 @@ Buttons:  BACK=15 OK=16
   board upgrade with IP5306 power module instead of TP4056
 
 ## Build: one perf board (decided 2026-11-14)
-- Everything goes on the owner's perf board (29 × 35 holes; the layout uses 23 × 35,
+- Everything except the buttons and power switch goes on the owner's perf board (29 × 35 holes; the layout uses 23 × 35,
   about 58 × 89 mm), parts on pin headers, wires on the solder side in the owner's six
   colours (red, black, yellow, blue, white, turquoise). `hardware/WIRING.md` has the one
   wiring diagram; `hardware/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
   `.claude/tools/perfboard_layout.py`.
-- Component side: DAC top-left (jack at top edge), BACK/OK and the power switch below
-  it, display top-right (header row 2, SD card sticking out of the right side,
+- Component side: DAC top-left (jack at top edge), battery flat below it (c1–c10,
+  rows 13–26; owner test-fitted it 2026-11-14, "fits snug"), display top-right (header row 2, SD card sticking out of the right side,
   deliberately outside the case). Bottom row, left to right (owner's idea): ESP32
   (USB-C at bottom edge, pins c1/c7 rows 27–35), encoder (19 × 26 mm, header row 26,
   knob through the front face), TP4056 charger (USB-C at bottom edge).
-- Solder side: only the battery, behind the display (owner's call, to save width).
+- Solder side: wires only. BACK/OK sit on a separate 7 × 4 hole board under the lid
+  (three flying leads: pad 15, pad 16, GND); the slide switch goes in a case side wall
+  on two flying leads (owner's call, 2026-11-14).
 - The owner wants wires drawn as actual runs on the back view (a pin-tag-only drawing
   "made no sense"); the connections drawing is three back views, one wire group each.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
 ## Case (not designed yet)
-- Follows the perf board: about 62 × 93 mm and roughly 30 mm thick (about 27 mm bare:
-  parts in front, battery behind). Front face: screen, knob, two buttons.
-- Battery length and width still unmeasured; 35 × 25 mm assumed from the 102535 code.
+- Follows the perf board: about 62 × 93 mm. The battery (10.9 mm) is the tallest part
+  on the front, so the lid sits about 12 mm above the board. Front face: screen, knob,
+  two buttons; slide switch in a side wall.
+- Open: where the button board goes. Over the battery it needs about 6 mm more height
+  (button body plus board), which recesses the screen.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout

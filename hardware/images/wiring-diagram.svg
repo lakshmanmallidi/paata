@@ -93,7 +93,7 @@
 <rect x="142" y="529" width="49.0" height="22" rx="11" fill="#d92b2b" stroke="#222"/>
 <text x="166.5" y="543.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">+  R3</text>
 <rect x="142" y="557" width="62.199999999999996" height="22" rx="11" fill="#222" stroke="#222"/>
-<text x="173.1" y="571.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">GND  K6</text>
+<text x="173.1" y="571.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">GND  K2</text>
 <rect x="230" y="628" width="100" height="44" rx="6" fill="#2d2d2d" stroke="#000" stroke-width="1.4"/>
 <text x="280" y="654.5" font-size="13" text-anchor="middle" fill="#fff" font-weight="bold">BACK</text>
 <polyline points="330,650 560,650" fill="none" stroke="#333" stroke-width="6.5" stroke-linejoin="round"/>
@@ -113,7 +113,7 @@
 <circle cx="560" cy="715" r="6" fill="#d9a441" stroke="#222"/>
 <text x="574" y="719.5" font-size="13" text-anchor="start" fill="#fff" font-weight="bold">16</text>
 <rect x="155.8" y="704" width="62.199999999999996" height="22" rx="11" fill="#222" stroke="#222"/>
-<text x="186.9" y="718.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">GND  K2</text>
+<text x="186.9" y="718.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">GND  K5</text>
 <rect x="980" y="95" width="220" height="300" rx="8" fill="#c8372d" stroke="#7d1d17" stroke-width="1.4"/>
 <text x="1120" y="135.2" font-size="15" text-anchor="middle" fill="#fff" font-weight="bold">Display</text>
 <text x="1120" y="153.8" font-size="11" text-anchor="middle" fill="#ffe1dd" font-weight="normal">8-pin header</text>
@@ -195,7 +195,7 @@
 <text x="878" y="644.4" font-size="12.5" text-anchor="start" fill="#111" font-weight="normal">= 3.3 V, chained from the ESP32 3V3 pin (wires R1–R3)</text>
 <rect x="800" y="661" width="82.0" height="22" rx="11" fill="#222" stroke="#222"/>
 <text x="841.0" y="675.9" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">black pill</text>
-<text x="888" y="676.4" font-size="12.5" text-anchor="start" fill="#111" font-weight="normal">= GND, chained from the charger OUT− pad (wires K1–K6)</text>
+<text x="888" y="676.4" font-size="12.5" text-anchor="start" fill="#111" font-weight="normal">= GND, chained from the charger OUT− pad (wires K1–K5)</text>
 <text x="800" y="708.4" font-size="12.5" text-anchor="start" fill="#111" font-weight="normal">Pins 12 and 11 each take two wires: one to the display, one to the SD slot.</text>
 <text x="800" y="740.4" font-size="12.5" text-anchor="start" fill="#444" font-weight="normal">Flash through the ESP32's USB-C. Charge through the charger's USB-C.</text>
 </svg>

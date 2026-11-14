@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 1250" width="1050" height="1250" font-family="Helvetica, Arial, sans-serif">
 <rect width="1050" height="1250" fill="#fbfaf7"/>
 <text x="525.0" y="38" font-size="21" text-anchor="middle" font-weight="bold">Perf board layout: component side</text>
-<text x="525.0" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–23 left to right, rows 1–35 top to bottom. Only the battery is on the other side, behind the display.</text>
+<text x="525.0" y="62" font-size="13" text-anchor="middle" fill="#444">Columns 1–23 left to right, rows 1–35 top to bottom. Nothing is mounted on the other side. The buttons go on their own small board on the lid, the power switch on the case wall.</text>
 <rect x="60.5" y="120.5" width="699.0" height="1059.0" rx="6" fill="#d8b98a" fill-opacity="1.0" stroke="#8a6a3a" stroke-width="1.2"/>
 <circle cx="80.0" cy="140.0" r="2.2" fill="#8a6a3a"/>
 <circle cx="80.0" cy="170.0" r="2.2" fill="#8a6a3a"/>
@@ -883,12 +883,9 @@
 <text x="170.0" y="1030.2" font-size="15" text-anchor="middle" fill="#fff" font-weight="bold">ESP32</text>
 <text x="170.0" y="1061.7" font-size="10.5" text-anchor="middle" fill="#dfe8f5" font-weight="normal">flashing port</text>
 <text x="128.0" y="915.5" font-size="8.5" text-anchor="start" fill="#dfe8f5" font-weight="normal">pads 14 15 16</text>
-<rect x="182.0" y="780.5" width="96.0" height="39.0" rx="2" fill="#444" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
-<text x="230.0" y="845.7" font-size="10.5" text-anchor="middle" fill="#333" font-weight="normal">power switch</text>
-<rect x="98.0" y="608.0" width="84.0" height="114.0" rx="4" fill="#2d2d2d" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
-<circle cx="140.0" cy="665.0" r="22.5" fill="#777" stroke="#000"/>
-<rect x="218.0" y="608.0" width="84.0" height="114.0" rx="4" fill="#2d2d2d" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
-<circle cx="260.0" cy="665.0" r="22.5" fill="#777" stroke="#000"/>
+<rect x="65.0" y="479.0" width="288.0" height="411.0" rx="6" fill="#b9bec6" fill-opacity="0.93" stroke="#6d7480" stroke-width="1.2"/>
+<text x="209.0" y="674.0" font-size="17" text-anchor="middle" fill="#111" font-weight="bold">Battery</text>
+<text x="209.0" y="707.7" font-size="10.5" text-anchor="middle" fill="#333" font-weight="normal">on the front, leads to the charger</text>
 <rect x="311.0" y="872.0" width="225.0" height="306.0" rx="4" fill="#16181c" fill-opacity="0.93" stroke="#000" stroke-width="1.2"/>
 <rect x="548.0" y="872.0" width="204.0" height="315.0" rx="4" fill="#1f6aa8" fill-opacity="0.93" stroke="#0d3a61" stroke-width="1.2"/>
 <rect x="596.0" y="1109.0" width="108.0" height="87.0" rx="3" fill="#c9c9c9" fill-opacity="1.0" stroke="#666" stroke-width="1.2"/>
@@ -984,23 +981,10 @@
 <text x="440.0" y="912.9" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">+</text>
 <circle cx="470.0" cy="890.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
 <text x="470.0" y="912.9" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">GND</text>
-<circle cx="110.0" cy="620.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="110.0" y="604.1" font-size="9.5" text-anchor="middle" fill="#111" font-weight="bold">BACK</text>
-<circle cx="170.0" cy="710.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="170.0" y="732.9" font-size="10.5" text-anchor="middle" fill="#111" font-weight="bold">GND</text>
-<circle cx="230.0" cy="620.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="230.0" y="604.5" font-size="10.5" text-anchor="middle" fill="#111" font-weight="bold">OK</text>
-<circle cx="290.0" cy="710.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="290.0" y="732.9" font-size="10.5" text-anchor="middle" fill="#111" font-weight="bold">GND</text>
-<circle cx="200.0" cy="800.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="230.0" cy="800.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="260.0" cy="800.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<circle cx="290.0" cy="860.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="302.6" y="863.7" font-size="10.5" text-anchor="start" fill="#111" font-weight="bold">14</text>
-<circle cx="110.0" cy="860.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="110.0" y="844.5" font-size="10.5" text-anchor="middle" fill="#111" font-weight="bold">15</text>
-<circle cx="200.0" cy="740.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
-<text x="212.6" y="743.7" font-size="10.5" text-anchor="start" fill="#111" font-weight="bold">16</text>
+<circle cx="290.0" cy="920.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<text x="302.6" y="923.7" font-size="10.5" text-anchor="start" fill="#fff" font-weight="bold">14</text>
+<circle cx="290.0" cy="1160.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<text x="302.6" y="1163.7" font-size="10.5" text-anchor="start" fill="#fff" font-weight="bold">GND</text>
 <circle cx="560.0" cy="860.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
 <text x="560.0" y="882.5" font-size="9.5" text-anchor="middle" fill="#fff" font-weight="bold">OUT−</text>
 <circle cx="590.0" cy="860.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
@@ -1009,4 +993,58 @@
 <text x="680.0" y="882.9" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">B+</text>
 <circle cx="710.0" cy="860.0" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
 <text x="710.0" y="882.5" font-size="9.5" text-anchor="middle" fill="#fff" font-weight="bold">OUT+</text>
+<text x="895" y="748" font-size="15" text-anchor="middle" font-weight="bold">Button board (on the lid)</text>
+<text x="895" y="767" font-size="11" text-anchor="middle" fill="#444">7 × 4 holes, seen from the button side</text>
+<rect x="787" y="782" width="216" height="126" rx="5" fill="#d8b98a" stroke="#8a6a3a" stroke-width="1.2"/>
+<circle cx="805" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="805" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="805" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="805" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="835" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="835" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="835" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="835" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="865" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="865" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="865" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="865" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="895" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="895" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="895" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="895" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="925" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="925" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="925" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="925" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="955" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="955" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="955" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="955" cy="890" r="2.2" fill="#8a6a3a"/>
+<circle cx="985" cy="800" r="2.2" fill="#8a6a3a"/>
+<circle cx="985" cy="830" r="2.2" fill="#8a6a3a"/>
+<circle cx="985" cy="860" r="2.2" fill="#8a6a3a"/>
+<circle cx="985" cy="890" r="2.2" fill="#8a6a3a"/>
+<polyline points="865,890 925,890" fill="none" stroke="#222" stroke-width="4.5" stroke-linecap="round"/>
+<rect x="799.6" y="809.6" width="70.8" height="70.8" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>
+<circle cx="835" cy="845.0" r="21.0" fill="#777" stroke="#000"/>
+<text x="835" y="849.0" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">BACK</text>
+<rect x="919.6" y="809.6" width="70.8" height="70.8" rx="4" fill="#2d2d2d" fill-opacity=".93" stroke="#000"/>
+<circle cx="955" cy="845.0" r="21.0" fill="#777" stroke="#000"/>
+<text x="955" y="849.0" font-size="10.5" text-anchor="middle" fill="#fff" font-weight="bold">OK</text>
+<circle cx="805" cy="800" r="6.9" fill="#2f6fdd" stroke="#222" stroke-width="1.2"/>
+<circle cx="805" cy="890" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<circle cx="865" cy="800" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<circle cx="865" cy="890" r="6.9" fill="#222" stroke="#222" stroke-width="1.2"/>
+<circle cx="925" cy="800" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<circle cx="925" cy="890" r="6.9" fill="#222" stroke="#222" stroke-width="1.2"/>
+<circle cx="985" cy="800" r="6.9" fill="#f2c81e" stroke="#222" stroke-width="1.2"/>
+<circle cx="985" cy="890" r="6.9" fill="#d9a441" stroke="#222" stroke-width="1.2"/>
+<circle cx="795" cy="930" r="6" fill="#2f6fdd" stroke="#222"/>
+<text x="809" y="934" font-size="11.5" fill="#222">17 blue: BACK leg to ESP32 pad 15</text>
+<circle cx="795" cy="951" r="6" fill="#f2c81e" stroke="#222"/>
+<text x="809" y="955" font-size="11.5" fill="#222">18 yellow: OK leg to ESP32 pad 16</text>
+<circle cx="795" cy="972" r="6" fill="#222" stroke="#222"/>
+<text x="809" y="976" font-size="11.5" fill="#222">K5 black: both ground legs, joined, to GND</text>
+<text x="789" y="1001" font-size="11" fill="#444">Legs stick out of the top and bottom sides.</text>
+<text x="789" y="1020" font-size="11" fill="#444">Unused legs are soldered but not wired.</text>
 </svg>
