@@ -41,7 +41,7 @@ NUT_DROP = 4.0                        # plastic between the lid and the nut slot
 # positions, EST unless noted (y is measured down from the jack end in the photos)
 yd = lambda y: BOARD_L - y
 JACK_X, JACK_Z, JACK_D = X0 + 12.5, ZTOP - 4.5, 6.0     # measured on the first print: from the inside of the left wall, from the top of the wall
-USB_ESP_X, USB_CHG_X, USB_Z = 14.3, 51.1, 9.8      # moved 5.0 towards the charger side after the first print (owner's measurement)
+USB_ESP_X, USB_CHG_X, USB_Z = 11.3, 48.1, 9.8      # EST from two test prints: +0 left the sockets against the charger-side edge, +5 against the other; now +2
 SD_Y0, SD_Y1, SD_Z = yd(46.8), yd(22.8), 5.6
 ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
@@ -96,7 +96,7 @@ def base():
         b -= Pos(xo + POCKET_D, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
     b -= Pos(JACK_X, Y1 + WALL / 2, JACK_Z) * Rot(90, 0, 0) * Cylinder(JACK_D / 2, WALL + 2)   # headphone jack
     for x in (USB_ESP_X, USB_CHG_X):                                      # USB-C openings, sized for the plug shell
-        b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(12.5, 6.8, 2.5), WALL + 2, both=True)
+        b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(13.5, 6.8, 2.5), WALL + 2, both=True)
     b -= B(X1 - 1, xo + 1, SD_Y0 - 1, SD_Y1 + 1, SD_Z - 1.8, SD_Z + 1.8)  # SD card slot
     cx, cy = (X0 + X1) / 2, (Y0 + Y1) / 2
     for x, y in lugs():
