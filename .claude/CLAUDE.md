@@ -25,7 +25,7 @@ features (playlists, Wi-Fi sync, no 8,192-track cap). Owner listens on IEMs only
 |---|---|
 | Display board | 34 × 58.2; SD adapter sticks out 19 on the right seen from the front (53.0 across board + card). Header removed. |
 | ESP32-S3-Zero | 17.9 × 23.8 incl. USB-C. Inner pads 14/15/16 sit beside pads 7/8/9. |
-| DAC | 20.2 × 30.9 incl. jack |
+| DAC | 20.2 × 30.9 board only, without the jack (owner's correction, 2026-11-15); published 20.3 × 32.5 with the jack |
 | Encoder board | 21.7 × 26.0; 10 k pull-ups R1/R2 on the back. Owner will remove the header but **not** desolder the encoder from the board. |
 | TP4056 charger | 17.3 × 26.7 |
 | Battery | 10.9 thick; length and width not yet measured |

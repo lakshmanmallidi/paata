@@ -23,8 +23,8 @@ PARTS = {
                       "Waveshare ESP32-S3-Zero. Published size 18 × 23.5 mm. "
                       "Measured 17.9 × 23.8 mm with the USB-C socket."),
     "pcm5102a-dac": ((330, 575, 1225, 2095), "20.3 mm", "32.5 mm",
-                     "Adafruit PCM5102 I2S DAC (product 6250). Published size 20.3 × 32.5 mm. "
-                     "Measured 20.2 × 30.9 mm with the headphone jack."),
+                     "Adafruit PCM5102 I2S DAC (product 6250). Published size 20.3 × 32.5 mm with the jack. "
+                     "Measured board 20.2 × 30.9 mm; the headphone jack sticks out past it."),
     "st7735-tft-back": ((350, 625, 1240, 2085), "34.5 mm", "58 mm",
                         "1.8\" ST7735 display, back side. Published board size 34.5 × 58 mm. "
                         "Measured 34 × 58.2 mm. A full-size SD card (or microSD adapter) sticks out 19 mm."),
