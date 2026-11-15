@@ -111,10 +111,14 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
 | Perf board back to screen face | 8.4 |
 | Perf board back to top of display PCB | 5.7 |
 | Lower edge of screen to USB-C end (my reading of the photo; confirm) | 36.2 |
-| Slide switch body (3 pins), without pins and slider | 10.5 × 5.7 × 5.0 |
+| Slide switch body (3 pins), without pins, slider and ears: length × depth × pin face to slider face (owner confirmed) | 10.5 × 5.7 × 5.0 |
 - Perf board alone: 22 × 34 holes, about 56 × 87. Battery is the tallest part apart from
   the encoder shaft. Front face: screen and knob; slide switch in a side wall; jack on
   the top edge; two USB-C openings on the bottom edge; SD card out of the right side.
+- The switch keeps its two mounting ears: it is screwed to the case wall from inside
+  (owner, 2026-11-15). Ears not measured; from a blurry photo I estimate about 18.5 mm
+  across the ears and about 14.5 mm between hole centres. Get real figures and the hole
+  diameter before modelling.
 - Not measured yet (ask before modelling): encoder shaft height above the perf board and
   shaft diameter, slider size and travel, jack centre and USB-C centre positions, perf
   board thickness, screen window position from the top and side edges.
