@@ -156,6 +156,9 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   ears screwed to the pod's outer wall. About
   83 × 108 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
   from photos; no board supports yet. Not printable until those are measured.
+  Pod made shallower after the second print (owner: too much gap behind the switch
+  terminals): pocket 6 out instead of 10, so the pod stands 8.5 out and the case is about
+  79 wide. The terminals sit in the wall opening and the gap beside the charger.
   Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
   (`lid.stl` is exported in that orientation). Pod underside is a real 45° slope (it was
   missing from the model before), slider slot is open to the top, jack hole has a 45°

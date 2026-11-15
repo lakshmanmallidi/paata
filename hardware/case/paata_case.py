@@ -48,10 +48,11 @@ ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
 
 # slide switch pod on the right wall (switch: body 10.5 x 5.7 x 5.0, 20 across the ears)
-# Owner's sizes are the inside of the pocket: 10 out from the wall, 20 long, 6 high.
+# Inside of the pocket: 6 out from the wall (switch body 5.0 plus 1), 20 long, 6 high.
+# The terminals and their wires use the opening through the case wall and the gap beside the charger.
 # Walls are added on top. The pocket is open at the top and closed by the lid, so the
 # switch drops in from above.
-POCKET_D, POCKET_L, POCKET_H = 10.0, 20.4, 6.2
+POCKET_D, POCKET_L, POCKET_H = 6.0, 20.4, 6.2       # depth was 10: too much empty space behind the terminals (owner, after the second print)
 POD_WALL = 2.5                        # outer wall, which the ears screw to
 POD_END = 2.0                         # end walls
 POD_FLOOR = 2.0
