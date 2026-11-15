@@ -7,14 +7,11 @@ organised by topic. `CLAUDE.md` is the short version; this is the reasoning behi
 
 ## 1. Where it started
 
-The original question was "I have a TrueNAS box with my hi-res songs; is there a TrueNAS
-app that syncs a library to a memory card for a Snowsky Echo Mini?"
-
-Answer: no NAS app can write to a card sitting in a player. The workable pattern is a
-**carry folder** on the NAS (`storage/Music/EchoMini/`) mirrored to the card from a PC
-with FreeFileSync (Windows) or rsync (Mac/Linux). TrueNAS apps that help *around* this:
-Navidrome (stream + browse the library at home), beets/Picard (tags), Syncthing (only if a
-phone with a card slot does the copying).
+The project began with a question: can a NAS app sync a music library to the memory card
+of a Snowsky Echo Mini? No: nothing on a NAS can write to a card sitting in a player. The
+workable pattern is a **carry folder** on the NAS, mirrored to the card from a computer
+with FreeFileSync or rsync. Navidrome (browse and star tracks), beets/Picard (tags) and
+Syncthing help around that.
 
 ### Snowsky Echo Mini facts (the benchmark)
 - ₹5,399 at Headphone Zone (512 MB and 8 GB versions; card matters more than internal).
@@ -33,21 +30,14 @@ phone with a card slot does the copying).
 | DSD64 / 128 / 256 | 170 / 340 / 680 MB | 1,500 / 750 / 370 |
 | MP3 320 | ~10 MB | 8,192 (cap) |
 
-Owner's playlist is ~200 songs → 6 GB (CD FLAC) to 36 GB (24/192). A 64 GB card is plenty.
+A 200-song playlist is 6 GB (CD FLAC) to 36 GB (24/192), so a 64 GB card is plenty.
 
 ---
 
-## 2. The owner's library (what we actually looked at)
+## 2. The music library
 
-| File | Finding |
-|---|---|
-| `Oy! (2009)` FLAC, 35 MB / 4:42 | ~1,000 kbps, 16/44.1, Spek shows content to 22 kHz → genuine CD rip. |
-| `Andala Rakshasi (2012)` MP3 | 320 VBR, lossy. Every tag field polluted with `[www.Tollymp3z.com]`. |
-| `ANIMAL (Telugu) Deluxe` .m4a, 65 MB / 4:35 | ~1,900 kbps at 48 kHz → ALAC 24/48, true hi-res, clean T-Series tags, embedded art. |
-| `1-nenokkadine (2013)` | FLAC + `cover.jpg`, `Back.jpg`, `CD.jpg`. |
-
-So the library is mostly CD-quality FLAC with some 24/48 ALAC and some MP3. This drove the
-"CD and 24/96 must be perfect; 24/192 is a bonus; DSD not needed" requirement.
+The target library is mostly CD-quality FLAC with some 24/48 ALAC and some MP3. This drove
+the "CD and 24/96 must be perfect; 24/192 is a bonus; DSD not needed" requirement.
 
 ### Verifying files
 - Spek spectrogram: content to ~20–22 kHz = real lossless; hard cut at 16 kHz = MP3 upsampled.
@@ -66,21 +56,19 @@ So the library is mostly CD-quality FLAC with some 24/48 ALAC and some MP3. This
   alongside and are ignored. PNG → JPEG for the player (lighter decoder, smaller file).
 - **Junk to delete:** `.cue` (only useful for single-file rips), `.log` (rip log, proof of
   quality, useless after), `.m3u` (album order, redundant), `.nfo .txt .url Thumbs.db .DS_Store`.
-- **Naming:** `Artist/Album (yyyy)/NN - Artist - Title.flac`. Owner prefers no trailing
-  spaces and `(yyyy)` suffix. Do it with MusicBrainz Picard file-naming:
+- **Naming:** `Artist/Album (yyyy)/NN - Artist - Title.flac`. No trailing
+  spaces, `(yyyy)` suffix. Do it with MusicBrainz Picard file-naming:
   `%albumartist%/%album% (%date:0:4%)/%tracknumber% - %artist% - %title%`.
 - **Tagging:** Picard with *Scan* (AcoustID fingerprint beats spam tags) + Discogs plugin.
-  Telugu coverage is ~60–80 %; unmatched albums still get renamed from existing tags.
-  Keep tags in Latin script (player font has no Telugu glyphs). Mp3tag for stragglers.
+  Coverage of regional film music is ~60–80 %; unmatched albums still get renamed from existing tags.
+  Keep tags in Latin script (the player font has no other glyphs). Mp3tag for stragglers.
 - **ALAC is not supported** by ESP32-audioI2S; convert, don't try to play it.
 
 ### NAS automation (planned, `tools/`)
-Watch folder `Inbox/` on TrueNAS → script extracts zip/rar/7z, converts ALAC/WAV→FLAC,
+Watch folder `Inbox/` on the NAS → script extracts zip/rar/7z, converts ALAC/WAV→FLAC,
 flattens `Covers/`/`Scans/` up one level, renames `*front*`→`cover.jpg`, `*cd*`→`CD.jpg`,
-`*back*`→`Back.jpg`, deletes junk, moves album to `Music/Review/`. Owner stars tracks in
-Navidrome; a second script copies starred tracks + cover into `EchoMini/` and moves the
-album into the main library. **Explicitly out of scope: anything that bulk-downloads from
-Telegram sharing channels.**
+`*back*`→`Back.jpg`, deletes junk, moves album to a review folder. Tracks starred in Navidrome are copied, with their cover,
+into the player folder by a second script, and the album moves into the main library.
 
 ---
 
@@ -116,8 +104,8 @@ Decision: build our own on ESP32-S3; keep Echo Mini as the quality/size benchmar
   inner 16 15 14.
 
 ### DAC — the big dead end
-An early plan (from another assistant) proposed driving the owner's **Headphone Zone ×
-ddHiFi USB-C dongle (CX31993 + MAX97220)** from the ESP32 as a USB host. Rejected because:
+An early plan (from another assistant) proposed driving a **USB-C DAC dongle
+(CX31993 + MAX97220)** from the ESP32 as a USB host. Rejected because:
 - ESP32-S3 USB is Full-Speed (12 Mbps), UAC 1.0 only; Espressif's `usb_host_uac` /
   `usb_stream` driver is capped at **16-bit/48 kHz**. Many hi-res dongles are UAC 2.0 only.
 - It needs ESP-IDF, not Arduino; "EspUsbHost" is a HID library, not audio.
