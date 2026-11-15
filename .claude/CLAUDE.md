@@ -167,8 +167,9 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   of the left wall and 4.5 below the top of the base wall (owner's measurements); both
   USB-C openings: the first print (centres x 9.3, 46.1) had the sockets against the
   charger-side edge, the second (+5.0, owner's figure) against the opposite edge. Now +2.0
-  (x 11.3, 48.1, my estimate from the two photos) and 13.5 wide; needs a real measurement.
-  Jack hole confirmed in the right place on the second print.
+  (x 11.3, 48.1; the owner asked for 3 back from the second print) and 13.5 wide. Jack hole
+  moved 1 towards the screen side after the second print: centre now 13.5 from the inside
+  of the left wall.
 
 ## Library conventions the firmware assumes
 - Track files are named `NN - Artist - Title.flac`, one folder per album.

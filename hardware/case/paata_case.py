@@ -40,8 +40,8 @@ NUT_DROP = 4.0                        # plastic between the lid and the nut slot
 
 # positions, EST unless noted (y is measured down from the jack end in the photos)
 yd = lambda y: BOARD_L - y
-JACK_X, JACK_Z, JACK_D = X0 + 12.5, ZTOP - 4.5, 6.0     # measured on the first print: from the inside of the left wall, from the top of the wall
-USB_ESP_X, USB_CHG_X, USB_Z = 11.3, 48.1, 9.8      # EST from two test prints: +0 left the sockets against the charger-side edge, +5 against the other; now +2
+JACK_X, JACK_Z, JACK_D = X0 + 13.5, ZTOP - 4.5, 6.0     # from the inside of the left wall and the top of the wall; 1 mm towards the screen side after the second print
+USB_ESP_X, USB_CHG_X, USB_Z = 11.3, 48.1, 9.8      # first print +2: the owner asked for 3 back from the second print, which was at +5
 SD_Y0, SD_Y1, SD_Z = yd(46.8), yd(22.8), 5.6
 ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
