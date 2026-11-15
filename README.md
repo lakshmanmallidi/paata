@@ -15,7 +15,7 @@ It plays music from an SD card through an I2S DAC, with a small colour screen an
 - Title, artist, track number, elapsed time and progress bar
 - Runs from a single LiPo cell, charged over USB-C
 
-Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and Wi-Fi sync from a NAS. See the [roadmap](#roadmap).
+Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and loading music over Wi-Fi. See the [roadmap](#roadmap).
 
 ## Hardware
 
@@ -87,7 +87,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 
 - **v1**: play from SD, browse folders, basic screen (current)
 - **v2**: album art from `cover.jpg`, `.m3u` playlists, backlight dimming, battery level
-- **v3**: Wi-Fi sync of a music folder from a NAS
+- **v3**: load music onto the card over Wi-Fi
 - **Later**: 3D-printed case (concept in [hardware/case](hardware/case/)), optional higher-end DAC board
 
 ## Repository layout

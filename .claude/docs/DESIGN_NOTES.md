@@ -7,11 +7,8 @@ organised by topic. `CLAUDE.md` is the short version; this is the reasoning behi
 
 ## 1. Where it started
 
-The project began with a question: can a NAS app sync a music library to the memory card
-of a Snowsky Echo Mini? No: nothing on a NAS can write to a card sitting in a player. The
-workable pattern is a **carry folder** on the NAS, mirrored to the card from a computer
-with FreeFileSync or rsync. Navidrome (browse and star tracks), beets/Picard (tags) and
-Syncthing help around that.
+The starting point was the Snowsky Echo Mini: a good small player with limits that a
+self-built one could remove.
 
 ### Snowsky Echo Mini facts (the benchmark)
 - ₹5,399 at Headphone Zone (512 MB and 8 GB versions; card matters more than internal).
@@ -63,12 +60,6 @@ the "CD and 24/96 must be perfect; 24/192 is a bonus; DSD not needed" requiremen
   Coverage of regional film music is ~60–80 %; unmatched albums still get renamed from existing tags.
   Keep tags in Latin script (the player font has no other glyphs). Mp3tag for stragglers.
 - **ALAC is not supported** by ESP32-audioI2S; convert, don't try to play it.
-
-### NAS automation (planned, `tools/`)
-Watch folder `Inbox/` on the NAS → script extracts zip/rar/7z, converts ALAC/WAV→FLAC,
-flattens `Covers/`/`Scans/` up one level, renames `*front*`→`cover.jpg`, `*cd*`→`CD.jpg`,
-`*back*`→`Back.jpg`, deletes junk, moves album to a review folder. Tracks starred in Navidrome are copied, with their cover,
-into the player folder by a second script, and the album moves into the main library.
 
 ---
 
@@ -195,7 +186,7 @@ measured. The layout sketched below predates all of this.
 3D-print. The 1.8" ST7735 is common enough that Printables/MakerWorld ESP32-MP3-player
 cases can be remixed. Layout: screen + knob + 2 buttons on the front; two USB-C openings
 (charge / flash) and the 3.5 mm jack on the side; S3-Zero, DAC and LiPo stacked behind
-the screen. Card can live inside permanently since sync will be over Wi-Fi.
+the screen. The card can stay inside if music is later loaded over Wi-Fi.
 
 ---
 

@@ -8,7 +8,7 @@ details, network addresses or private paths in this folder.
 
 ## Goal
 A tiny, offline, button-driven music player (no touchscreen) that plays a FLAC
-library from an SD card, later synced from a NAS. Comparison target is the
+library from an SD card. Comparison target is the
 Snowsky Echo Mini (₹5,399): we aim to match its sound on IEMs and beat it on
 features (playlists, Wi-Fi sync, no 8,192-track cap). The output is meant for IEMs.
 
@@ -66,7 +66,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   picture in every track never played. `firmware/patch_audio_lib.py` (a `pre:` script)
   patches the library to seek past pictures over 32 KB in local files. Flashed
   2026-11-15, not yet confirmed on hardware; 24-bit/48 kHz playback is unconfirmed too.
-  Stripping big pictures in the sync tools is still worth doing.
+  Stripping big pictures before copying albums to the card is still worth doing.
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
@@ -78,8 +78,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - v1: play from SD, browse, basic UI  ← current
 - v2: cover.jpg display (TJpg_Decoder), .m3u playlist support, backlight dimming,
   battery voltage on screen
-- v3: Wi-Fi sync of a music folder from a NAS (SMB share); optional DLNA/
-  Navidrome client
+- v3: load music onto the card over Wi-Fi
 - Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
 
@@ -157,17 +156,14 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   roof, lid screw recesses are 90° countersinks, so the lid screws are flat-head M3 × 10.
   What is left are bridges: nut slots 5.7 mm, USB-C openings 7.5 mm, SD slot 26 mm.
 
-## Library conventions the firmware and tools assume
-- Library layout `Artist/Album (yyyy)/NN - Artist - Title.flac`; a separate folder
-  holds the subset synced to the player.
+## Library conventions the firmware assumes
+- Track files are named `NN - Artist - Title.flac`, one folder per album.
 - FLAC only for lossless. ALAC and WAV are converted with ffmpeg
   (`-c:a flac -map_metadata 0`), source deleted only on success. AAC/MP3 kept as is.
 - Cover art: `cover.jpg` in each album folder, ~600 px, JPEG. `Back.jpg`, `CD.jpg`
   may also exist and are ignored by the player. `.cue .log .m3u .nfo .txt` deleted.
 - Keep tags and file names in Latin script (the player font has no other glyphs).
 - SD card: FAT32, `/Music/<Album>/` folders.
-- Planned `tools/`: `nas-inbox.py` (extract/convert/tidy a drop folder) and
-  `sync-to-player.py` (tracks starred in Navidrome → player folder → SD/Wi-Fi). Python.
 
 ## Repo layout & licensing
 Note: repo was initialised with an MIT LICENSE at the root. Licence split below is the recommendation; revisit before shipping compiled binaries.
@@ -176,7 +172,6 @@ Note: repo was initialised with an MIT LICENSE at the root. Licence split below 
 paata/
 ├── firmware/     PlatformIO project        GPL-3.0 (ESP32-audioI2S is GPL-3)
 ├── hardware/     components/, wiring/, assembly/  CERN-OHL-P-2.0
-├── tools/        NAS-side Python scripts   MIT
 ├── README.md
 ├── LICENSE       GPL-3.0
 └── .claude/      everything for Claude Code: this file, skills, and
