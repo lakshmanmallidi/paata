@@ -84,6 +84,8 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   10 × 25 × 35; the encoder has no consistent published size. They are made by `.claude/tools/component_dims.py`
   (`uv run --with pillow`), which reads the untouched photos from git commit 558b775.
   Update the sizes there when a part is re-measured.
+  `slide-switch.jpg` is the exception: drawn by a one-off script from an owner photo that
+  is not in git (measured only, no published size looked up).
 - Headers are soldered (2026-11-14); hole positions in the generator were read from the owner's photo of the back, so treat them as fixed:
   display header r1 c13–20, SD pads r22 c15–18, DAC c8 r2–9 (and c2 r3–8, unwired),
   ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
