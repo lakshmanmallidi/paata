@@ -152,6 +152,9 @@ void drawProgress() {
 }
 
 // ---------- playback ----------
+uint32_t trackStartMs = 0;
+int failedInARow = 0;           // tracks that ended within seconds of starting
+
 void playTrack(int idx) {
   if (playlist.empty()) return;
   if (idx < 0) idx = playlist.size() - 1;
@@ -159,6 +162,7 @@ void playTrack(int idx) {
   trackIdx = idx;
   nowTitle = ""; nowArtist = "";
   paused = false;
+  trackStartMs = millis();
   audio.connecttoFS(SD, playlist[idx].c_str());
   mode = PLAYING; needRedraw = true;
 }
@@ -289,7 +293,15 @@ void setup() {
 
 void loop() {
   audio.loop();
-  if (trackEnded) { trackEnded = false; playTrack(trackIdx + 1); }
+  if (trackEnded) {
+    trackEnded = false;
+    // A track that ends within 10 s of starting did not play (unreadable file, header timeout).
+    failedInARow = (millis() - trackStartMs < 10000) ? failedInARow + 1 : 0;
+    if (failedInARow >= (int)playlist.size()) {       // the whole folder failed: stop instead of looping forever
+      failedInARow = 0; trackIdx = -1; mode = BROWSE; needRedraw = true;
+      Serial.println("no playable track in this folder");
+    } else playTrack(trackIdx + 1);
+  }
   handleInput();
 
   static uint32_t lastProg = 0;
