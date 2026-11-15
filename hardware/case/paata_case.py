@@ -45,10 +45,14 @@ ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
 
 # slide switch pod on the right wall (switch: body 10.5 x 5.7 x 5.0, 20 across the ears)
-POD_Y0, POD_Y1 = 3.0, 30.0
-POD_D = 11.0                          # how far the pod stands out from the wall
-POD_WALL = 3.0
-SW_Y, SW_Z = (POD_Y0 + POD_Y1) / 2, 9.0
+# Owner's sizes: 10 out from the wall, pocket 20 long and 6 high (plus a little clearance).
+POD_D = 10.0                          # how far the pod stands out from the wall
+POD_WALL = 2.5                        # outer wall, which the ears screw to
+POD_END = 2.0                         # end walls
+POD_ROOF = 1.5
+POCKET_L, POCKET_H = 20.4, 6.2
+SW_Y, SW_Z = 16.5, POCKET_H / 2       # the pocket sits on the case floor
+POD_Y0, POD_Y1 = SW_Y - POCKET_L / 2 - POD_END, SW_Y + POCKET_L / 2 + POD_END
 
 
 def B(x0, x1, y0, y1, z0, z1):
@@ -60,8 +64,6 @@ def outline():
     s = Pos(cx, cy) * RectangleRounded(X1 - X0 + 2 * WALL, Y1 - Y0 + 2 * WALL, 3.0)
     for x, y in lugs():
         s += Pos(x, y) * Circle(LUG_R)
-    xo = X1 + WALL
-    s += Pos(xo + POD_D / 2 - 1, (POD_Y0 + POD_Y1) / 2) * RectangleRounded(POD_D + 2, POD_Y1 - POD_Y0, 2.0)
     return s
 
 
@@ -72,8 +74,10 @@ def lugs():
 def base():
     xo = X1 + WALL
     b = Pos(0, 0, -FLOOR) * extrude(outline(), FLOOR + ZTOP)
+    pod = Pos(xo + POD_D / 2 - 1, (POD_Y0 + POD_Y1) / 2) * RectangleRounded(POD_D + 2, POD_Y1 - POD_Y0, 1.5)
+    b += Pos(0, 0, -FLOOR) * extrude(pod, FLOOR + POCKET_H + POD_ROOF)   # low pod, flat on the print bed
     b -= B(X0, X1, Y0, Y1, 0, ZTOP + 1)                                   # board cavity
-    b -= B(X1 - 1, xo + POD_D - POD_WALL, POD_Y0 + 2, POD_Y1 - 2, 4.0, ZTOP + 1)   # switch pocket, open to the cavity
+    b -= B(X1 - 1, xo + POD_D - POD_WALL, SW_Y - POCKET_L / 2, SW_Y + POCKET_L / 2, 0, POCKET_H)   # switch pocket, open to the cavity
     b -= B(xo + POD_D - POD_WALL - 1, xo + POD_D + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, SW_Z + 2.2)  # slider slot
     for dy in (-8, 8):                                                    # pilot holes for the ear screws
         b -= Pos(xo + POD_D - POD_WALL, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
