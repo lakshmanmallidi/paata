@@ -59,11 +59,12 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - First run on hardware 2026-11-15: flashed over `/dev/cu.usbmodem1101`, boots, screen, SD,
   browser and playback work (owner played two 16-bit FLAC albums). Read serial without
   resetting via pyserial (`uv run --with pyserial`).
-- **Embedded cover art breaks playback:** ESP32-audioI2S reads through FLAC PICTURE blocks
-  and gives up after 8 s ("audioHeader reading timeout"). An album with a 9.7 MB picture
-  in every track never played. Files for the player must have no large embedded picture
-  (`ffmpeg -map 0:a -c copy -map_metadata 0`); `nas-inbox.py`/`sync-to-player.py` should
-  do this. 24-bit/48 kHz playback is still unconfirmed because of this.
+- **Embedded cover art broke playback:** ESP32-audioI2S 4.0.1 reads through FLAC PICTURE
+  blocks and gives up after 8 s ("audioHeader reading timeout"); an album with a 9.7 MB
+  picture in every track never played. `firmware/patch_audio_lib.py` (a `pre:` script)
+  patches the library to seek past pictures over 32 KB in local files. Flashed
+  2026-11-15, not yet confirmed on hardware; 24-bit/48 kHz playback is unconfirmed too.
+  Stripping big pictures in the sync tools is still worth doing.
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
