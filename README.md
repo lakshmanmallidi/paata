@@ -4,7 +4,7 @@ A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu
 
 It plays music from an SD card through an I2S DAC, with a small colour screen and a single rotary knob. No touchscreen, no phone app, no account.
 
-> **Status: early.** The v1 firmware compiles, but has not yet been tested on assembled hardware. Expect changes to the wiring and the code.
+> **Status: early.** The board is built and the v1 firmware runs on it: browsing and FLAC playback from the SD card work. The case is still a concept. Expect changes to the code.
 
 ## Features (v1)
 
@@ -88,13 +88,14 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 - **v1**: play from SD, browse folders, basic screen (current)
 - **v2**: album art from `cover.jpg`, `.m3u` playlists, backlight dimming, battery level
 - **v3**: Wi-Fi sync of a music folder from a NAS
-- **Later**: 3D-printed case (about 60 × 91 mm), optional higher-end DAC board
+- **Later**: 3D-printed case (concept in [hardware/case](hardware/case/)), optional higher-end DAC board
 
 ## Repository layout
 
 ```
 firmware/   PlatformIO project (src/main.cpp, platformio.ini)
-hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables), assembly/ (finished board and its measurements)
+hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables),
+            assembly/ (finished board and its measurements), case/ (3D-printed case concept, not final)
 .claude/    Project notes used by the Claude Code assistant; not needed to build
 ```
 
