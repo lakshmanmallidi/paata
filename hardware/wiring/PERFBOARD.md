@@ -6,7 +6,7 @@ Holes are written as column and row: `c7 r31` is column 7, row 31, counted from 
 
 ## Layout
 
-![Perf board layout, component side](images/perfboard-layout.svg)
+![Perf board layout, component side](perfboard-layout.svg)
 
 The positions below were read from a photo of the soldered board.
 
@@ -31,7 +31,7 @@ Ports: headphone jack on the top edge, flashing port and charging port on the bo
 
 The drawing shows the back of the board three times, one group of wires each, in the order to solder them. Seen from the back, left and right are swapped, so column 1 is on the right. The white tag on each wire is its number in the tables below.
 
-![Perf board connections, back of the board](images/perfboard-connections.svg)
+![Perf board connections, back of the board](perfboard-connections.svg)
 
 No joint takes more than two wires. The routes are a guide: they keep wires in lanes and as short as the pin positions allow. Wires cross where the display wires pass the DAC wires; that cannot be avoided with this pin map and does no harm with insulated wire.
 

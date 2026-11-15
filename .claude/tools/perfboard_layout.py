@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws the three build drawings in hardware/images/:
+"""Draws the three build drawings in hardware/wiring/:
 
   wiring-diagram.svg         what connects to what (pins grouped by job)
   perfboard-layout.svg       component side of the board (22 x 34 holes, as cut and soldered by the owner)
@@ -10,7 +10,7 @@ always counted on the component side. The solder-side view mirrors c.
 """
 from pathlib import Path
 
-IMG = Path(__file__).resolve().parents[2] / "hardware/images"
+IMG = Path(__file__).resolve().parents[2] / "hardware/wiring"
 COL = {"red": "#d92b2b", "black": "#222", "yellow": "#f2c81e", "blue": "#2f6fdd",
        "white": "#ffffff", "turq": "#22c7b8", None: "#d9a441"}
 FONT = 'font-family="Helvetica, Arial, sans-serif"'

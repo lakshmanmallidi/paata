@@ -72,11 +72,15 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 
 ## Build: one perf board (decided 2026-11-14)
 - Everything except the power switch goes on the owner's perf board (cut to 22 × 34 holes, about 56 × 87 mm), parts on pin headers, wires on the solder side in the owner's six
-  colours (red, black, yellow, blue, white, turquoise). `hardware/WIRING.md` has the one
-  wiring diagram; `hardware/PERFBOARD.md` has the layout, the back-side connections
+  colours (red, black, yellow, blue, white, turquoise). `hardware/wiring/WIRING.md` has the one
+  wiring diagram; `hardware/wiring/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
-  `.claude/tools/perfboard_layout.py`.
-- Headers are soldered (2026-11-14); hole positions in `hardware/PERFBOARD.md` and the
+  `.claude/tools/perfboard_layout.py`, which writes into `hardware/wiring/`.
+- `hardware/components/` holds one photo per part with its measured size drawn on it
+  (owner's request, 2026-11-15). They are made by `.claude/tools/component_dims.py`
+  (`uv run --with pillow`), which reads the untouched photos from git commit 558b775.
+  Update the sizes there when a part is re-measured.
+- Headers are soldered (2026-11-14); hole positions in `hardware/wiring/PERFBOARD.md` and the
   generator were read from the owner's photo of the back, so treat them as fixed:
   display header r1 c13–20, SD pads r22 c15–18, DAC c8 r2–9 (and c2 r3–8, unwired),
   ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
@@ -116,7 +120,7 @@ Note: repo was initialised with an MIT LICENSE at the root. Licence split below 
 ```
 paata/
 ├── firmware/     PlatformIO project        GPL-3.0 (ESP32-audioI2S is GPL-3)
-├── hardware/     WIRING.md, BOM.md, case   CERN-OHL-P-2.0
+├── hardware/     components/, wiring/      CERN-OHL-P-2.0
 ├── tools/        NAS-side Python scripts   MIT
 ├── README.md
 ├── LICENSE       GPL-3.0

@@ -31,7 +31,7 @@ Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and
 
 The PCM5102A has a line-level output. It drives in-ear monitors well; high-impedance headphones would need a separate headphone amplifier.
 
-Full pin-by-pin wiring is in [hardware/WIRING.md](hardware/WIRING.md). The build itself, on one perf board, is in [hardware/PERFBOARD.md](hardware/PERFBOARD.md). In short:
+Full pin-by-pin wiring is in [hardware/wiring/WIRING.md](hardware/wiring/WIRING.md). The build itself, on one perf board, is in [hardware/wiring/PERFBOARD.md](hardware/wiring/PERFBOARD.md). Photos of every part with its measured size are in [hardware/components](hardware/components/). In short:
 
 ```
 I2S DAC:   BCK=5   WSEL=6  DIN=7
@@ -94,7 +94,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 
 ```
 firmware/   PlatformIO project (src/main.cpp, platformio.ini)
-hardware/   Wiring diagram and perf board build guide
+hardware/   components/ (part photos with sizes), wiring/ (wiring diagram, perf board build guide)
 .claude/    Project notes used by the Claude Code assistant; not needed to build
 ```
 
