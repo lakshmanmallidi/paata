@@ -97,10 +97,26 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
-## Case (not designed yet)
-- Follows the perf board: about 60 × 91 mm. The battery (10.9 mm) is the tallest part
-  on the front, so the lid sits about 12 mm above the board. Front face: screen and
-  knob; slide switch in a side wall.
+## Case (not designed yet; next job is a 3D-printed enclosure with the slide switch)
+Board is built and wired (2026-11-15). Owner's caliper readings of the finished board, mm
+(photos in `hardware/assembly/`):
+| What | mm |
+|---|---|
+| Overall length, jack tip to USB-C sockets | 89.9 |
+| Overall width, perf board + display overhang | 59.1 |
+| Thickness at USB-C end, back wires to battery top | 15.4 |
+| Thickness at jack end, back wires to battery top | 15.7 |
+| Perf board back to screen face | 8.4 |
+| Perf board back to top of display PCB | 5.7 |
+| Lower edge of screen to USB-C end (my reading of the photo; confirm) | 36.2 |
+| Slide switch body (3 pins), without pins and slider | 10.5 × 5.7 × 5.0 |
+- Perf board alone: 22 × 34 holes, about 56 × 87. Battery is the tallest part apart from
+  the encoder shaft. Front face: screen and knob; slide switch in a side wall; jack on
+  the top edge; two USB-C openings on the bottom edge; SD card out of the right side.
+- Not measured yet (ask before modelling): encoder shaft height above the perf board and
+  shaft diameter, slider size and travel, jack centre and USB-C centre positions, perf
+  board thickness, screen window position from the top and side edges.
+- The assembly photos were cropped and captioned by a one-off script (not kept in the repo).
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout
@@ -123,7 +139,7 @@ Note: repo was initialised with an MIT LICENSE at the root. Licence split below 
 ```
 paata/
 ├── firmware/     PlatformIO project        GPL-3.0 (ESP32-audioI2S is GPL-3)
-├── hardware/     components/, wiring/      CERN-OHL-P-2.0
+├── hardware/     components/, wiring/, assembly/  CERN-OHL-P-2.0
 ├── tools/        NAS-side Python scripts   MIT
 ├── README.md
 ├── LICENSE       GPL-3.0

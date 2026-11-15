@@ -94,7 +94,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 
 ```
 firmware/   PlatformIO project (src/main.cpp, platformio.ini)
-hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables)
+hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables), assembly/ (finished board and its measurements)
 .claude/    Project notes used by the Claude Code assistant; not needed to build
 ```
 
