@@ -64,9 +64,15 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - **Embedded cover art broke playback:** ESP32-audioI2S 4.0.1 reads through FLAC PICTURE
   blocks and gives up after 8 s ("audioHeader reading timeout"); an album with a 9.7 MB
   picture in every track never played. `firmware/patch_audio_lib.py` (a `pre:` script)
-  patches the library to seek past pictures over 32 KB in local files. Flashed
-  2026-11-15, not yet confirmed on hardware; 24-bit/48 kHz playback is unconfirmed too.
+  patches the library to seek past pictures over 32 KB in local files. Confirmed
+  on hardware 2026-11-16: that album starts and 24-bit/48 kHz plays in real time.
   Stripping big pictures before copying albums to the card is still worth doing.
+- **Crackling on loud passages into IEMs (2026-11-16):** not a firmware fault. Serial
+  diagnostics over 135 s of a 24/48 track showed no I2S underruns, a full input buffer and
+  no decode errors, and the same track is clean into headphones with a high-impedance aux
+  input. The PCM5102A line output (meant for loads of 1 kΩ or more) distorts on peaks into
+  16–32 Ω IEMs at higher volume steps. Fix is a headphone amp board after the DAC
+  (TPA6132A2 / MAX97220), or a volume cap in firmware as a stopgap.
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
