@@ -45,14 +45,22 @@ ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
 
 # slide switch pod on the right wall (switch: body 10.5 x 5.7 x 5.0, 20 across the ears)
-# Owner's sizes: 10 out from the wall, pocket 20 long and 6 high (plus a little clearance).
-POD_D = 10.0                          # how far the pod stands out from the wall
+# Owner's sizes are the inside of the pocket: 10 out from the wall, 20 long, 6 high.
+# Walls are added on top. The pocket is open at the top and closed by the lid, so the
+# switch drops in from above.
+POCKET_D, POCKET_L, POCKET_H = 10.0, 20.4, 6.2
 POD_WALL = 2.5                        # outer wall, which the ears screw to
 POD_END = 2.0                         # end walls
-POD_ROOF = 1.5
-POCKET_L, POCKET_H = 20.4, 6.2
-SW_Y, SW_Z = 16.5, POCKET_H / 2       # the pocket sits on the case floor
+POD_FLOOR = 2.0
+POD_OUT = POCKET_D + POD_WALL         # how far the pod stands out from the case wall
+SW_Y = 16.5
+SW_Z = ZTOP - POCKET_H / 2
 POD_Y0, POD_Y1 = SW_Y - POCKET_L / 2 - POD_END, SW_Y + POCKET_L / 2 + POD_END
+
+
+def pod_footprint():
+    xo = X1 + WALL
+    return Pos(xo + POD_OUT / 2 - 1, (POD_Y0 + POD_Y1) / 2) * RectangleRounded(POD_OUT + 2, POD_Y1 - POD_Y0, 1.5)
 
 
 def B(x0, x1, y0, y1, z0, z1):
@@ -74,13 +82,16 @@ def lugs():
 def base():
     xo = X1 + WALL
     b = Pos(0, 0, -FLOOR) * extrude(outline(), FLOOR + ZTOP)
-    pod = Pos(xo + POD_D / 2 - 1, (POD_Y0 + POD_Y1) / 2) * RectangleRounded(POD_D + 2, POD_Y1 - POD_Y0, 1.5)
-    b += Pos(0, 0, -FLOOR) * extrude(pod, FLOOR + POCKET_H + POD_ROOF)   # low pod, flat on the print bed
+    zb = ZTOP - POCKET_H - POD_FLOOR                                      # underside of the pod
+    b += Pos(0, 0, zb) * extrude(pod_footprint(), ZTOP - zb)
+    gusset = extrude(Plane.XZ.offset(-POD_Y1) * Polygon((xo - 0.5, zb), (xo + POD_OUT, zb), (xo - 0.5, zb - POD_OUT - 0.5), align=None),
+                     POD_Y1 - POD_Y0)                                     # 45 degree underside, prints without support
+    b += gusset & B(xo - 1, xo + POD_OUT + 1, POD_Y0, POD_Y1, -FLOOR, zb + 1)
     b -= B(X0, X1, Y0, Y1, 0, ZTOP + 1)                                   # board cavity
-    b -= B(X1 - 1, xo + POD_D - POD_WALL, SW_Y - POCKET_L / 2, SW_Y + POCKET_L / 2, 0, POCKET_H)   # switch pocket, open to the cavity
-    b -= B(xo + POD_D - POD_WALL - 1, xo + POD_D + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, SW_Z + 2.2)  # slider slot
+    b -= B(X1 - 1, xo + POCKET_D, SW_Y - POCKET_L / 2, SW_Y + POCKET_L / 2, ZTOP - POCKET_H, ZTOP + 1)   # switch pocket, open at the top and into the cavity
+    b -= B(xo + POCKET_D - 1, xo + POD_OUT + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, SW_Z + 2.2)          # slider slot
     for dy in (-8, 8):                                                    # pilot holes for the ear screws
-        b -= Pos(xo + POD_D - POD_WALL, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
+        b -= Pos(xo + POCKET_D, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
     b -= Pos(JACK_X, Y1 + WALL / 2, JACK_Z) * Rot(90, 0, 0) * Cylinder(3.6, WALL + 2)          # headphone jack
     for x in (USB_ESP_X, USB_CHG_X):                                      # USB-C openings, sized for the plug shell
         b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(12.5, 6.8, 2.5), WALL + 2, both=True)
@@ -91,7 +102,7 @@ def base():
 
 
 def lid():
-    l = Pos(0, 0, ZTOP) * extrude(outline(), LID)
+    l = Pos(0, 0, ZTOP) * extrude(outline() + pod_footprint(), LID)
     zb = SCREEN_Z + 0.5                                                   # the shroud stops just above the screen
     top_w, top_h, t = WIN_W + 3, WIN_H + 4, 1.2
     shroud = B(WIN_X - top_w / 2 - t, min(WIN_X + top_w / 2 + t, X1 - 0.2), WIN_Y - top_h / 2 - t, WIN_Y + top_h / 2 + t, zb, ZTOP)
@@ -119,9 +130,9 @@ def dummies():
         "display": (c(24.6, 59.1, 1.2, 59.4, 6.6, 8.2), "#c8372d"),
         "screen": (c(25.5, 58.5, 10.9, 53.7, 8.2, SCREEN_Z), "#11161c"),
         "sdcard": (c(40.0, 78.0, 22.8, 46.8, 4.6, 6.7), "#e8eaee"),
-        "switch": (B(X1 + WALL + POD_D - POD_WALL - 5.0, X1 + WALL + POD_D - POD_WALL, SW_Y - 5.25, SW_Y + 5.25, SW_Z - 2.85, SW_Z + 2.85)
-                   + B(X1 + WALL + POD_D - POD_WALL - 0.5, X1 + WALL + POD_D - POD_WALL, SW_Y - 10, SW_Y + 10, SW_Z - 2.85, SW_Z + 2.85)
-                   + B(X1 + WALL + POD_D - POD_WALL, X1 + WALL + POD_D + 2.5, SW_Y - 3.5, SW_Y - 0.5, SW_Z - 1.5, SW_Z + 1.5), "#16181c"),
+        "switch": (B(X1 + WALL + POCKET_D - 5.0, X1 + WALL + POCKET_D, SW_Y - 5.25, SW_Y + 5.25, SW_Z - 2.85, SW_Z + 2.85)
+                   + B(X1 + WALL + POCKET_D - 0.5, X1 + WALL + POCKET_D, SW_Y - 10, SW_Y + 10, SW_Z - 2.85, SW_Z + 2.85)
+                   + B(X1 + WALL + POCKET_D, X1 + WALL + POD_OUT + 2.5, SW_Y - 3.5, SW_Y - 0.5, SW_Z - 1.5, SW_Z + 1.5), "#16181c"),
     }
 
 

@@ -128,11 +128,13 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   writes `concept-*.png` and git-ignored STLs. Base tray + flat lid held by four M3
   screws in outside corner lugs (owner asked for M3); screen seen through a tapered well
   in the lid; knob through the lid; jack hole in the top wall, two USB-C openings in the
-  bottom wall, SD slot in the right wall; switch in a low pod on the right wall beside the
-  charger, sized by the owner (10 mm out, pocket 20 long × 6 high; I added 0.4/0.2
-  clearance and walls, so 24.4 long × 9.7 tall outside, sitting on the case floor level),
-  slider out sideways, ears screwed to the pod wall from inside through the wall opening. About
-  79 × 104 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
+  bottom wall, SD slot in the right wall; switch in a pod on the right wall beside the
+  charger. Owner's rules for the pod (2026-11-15): its sizes are the inside of the pocket
+  (10 out, 20 long, 6 high) and walls are added on top; the pod is level with the lid and
+  the lid forms its top, so the switch drops in from above. Outside: 12.5 out, 24.4 long,
+  8.2 tall plus the lid, 45° underside so it prints without support. Slider out sideways,
+  ears screwed to the pod's outer wall. About
+  81 × 104 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
   from photos; no board supports yet. Not printable until those are measured.
 
 ## Library / NAS conventions
