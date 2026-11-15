@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Draws the measured dimensions onto the component photos in hardware/components/.
+"""Draws the published (standard) dimensions onto the component photos in hardware/components/.
 
 The untouched photos are read from git (commit SRC), so this can be re-run when a
 measurement changes.  Run with:  uv run --with pillow .claude/tools/component_dims.py
@@ -17,22 +17,27 @@ SRC = "558b775:hardware/images/"
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 
 # name: (part box l, t, r, b in photo pixels, width label, height label, caption)
+# Labels carry the published (standard) size; the caption adds the owner's caliper reading.
 PARTS = {
-    "esp32-s3-zero": ((245, 515, 1160, 1850), "17.9 mm", "23.8 mm with USB-C",
-                      "Waveshare ESP32-S3-Zero: 17.9 × 23.8 mm including the USB-C socket."),
-    "pcm5102a-dac": ((330, 575, 1225, 2095), "20.2 mm", "30.9 mm with jack",
-                     "Adafruit PCM5102A I2S DAC: 20.2 × 30.9 mm including the headphone jack."),
-    "st7735-tft-back": ((350, 625, 1240, 2085), "34 mm", "58.2 mm",
-                        "1.8\" ST7735 display, back side: board 34 × 58.2 mm. A full-size SD card "
-                        "(or microSD adapter) sticks out 19 mm, making it 53 mm across."),
-    "ky040-encoder": ((195, 825, 910, 1665), "21.7 mm (19 after trimming)", "26.0 mm",
-                      "KY-040 / M274 rotary encoder: board 21.7 × 26.0 mm without the header pins, "
-                      "trimmed to 19 mm wide for this build."),
-    "tp4056-charger": ((395, 820, 985, 1760), "17.3 mm", "26.7 mm",
-                       "TP4056 USB-C charger with protection: 17.3 × 26.7 mm."),
-    "lipo-battery": ((375, 800, 1100, 1835), "25 mm (nominal)", "35 mm (nominal)",
-                     "3.7 V 950 mAh LiPo, type 102535: 10.9 mm thick (measured). "
-                     "25 × 35 mm is the nominal size; length and width are not measured yet."),
+    "esp32-s3-zero": ((245, 515, 1160, 1850), "18 mm", "23.5 mm",
+                      "Waveshare ESP32-S3-Zero. Published size 18 × 23.5 mm. "
+                      "Measured 17.9 × 23.8 mm with the USB-C socket."),
+    "pcm5102a-dac": ((330, 575, 1225, 2095), "20.3 mm", "32.5 mm",
+                     "Adafruit PCM5102 I2S DAC (product 6250). Published size 20.3 × 32.5 mm. "
+                     "Measured 20.2 × 30.9 mm with the headphone jack."),
+    "st7735-tft-back": ((350, 625, 1240, 2085), "34.5 mm", "58 mm",
+                        "1.8\" ST7735 display, back side. Published board size 34.5 × 58 mm. "
+                        "Measured 34 × 58.2 mm. A full-size SD card (or microSD adapter) sticks out 19 mm."),
+    "ky040-encoder": ((195, 825, 910, 1665), "21.7 mm (measured)", "26.0 mm (measured)",
+                      "KY-040 / M274 rotary encoder. Sellers give no consistent board size (26 × 19 to "
+                      "32 × 19 mm), so this is the measured board, 21.7 × 26.0 mm without the header "
+                      "pins. Trimmed to 19 mm wide for this build."),
+    "tp4056-charger": ((395, 820, 985, 1760), "17 mm", "28 mm",
+                       "TP4056 USB-C charger with protection. Published size 17 × 28 mm (most sellers). "
+                       "Measured 17.3 × 26.7 mm."),
+    "lipo-battery": ((375, 800, 1100, 1835), "25 mm", "35 mm",
+                     "3.7 V 950 mAh LiPo, type 102535. Published size 10 × 25 × 35 mm. "
+                     "Measured 10.9 mm thick; length and width are not measured yet."),
 }
 
 

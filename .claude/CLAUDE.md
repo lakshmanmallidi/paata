@@ -76,8 +76,10 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   wiring diagram; `hardware/wiring/PERFBOARD.md` has the layout, the back-side connections
   drawing and the wire list. All three drawings come from
   `.claude/tools/perfboard_layout.py`, which writes into `hardware/wiring/`.
-- `hardware/components/` holds one photo per part with its measured size drawn on it
-  (owner's request, 2026-11-15). They are made by `.claude/tools/component_dims.py`
+- `hardware/components/` holds one photo per part with its published (standard) size drawn on it
+  and the owner's caliper reading in the caption (owner's request, 2026-11-15). Published:
+  ESP32 18 × 23.5, DAC 20.3 × 32.5, display 34.5 × 58, charger 17 × 28, battery
+  10 × 25 × 35; the encoder has no consistent published size. They are made by `.claude/tools/component_dims.py`
   (`uv run --with pillow`), which reads the untouched photos from git commit 558b775.
   Update the sizes there when a part is re-measured.
 - Headers are soldered (2026-11-14); hole positions in `hardware/wiring/PERFBOARD.md` and the
