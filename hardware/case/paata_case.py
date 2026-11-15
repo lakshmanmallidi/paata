@@ -33,8 +33,10 @@ HEAD = 0.8            # clearance above the battery
 X0, X1 = -GAP, BOARD_W + GAP
 Y0, Y1 = -GAP, BOARD_L + GAP
 ZTOP = STACK_H + HEAD                 # top of the base walls, underside of the lid
-LUG_R = 3.7                           # corner lugs for the M3 lid screws
-LUG_OFF = 2.7
+LUG_R = 5.0                           # corner lugs: M3 screw from the top into a captive hex nut
+LUG_OFF = 3.6
+NUT_AF, NUT_T = 5.5, 2.4              # M3 nut: across flats, thickness
+NUT_DROP = 4.0                        # plastic between the lid and the nut slot
 
 # positions, EST unless noted (y is measured down from the jack end in the photos)
 yd = lambda y: BOARD_L - y
@@ -96,8 +98,13 @@ def base():
     for x in (USB_ESP_X, USB_CHG_X):                                      # USB-C openings, sized for the plug shell
         b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(12.5, 6.8, 2.5), WALL + 2, both=True)
     b -= B(X1 - 1, xo + 1, SD_Y0 - 1, SD_Y1 + 1, SD_Z - 1.8, SD_Z + 1.8)  # SD card slot
+    cx, cy = (X0 + X1) / 2, (Y0 + Y1) / 2
     for x, y in lugs():
-        b -= Pos(x, y, ZTOP - 5) * Cylinder(1.4, 12)                      # M3 screws cut their own thread
+        b -= Pos(x, y, ZTOP - 6) * Cylinder(1.7, 12.2)                    # M3 clearance hole, 12 deep
+        ang = {(True, True): 45, (False, True): 135, (False, False): 225, (True, False): 315}[(x > cx, y > cy)]
+        L = 3.3 + LUG_R + 1                                               # slot runs from the screw axis out through the lug
+        b -= (Pos(x, y, ZTOP - NUT_DROP - (NUT_T + 0.3) / 2) * Rot(0, 0, ang) * Pos(L / 2 - 3.3, 0, 0)
+              * Box(L, NUT_AF + 0.2, NUT_T + 0.3))                        # the nut slides in from outside and cannot turn
     return b
 
 
@@ -177,6 +184,7 @@ def render():
     shot("concept-2-exploded.png", [(210, -150, 150), (32, 45, 40), (0, 0, 1)], lift=70, size=(1500, 1500))
     shot("concept-3-open.png", [(150, -90, 175), mid, (0, 0, 1)], show_lid=False)
     shot("concept-4-switch-side.png", [(215, -40, 70), (55, 35, 8), (0, 0, 1)], zoom=1.25)
+    shot("concept-7-nut-slot.png", [(-75, -60, 42), (-2, 2, 9), (0, 0, 1)], zoom=2.6)
     shot("concept-5-usb-end.png", [(32, -190, 60), mid, (0, 0, 1)])
     shot("concept-6-front.png", [(32, 45, 300), mid, (0, 1, 0)], size=(1150, 1500))
     tmp.unlink()
