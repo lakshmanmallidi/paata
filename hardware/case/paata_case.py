@@ -40,8 +40,8 @@ NUT_DROP = 4.0                        # plastic between the lid and the nut slot
 
 # positions, EST unless noted (y is measured down from the jack end in the photos)
 yd = lambda y: BOARD_L - y
-JACK_X, JACK_Z = 11.9, 10.7
-USB_ESP_X, USB_CHG_X, USB_Z = 9.3, 46.1, 9.8
+JACK_X, JACK_Z, JACK_D = X0 + 12.5, ZTOP - 4.5, 6.0     # measured on the first print: from the inside of the left wall, from the top of the wall
+USB_ESP_X, USB_CHG_X, USB_Z = 10.8, 47.6, 9.8      # moved 1.5 towards the charger side after the first print
 SD_Y0, SD_Y1, SD_Z = yd(46.8), yd(22.8), 5.6
 ENC_X, ENC_Y = 27.5, yd(76.7)
 WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
@@ -94,9 +94,7 @@ def base():
     b -= B(xo + POCKET_D - 1, xo + POD_OUT + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, ZTOP + 1)            # slider slot, open at the top: no bridge, and the slider drops in
     for dy in (-8, 8):                                                    # pilot holes for the ear screws
         b -= Pos(xo + POCKET_D, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
-    r, k = 3.6, 3.6 * 0.7071                                              # headphone jack: round hole with a 45 degree roof
-    jack = Pos(JACK_X, JACK_Z) * (Circle(r) + Polygon((-k, k), (k, k), (0.9, 2 * k - 0.9), (-0.9, 2 * k - 0.9), align=None))
-    b -= extrude(Plane.XZ.offset(-(Y1 - 1)) * jack, WALL + 2)
+    b -= Pos(JACK_X, Y1 + WALL / 2, JACK_Z) * Rot(90, 0, 0) * Cylinder(JACK_D / 2, WALL + 2)   # headphone jack
     for x in (USB_ESP_X, USB_CHG_X):                                      # USB-C openings, sized for the plug shell
         b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(12.5, 6.8, 2.5), WALL + 2, both=True)
     b -= B(X1 - 1, xo + 1, SD_Y0 - 1, SD_Y1 + 1, SD_Z - 1.8, SD_Z + 1.8)  # SD card slot

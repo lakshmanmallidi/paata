@@ -161,6 +161,11 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   missing from the model before), slider slot is open to the top, jack hole has a 45°
   roof, lid screw recesses are 90° countersinks, so the lid screws are flat-head M3 × 10.
   What is left are bridges: nut slots 5.7 mm, USB-C openings 7.5 mm, SD slot 26 mm.
+  First test print (2026-11-16, owner's findings): the jack hole was missing (the 45° roof
+  cut was extruded the wrong way and never reached the wall); the USB-C sockets sat against
+  the charger-side edge of their openings. Now: jack hole 6 mm, centre 12.5 from the inside
+  of the left wall and 4.5 below the top of the base wall (owner's measurements); both
+  USB-C openings moved 1.5 towards the charger side (owner asked for at least 0.5).
 
 ## Library conventions the firmware assumes
 - Track files are named `NN - Artist - Title.flac`, one folder per album.
