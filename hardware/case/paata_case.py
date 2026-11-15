@@ -4,7 +4,8 @@
 Run from the repo root:
     uv run --python 3.12 --with build123d --with pyvista hardware/case/paata_case.py
 
-Writes base.stl and lid.stl plus concept renders into hardware/case/.
+Writes base.stl, lid.stl, two short test pieces for the port openings (test-usb-end.stl,
+test-jack-end.stl) and concept renders into hardware/case/.
 
 Coordinates, in mm: X to the right seen from the front, Y from the USB-C end (0) up to
 the headphone jack end, Z from the lowest wire on the back of the board (0) towards
@@ -108,6 +109,15 @@ def base():
     return b
 
 
+def test_ends(depth=6.0):
+    """Short slices of the base at each end, to check the port openings without printing the whole case."""
+    b = base()
+    xa, xb = X0 - WALL, X1 + WALL
+    usb = b & B(xa, xb, Y0 - WALL, Y0 + depth, -FLOOR, ZTOP)
+    jack = b & B(xa, xb, Y1 - depth, Y1 + WALL, -FLOOR, ZTOP)
+    return usb, jack
+
+
 def lid():
     l = Pos(0, 0, ZTOP) * extrude(outline() + pod_footprint(), LID)
     zb = SCREEN_Z + 0.5                                                   # the shroud stops just above the screen
@@ -192,6 +202,8 @@ def render():
 
 if __name__ == "__main__":
     export_stl(base(), str(OUT / "base.stl"), tolerance=0.02)
+    for name, part in zip(("test-usb-end.stl", "test-jack-end.stl"), test_ends()):
+        export_stl(part, str(OUT / name), tolerance=0.02)
     export_stl(Rot(180, 0, 0) * lid(), str(OUT / "lid.stl"), tolerance=0.02)      # print orientation: outside face on the bed
     bb, lb = base().bounding_box(), lid().bounding_box()
     print("base", [round(v, 1) for v in (bb.size.X, bb.size.Y, bb.size.Z)], "lid", [round(v, 1) for v in (lb.size.X, lb.size.Y, lb.size.Z)])
