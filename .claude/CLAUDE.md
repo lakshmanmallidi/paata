@@ -116,9 +116,8 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   the encoder shaft. Front face: screen and knob; slide switch in a side wall; jack on
   the top edge; two USB-C openings on the bottom edge; SD card out of the right side.
 - The switch keeps its two mounting ears: it is screwed to the case wall from inside
-  (owner, 2026-11-15). Ears not measured; from a blurry photo I estimate about 18.5 mm
-  across the ears and about 14.5 mm between hole centres. Get real figures and the hole
-  diameter before modelling.
+  (owner, 2026-11-15). Owner's figures: 20 mm across the ears, holes 2 mm diameter, hole
+  edge 1 mm from the ear's end. From those I derive 16 mm between hole centres.
 - Not measured yet (ask before modelling): encoder shaft height above the perf board and
   shaft diameter, slider size and travel, jack centre and USB-C centre positions, perf
   board thickness, screen window position from the top and side edges.
