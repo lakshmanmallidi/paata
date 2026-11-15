@@ -86,15 +86,17 @@ def base():
     b = Pos(0, 0, -FLOOR) * extrude(outline(), FLOOR + ZTOP)
     zb = ZTOP - POCKET_H - POD_FLOOR                                      # underside of the pod
     b += Pos(0, 0, zb) * extrude(pod_footprint(), ZTOP - zb)
-    gusset = extrude(Plane.XZ.offset(-POD_Y1) * Polygon((xo - 0.5, zb), (xo + POD_OUT, zb), (xo - 0.5, zb - POD_OUT - 0.5), align=None),
+    gusset = extrude(Plane.XZ.offset(-POD_Y0) * Polygon((xo - 0.5, zb + 1), (xo + POD_OUT + 1, zb + 1), (xo - 0.5, zb - POD_OUT - 0.5), align=None),
                      POD_Y1 - POD_Y0)                                     # 45 degree underside, prints without support
-    b += gusset & B(xo - 1, xo + POD_OUT + 1, POD_Y0, POD_Y1, -FLOOR, zb + 1)
+    b += gusset & (Pos(0, 0, -FLOOR) * extrude(pod_footprint(), zb + 1 + FLOOR))
     b -= B(X0, X1, Y0, Y1, 0, ZTOP + 1)                                   # board cavity
     b -= B(X1 - 1, xo + POCKET_D, SW_Y - POCKET_L / 2, SW_Y + POCKET_L / 2, ZTOP - POCKET_H, ZTOP + 1)   # switch pocket, open at the top and into the cavity
-    b -= B(xo + POCKET_D - 1, xo + POD_OUT + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, SW_Z + 2.2)          # slider slot
+    b -= B(xo + POCKET_D - 1, xo + POD_OUT + 1, SW_Y - 4.5, SW_Y + 4.5, SW_Z - 2.2, ZTOP + 1)            # slider slot, open at the top: no bridge, and the slider drops in
     for dy in (-8, 8):                                                    # pilot holes for the ear screws
         b -= Pos(xo + POCKET_D, SW_Y + dy, SW_Z) * Rot(0, 90, 0) * Cylinder(0.85, 4)
-    b -= Pos(JACK_X, Y1 + WALL / 2, JACK_Z) * Rot(90, 0, 0) * Cylinder(3.6, WALL + 2)          # headphone jack
+    r, k = 3.6, 3.6 * 0.7071                                              # headphone jack: round hole with a 45 degree roof
+    jack = Pos(JACK_X, JACK_Z) * (Circle(r) + Polygon((-k, k), (k, k), (0.9, 2 * k - 0.9), (-0.9, 2 * k - 0.9), align=None))
+    b -= extrude(Plane.XZ.offset(-(Y1 - 1)) * jack, WALL + 2)
     for x in (USB_ESP_X, USB_CHG_X):                                      # USB-C openings, sized for the plug shell
         b -= Pos(x, Y0 - WALL / 2, USB_Z) * Rot(90, 0, 0) * extrude(RectangleRounded(12.5, 6.8, 2.5), WALL + 2, both=True)
     b -= B(X1 - 1, xo + 1, SD_Y0 - 1, SD_Y1 + 1, SD_Z - 1.8, SD_Z + 1.8)  # SD card slot
@@ -119,7 +121,7 @@ def lid():
     l -= Pos(ENC_X, ENC_Y, ZTOP + LID / 2) * Cylinder(3.8, LID + 2)       # encoder bush
     for x, y in lugs():
         l -= Pos(x, y, ZTOP + LID / 2) * Cylinder(1.7, LID + 2)
-        l -= Pos(x, y, ZTOP + LID - 0.8) * Cylinder(3.0, 1.7)             # screw head recess
+        l -= Pos(x, y, ZTOP + LID - 0.6) * Cone(1.7, 3.1, 1.4)            # 90 degree countersink for a flat-head M3; prints face down without support
     return l
 
 
@@ -192,7 +194,7 @@ def render():
 
 if __name__ == "__main__":
     export_stl(base(), str(OUT / "base.stl"), tolerance=0.02)
-    export_stl(lid(), str(OUT / "lid.stl"), tolerance=0.02)
+    export_stl(Rot(180, 0, 0) * lid(), str(OUT / "lid.stl"), tolerance=0.02)      # print orientation: outside face on the bed
     bb, lb = base().bounding_box(), lid().bounding_box()
     print("base", [round(v, 1) for v in (bb.size.X, bb.size.Y, bb.size.Z)], "lid", [round(v, 1) for v in (lb.size.X, lb.size.Y, lb.size.Z)])
     render()

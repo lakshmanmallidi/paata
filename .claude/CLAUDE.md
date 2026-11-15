@@ -149,6 +149,11 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   ears screwed to the pod's outer wall. About
   83 × 108 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
   from photos; no board supports yet. Not printable until those are measured.
+  Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
+  (`lid.stl` is exported in that orientation). Pod underside is a real 45° slope (it was
+  missing from the model before), slider slot is open to the top, jack hole has a 45°
+  roof, lid screw recesses are 90° countersinks, so the lid screws are flat-head M3 × 10.
+  What is left are bridges: nut slots 5.7 mm, USB-C openings 7.5 mm, SD slot 26 mm.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout
