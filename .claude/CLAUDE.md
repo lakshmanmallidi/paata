@@ -73,8 +73,10 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 ## Build: one perf board (decided 2026-11-14)
 - Everything except the power switch goes on the owner's perf board (cut to 22 × 34 holes, about 56 × 87 mm), parts on pin headers, wires on the solder side in the owner's six
   colours (red, black, yellow, blue, white, turquoise). `hardware/wiring/WIRING.md` has the one
-  wiring diagram; `hardware/wiring/PERFBOARD.md` has the layout, the back-side connections
-  drawing and the wire list. All three drawings come from
+  wiring diagram. `PERFBOARD.md` (layout notes and wire list) was removed 2026-11-15: the
+  owner sees the perf board as personal learning, not something to teach repo readers, so
+  do not write perf board guides into the repo. The two perf board drawings stay in
+  `hardware/wiring/`; the wire routes and hole positions live in the generator. All three drawings come from
   `.claude/tools/perfboard_layout.py`, which writes into `hardware/wiring/`.
 - `hardware/components/` holds one photo per part with its published (standard) size drawn on it
   and the owner's caliper reading in the caption (owner's request, 2026-11-15). Published:
@@ -82,8 +84,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   10 × 25 × 35; the encoder has no consistent published size. They are made by `.claude/tools/component_dims.py`
   (`uv run --with pillow`), which reads the untouched photos from git commit 558b775.
   Update the sizes there when a part is re-measured.
-- Headers are soldered (2026-11-14); hole positions in `hardware/wiring/PERFBOARD.md` and the
-  generator were read from the owner's photo of the back, so treat them as fixed:
+- Headers are soldered (2026-11-14); hole positions in the generator were read from the owner's photo of the back, so treat them as fixed:
   display header r1 c13–20, SD pads r22 c15–18, DAC c8 r2–9 (and c2 r3–8, unwired),
   ESP32 c1/c7 r25–33 (USB-C at bottom edge), encoder header r25 c8–12, charger pads r25
   c16/17/20/21 (OUT+ B+ B− OUT−, read from photos, owner to confirm). Battery lies flat

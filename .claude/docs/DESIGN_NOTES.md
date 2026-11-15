@@ -199,7 +199,7 @@ roughly 85–95 × 40 × 14 mm. A 503450 cell brings the stacked version to abou
 
 ### Case (later)
 **Superseded 2026-11-14:** the case now follows the single perf board build
-(`hardware/wiring/PERFBOARD.md`): about 60 × 91 mm, all parts including the battery on the front of the board, slide switch in a side wall, screen and knob on the front face (no push buttons since 2026-11-15),
+(drawings in `hardware/wiring/`): about 60 × 91 mm, all parts including the battery on the front of the board, slide switch in a side wall, screen and knob on the front face (no push buttons since 2026-11-15),
 SD card sticking out of the right side. An earlier choice of a top-edge knob
 (40 × 70 × 16 mm) was dropped once the full-size SD slot and the encoder board were
 measured. The layout sketched below predates all of this.

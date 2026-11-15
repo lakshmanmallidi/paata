@@ -4,7 +4,7 @@ All logic is 3.3 V. GPIO numbers = the numbers printed on the S3-Zero.
 
 ![Wiring diagram](wiring-diagram.svg)
 
-The tables below list the same connections part by part. Where each part sits on the perf board, and which hole each wire goes to, is in [PERFBOARD.md](PERFBOARD.md).
+The tables below list the same connections part by part.
 
 <img src="../components/esp32-s3-zero.jpg" alt="Waveshare ESP32-S3-Zero, top side with pin labels" width="280">
 
