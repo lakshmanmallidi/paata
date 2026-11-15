@@ -102,10 +102,10 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
 (photos in `hardware/assembly/`):
 | What | mm |
 |---|---|
-| Overall length, jack tip to USB-C sockets | 89.9 |
+| Length incl. USB-C sockets, excl. the jack, which sticks out about 1 more (owner, 2026-11-15) | 89.9 |
 | Overall width, perf board + display overhang | 59.1 |
-| Thickness at USB-C end, back wires to battery top | 15.4 |
-| Thickness at jack end, back wires to battery top | 15.7 |
+| Back wires to top of encoder body, excl. threaded bush and shaft | 15.4 |
+| Greatest thickness: back wires to battery top | 15.7 |
 | Perf board back to screen face | 8.4 |
 | Perf board back to top of display PCB | 5.7 |
 | Lower edge of screen to USB-C end (my reading of the photo; confirm) | 36.2 |
