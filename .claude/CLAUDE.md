@@ -122,6 +122,16 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   shaft diameter, slider size and travel, jack centre and USB-C centre positions, perf
   board thickness, screen window position from the top and side edges.
 - The assembly photos were cropped and captioned by a one-off script (not kept in the repo).
+- **Concept v1 (2026-11-15, awaiting the owner's verdict):** `hardware/case/paata_case.py`
+  (build123d model + pyvista renders; run with
+  `uv run --python 3.12 --with build123d --with pyvista hardware/case/paata_case.py`)
+  writes `concept-*.png` and git-ignored STLs. Base tray + flat lid held by four M3
+  screws in outside corner lugs (owner asked for M3); screen seen through a tapered well
+  in the lid; knob through the lid; jack hole in the top wall, two USB-C openings in the
+  bottom wall, SD slot in the right wall; switch in a pod on the right wall beside the
+  charger, slider out sideways, ears screwed to the pod wall from inside. About
+  80 × 104 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
+  from photos; no board supports yet. Not printable until those are measured.
 
 ## Library / NAS conventions
 - Master library on TrueNAS share `storage/Music`, layout
