@@ -157,8 +157,28 @@ def dummies():
     }
 
 
+KNOB_R, KNOB_H = 10.0, 15.0           # owner asked for a 10 mm radius
+SHAFT_D, SHAFT_FLAT, SHAFT_TOP = 6.0, 4.5, ENC_BODY_Z + 20.0   # standard KY-040 D-shaft, not measured on this part
+BUSH_D, BUSH_H = 7.0, 7.0             # threaded bush, also the standard figures
+KNOB_BORE = 13.5                      # from the knob's underside to where the shaft end stops
+
+
+def knob_part():
+    """Knob with its underside at z = 0. Pushes on to the D-shaft; a recess clears the bush."""
+    k = Pos(0, 0, KNOB_H / 2) * Cylinder(KNOB_R, KNOB_H)
+    k = chamfer(k.edges().group_by(Axis.Z)[-1], 1.0)
+    for i in range(24):                                                   # finger grooves
+        k -= Rot(0, 0, i * 15) * Pos(KNOB_R + 0.4, 0, KNOB_H / 2) * Cylinder(1.0, KNOB_H + 2)
+    r = SHAFT_D / 2 + 0.1
+    bore = Pos(0, 0, KNOB_BORE / 2) * Cylinder(r, KNOB_BORE)
+    bore -= Pos(SHAFT_FLAT + 0.2 - r + 5, 0, KNOB_BORE / 2) * Box(10, 10, KNOB_BORE + 1)   # the flat
+    k -= bore
+    k -= Pos(0, 0, 1.75) * Cylinder(BUSH_D / 2 + 1.0, 3.5)                # clears the bush above the lid
+    return k
+
+
 def knob():
-    return Pos(ENC_X, ENC_Y, ZTOP + LID + 6.5 + 7) * Cylinder(8.5, 13)
+    return Pos(ENC_X, ENC_Y, SHAFT_TOP - KNOB_BORE) * knob_part()
 
 
 def render():
@@ -209,6 +229,8 @@ if __name__ == "__main__":
     for name, part in zip(("test-usb-end.stl", "test-jack-end.stl"), test_ends()):
         export_stl(part, str(OUT / name), tolerance=0.02)
     export_stl(Rot(180, 0, 0) * lid(), str(OUT / "lid.stl"), tolerance=0.02)      # print orientation: outside face on the bed
+    export_stl(Rot(180, 0, 0) * knob_part(), str(OUT / "knob.stl"), tolerance=0.01)   # prints top face down, bore open upwards
+    print("knob underside is", round(SHAFT_TOP - KNOB_BORE - ZTOP - LID, 1), "mm above the lid")
     bb, lb = base().bounding_box(), lid().bounding_box()
     print("base", [round(v, 1) for v in (bb.size.X, bb.size.Y, bb.size.Z)], "lid", [round(v, 1) for v in (lb.size.X, lb.size.Y, lb.size.Z)])
     render()

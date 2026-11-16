@@ -169,6 +169,10 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   Lid plate is 1.5 mm thick (was 2.0; owner, 2026-11-16) so that a clear filament shows
   the charger and ESP32 lights; case is 20.0 tall. `hardware/case/transparency_coupons.py`
   makes 2.0 / 1.5 / 1.0 mm test plates for judging a clear filament.
+  Knob (2026-11-16): `knob.stl`, 10 mm radius (owner's figure), 15 tall, push fit on the
+  D-shaft, printed top face down. Shaft and bush sizes in the model are the standard
+  KY-040 figures (6 mm shaft, 4.5 across the flat, 20 above the body, 7 mm bush), not
+  measured; first print not yet tried on the encoder.
   Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
   (`lid.stl` is exported in that orientation). Pod underside is a real 45° slope (it was
   missing from the model before), slider slot is open to the top, jack hole has a 45°
