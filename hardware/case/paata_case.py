@@ -122,7 +122,7 @@ def test_ends(depth=6.0):
 def lid():
     l = Pos(0, 0, ZTOP) * extrude(outline() + pod_footprint(), LID)
     zb = SCREEN_Z + 0.5                                                   # the shroud stops just above the screen
-    top_w, top_h, t = WIN_W + 3, WIN_H + 4, 0.8             # thin shroud wall: 1.2 touched the battery
+    top_w, top_h, t = WIN_W + 2.2, WIN_H + 4, 1.0           # 1 mm shroud wall on all four sides; the opening is 0.8 narrower at the top so the wall clears the case side
     shroud = B(WIN_X - top_w / 2 - t, min(WIN_X + top_w / 2 + t, X1 - 0.2), WIN_Y - top_h / 2 - t, WIN_Y + top_h / 2 + t, zb, ZTOP)
     cut = loft([Pos(WIN_X, WIN_Y, zb - 0.1) * Rectangle(WIN_W, WIN_H),
                 Pos(WIN_X, WIN_Y, ZTOP + LID + 0.1) * Rectangle(top_w, top_h)])

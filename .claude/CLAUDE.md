@@ -160,7 +160,7 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   terminals): pocket 6 out instead of 10, so the pod stands 8.5 out and the case is about
   79 wide. The terminals sit in the wall opening and the gap beside the charger.
   Lid after the second print (owner): encoder hole 2 mm towards the USB-C end; the
-  screen shroud wall touched the battery, so it is 0.8 thick (was 1.2) and the window is
+  screen shroud wall touched the battery, so it is 1.0 thick on all sides (was 1.2) and the window is
   0.5 further from the battery. The owner describes directions with the USB-C end on top,
   so his left is +X and his top is −Y in the model.
   Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
