@@ -17,7 +17,7 @@ It plays music from an SD card through an I2S DAC, with a small colour screen an
 - Title, artist, track number, elapsed time and progress bar
 - Runs from a single LiPo cell, charged over USB-C
 
-Planned next: album art, `.m3u` playlists, backlight dimming, battery level, and loading music over Wi-Fi. See the [roadmap](#roadmap).
+Planned next: a headphone amplifier and a battery percentage on the screen, then playing over Bluetooth and copying songs onto the card over Wi-Fi. See the [roadmap](#roadmap).
 
 ## Hardware
 
@@ -91,11 +91,11 @@ After the last track of an album the next album starts, and going back from the 
 
 ## Roadmap
 
-- **v1**: play from SD, browse folders, basic screen (current)
-- **v2**: album art from `cover.jpg` (done), `.m3u` playlists, backlight dimming, battery level
-- **v3**: load music onto the card over Wi-Fi
+- **v1** (current): play from SD, browse folders, album art from `cover.jpg`, the screen and the knob
+- **v2**: headphone amplifier after the DAC for low-impedance IEMs, and the battery percentage on the screen
+- **v3**: play over Bluetooth (headphones and speakers), and copy songs onto the card over Wi-Fi
 - **In progress**: 3D-printed case with a knob ([hardware/case](hardware/case/)), prints without supports
-- **Later**: headphone amplifier after the DAC for low-impedance IEMs, optional higher-end DAC board
+- **Later**: `.m3u` playlists, backlight dimming, optional higher-end DAC board
 
 ## Repository layout
 

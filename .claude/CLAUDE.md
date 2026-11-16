@@ -110,12 +110,17 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - **Not** MicroPython (no FLAC decoder, timing issues). **Not** USB-host to a USB
   DAC dongle (ESP32-S3 is USB Full-Speed, UAC1 only, capped at 16-bit/48 kHz).
 
-## Roadmap
-- v1: play from SD, browse, basic UI  ← current
-- v2: cover.jpg display (done 2026-11-16), .m3u playlist support, backlight dimming,
-  battery voltage on screen
-- v3: load music onto the card over Wi-Fi
-- Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
+## Roadmap (owner's order, 2026-11-16; README's Roadmap says the same)
+- v1: play from SD, browse, album art (cover.jpg done 2026-11-16), screen, knob  ← current
+- v2: headphone amplifier after the DAC (TPA6138 or similar, low-impedance IEMs), battery
+  percentage on screen, and a **Settings menu** (owner's idea, 2026-11-16, for later):
+  a long press on the main menu (the top folder, where a hold has nothing to go up to
+  today) opens Settings; first entry: **Shuffle on/off**, kept across reboots (NVS). Deeper
+  in the browser a hold stays "up one folder". Not designed further yet.
+- v3: play over Bluetooth (headphones and speakers; A2DP source on the ESP32-S3 needs
+  checking against the I2S DAC pipeline), and copy songs onto the card over Wi-Fi
+- In progress: 3D-printed case with the knob
+- Later: .m3u playlist support, backlight dimming, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
 
 ## Build: one perf board (decided 2026-11-14)
