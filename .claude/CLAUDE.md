@@ -82,6 +82,10 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   scrolls continuously (owner's request): title and artist line in the player, the
   selected row and the folder name in the browser; the owner found a 9 pt bold title too
   big, so all text is the built-in 6 × 8 font. Volume and pause redraw only their own part.
+- **Folder listing (2026-11-16):** reading `/Music` with 142 album folders took 5.6 s with
+  `openNextFile()`, which made going back out of an album slow. `getNextFileName(&isDir)`
+  reads the same folder in 79 ms. Parent folder lists are also kept in memory, so going
+  back needs no card read and returns to the row it was left on.
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen

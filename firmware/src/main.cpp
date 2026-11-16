@@ -117,16 +117,21 @@ bool isAudio(const String& n) {
          l.endsWith(".m4a")  || l.endsWith(".aac") || l.endsWith(".ogg") || l.endsWith(".opus");
 }
 
+// Folders above the current one, kept so that going back needs no card read
+// and returns to the row it was left on.
+struct DirState { String path; std::vector<Entry> entries; int sel, top; };
+std::vector<DirState> dirStack;
+
 void loadDir(const String& path) {
+  uint32_t t0 = millis();
   entries.clear();
   File d = SD.open(path);
   if (!d || !d.isDirectory()) return;
-  for (File f = d.openNextFile(); f; f = d.openNextFile()) {
-    String n = f.name();
+  bool isDir = false;                              // names only: opening every entry took seconds on a big folder
+  for (String n = d.getNextFileName(&isDir); n.length(); n = d.getNextFileName(&isDir)) {
     int s = n.lastIndexOf('/'); if (s >= 0) n = n.substring(s + 1);
-    if (n.startsWith(".") || n.startsWith("_")) { f.close(); continue; }
-    if (f.isDirectory() || isAudio(n)) entries.push_back({n, (bool)f.isDirectory()});
-    f.close();
+    if (n.startsWith(".") || n.startsWith("_")) continue;
+    if (isDir || isAudio(n)) entries.push_back({n, isDir});
   }
   d.close();
   std::sort(entries.begin(), entries.end(), [](const Entry& a, const Entry& b) {
@@ -135,6 +140,7 @@ void loadDir(const String& path) {
   });
   sel = top = 0;
   needRedraw = true;
+  Serial.printf("dir: %s, %u entries, read in %lu ms\n", path.c_str(), (unsigned)entries.size(), millis() - t0);
 }
 
 String joinPath(const String& dir, const String& name) {
@@ -321,7 +327,13 @@ void goBack() {
   else if (curDir != rootDir) {
     String up = curDir.substring(0, curDir.lastIndexOf('/'));
     if (up.length() < rootDir.length()) up = rootDir;
-    curDir = up; loadDir(curDir);
+    curDir = up;
+    if (!dirStack.empty() && dirStack.back().path == up) {          // kept list: no card read
+      entries = std::move(dirStack.back().entries);
+      sel = dirStack.back().sel; top = dirStack.back().top;
+      dirStack.pop_back();
+      needRedraw = true;
+    } else { dirStack.clear(); loadDir(curDir); }
   }
 }
 
@@ -361,7 +373,11 @@ void handleInput() {
   if (sw == 1) {
     if (mode == BROWSE && !entries.empty()) {
       Entry& e = entries[sel];
-      if (e.isDir) { curDir = joinPath(curDir, e.name); loadDir(curDir); }
+      if (e.isDir) {
+        String next = joinPath(curDir, e.name);
+        dirStack.push_back({curDir, std::move(entries), sel, top});
+        curDir = next; loadDir(curDir);
+      }
       else playFolderFrom(joinPath(curDir, e.name));
     } else if (mode == PLAYING) {
       audio.pauseResume(); paused = !paused; needStatus = true;
