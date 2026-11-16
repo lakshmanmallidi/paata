@@ -44,8 +44,8 @@ yd = lambda y: BOARD_L - y
 JACK_X, JACK_Z, JACK_D = X0 + 13.5, ZTOP - 4.5, 6.0     # from the inside of the left wall and the top of the wall; 1 mm towards the screen side after the second print
 USB_ESP_X, USB_CHG_X, USB_Z = 11.3, 48.1, 9.8      # first print +2: the owner asked for 3 back from the second print, which was at +5
 SD_Y0, SD_Y1, SD_Z = yd(46.8), yd(22.8), 5.6
-ENC_X, ENC_Y = 27.5, yd(76.7)
-WIN_X, WIN_Y, WIN_W, WIN_H = 41.9, yd(34.5), 30.0, 37.0      # screen window at the screen face
+ENC_X, ENC_Y = 27.5, yd(76.7) - 2.0                           # 2 mm towards the USB-C end after the second print
+WIN_X, WIN_Y, WIN_W, WIN_H = 42.4, yd(34.5), 30.0, 37.0      # screen window at the screen face
 
 # slide switch pod on the right wall (switch: body 10.5 x 5.7 x 5.0, 20 across the ears)
 # Inside of the pocket: 6 out from the wall (switch body 5.0 plus 1), 20 long, 6 high.
@@ -122,7 +122,7 @@ def test_ends(depth=6.0):
 def lid():
     l = Pos(0, 0, ZTOP) * extrude(outline() + pod_footprint(), LID)
     zb = SCREEN_Z + 0.5                                                   # the shroud stops just above the screen
-    top_w, top_h, t = WIN_W + 3, WIN_H + 4, 1.2
+    top_w, top_h, t = WIN_W + 3, WIN_H + 4, 0.8             # thin shroud wall: 1.2 touched the battery
     shroud = B(WIN_X - top_w / 2 - t, min(WIN_X + top_w / 2 + t, X1 - 0.2), WIN_Y - top_h / 2 - t, WIN_Y + top_h / 2 + t, zb, ZTOP)
     cut = loft([Pos(WIN_X, WIN_Y, zb - 0.1) * Rectangle(WIN_W, WIN_H),
                 Pos(WIN_X, WIN_Y, ZTOP + LID + 0.1) * Rectangle(top_w, top_h)])
