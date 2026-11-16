@@ -163,6 +163,9 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   screen shroud wall touched the battery, so it is 1.0 thick on all sides (was 1.2) and the window is
   0.5 further from the battery. The owner describes directions with the USB-C end on top,
   so his left is +X and his top is −Y in the model.
+  Third base print (2026-11-16): the owner confirms it works with the USB-C openings at
+  x 11.3 / 48.1, the jack hole 13.5 from the inside of the left wall, and the 6 mm pod
+  pocket. Treat those positions as verified. The matching lid was printed the same day.
   Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
   (`lid.stl` is exported in that orientation). Pod underside is a real 45° slope (it was
   missing from the model before), slider slot is open to the top, jack hole has a 45°
