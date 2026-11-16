@@ -16,7 +16,7 @@ features (playlists, Wi-Fi sync, no 8,192-track cap). The output is meant for IE
 | Part | Notes |
 |---|---|
 | Waveshare ESP32-S3-Zero | ESP32-S3FH4R2, 4 MB flash, 2 MB QSPI PSRAM, USB-C. GPIO 21 = RGB LED (avoid). Header pins 1–16, TX(43), RX(44). |
-| Adafruit PCM5102A I2S DAC | Pins: VIN GND WSEL DIN BCK Lout G Rout. Config pads DE/FIL/MCK/MU/FM/3V left open. Line-level out, fine for IEMs. |
+| Adafruit PCM5102A I2S DAC | Pins: VIN GND WSEL DIN BCK Lout G Rout. Config pads DE/FIL/MCK/MU/FM/3V left open. Line-level out: fine into headphones or an aux input, distorts into low-impedance IEMs (see Firmware, crackling), so a headphone amplifier follows in v2. |
 | 1.8" ST7735 TFT 128×160 V1.1 (red board) | Display header: LED SCK SDA A0 RESET CS GND VCC. **Full-size SD** slot on back (not microSD; the card sticks out about 20 mm on one side) with pads SD_CS SD_MOSI SD_MISO SD_SCK (must be soldered). |
 | M274 / KY-040 rotary encoder | Pins: GND + SW DT CLK. 2 counts per detent. Its switch is the only button. |
 | TP4056 USB-C charger w/ protection | B+/B− to battery, OUT+/OUT− to switch → S3-Zero 5V/GND. |
@@ -51,16 +51,16 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   flash, USB CDC on boot. Platform is **pioarduino** (Arduino core 3.x), which
   ESP32-audioI2S 4.x requires.
 - Libraries: ESP32-audioI2S (schreibfaul1), Adafruit ST7735/ST7789, Adafruit GFX,
-  ESP32Encoder (madhephaestus).
+  ESP32Encoder (madhephaestus), TJpg_Decoder (bodmer).
 - v1 (`firmware/src/main.cpp`): FLAC/MP3/WAV/AAC/OGG from
   `/Music` on SD; folder browser; encoder only: turn = scroll (browser) /
   volume (playing); click = select / play-pause; hold 600 ms and release = up a folder /
   back to browser (decided on release, so a slow hold-and-turn is not taken as back;
-  owner's request 2026-11-16); hold and turn was next / previous track until the control change below; auto-advance.
+  owner's request 2026-11-16); double click = next track, triple click = previous track,
+  hold and turn = move within the track (see "Controls changed" below); auto-advance.
   After the last track the next album folder starts, and back from the first track plays
   the last track of the album before, going round at the ends of the library (owner's
-  request 2026-11-16; flashed, not yet confirmed on hardware). The owner tried double
-  click for next track and preferred hold and turn, so there is no double click.
+  request 2026-11-16; flashed, not yet confirmed on hardware).
 - Serial output is off unless built with `-DPAATA_LOG` (folder, cover, track start with
   free memory, audio library messages). One play that hung on 2026-11-16 was never
   explained: its log was lost and it did not recur. Free heap at a track start was 257 KB.
@@ -94,7 +94,10 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   `openNextFile()`, which made going back out of an album slow. `getNextFileName(&isDir)`
   reads the same folder in 79 ms. Parent folder lists are also kept in memory, so going
   back needs no card read and returns to the row it was left on.
-- **Controls changed 2026-11-16 (owner's idea, flashed, awaiting his confirmation):**
+- **Controls changed 2026-11-16 (owner's idea, flashed and published, awaiting his
+  confirmation after a few days of use).** History: hold and turn was next / previous
+  track at first; he then tried double click, went back to hold and turn, and finally
+  chose this:
   double click = next track, triple click = previous track (player screen only, so a
   single click there waits 350 ms), hold and turn = move within the track, 5 s per notch
   (`audio.setTimeOffset`, applied once the knob rests; not while paused; position is
@@ -120,7 +123,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - v3: copy songs onto the card over Wi-Fi. Bluetooth audio was on the list and the owner
   removed it 2026-11-17: the ESP32-S3 has Bluetooth LE only, no Bluetooth Classic, so no
   A2DP for headphones and speakers without an added transmitter module or a second chip.
-- In progress: 3D-printed case with the knob
+- Done 2026-11-17: 3D-printed case with the knob (see Case)
 - Later: .m3u playlist support, backlight dimming, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
 
@@ -153,7 +156,13 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 - Breadboard, direct-wiring and case-study drawings were removed at the owner's request
   (2026-11-14); do not re-add alternative layouts.
 
-## Case (not designed yet; next job is a 3D-printed enclosure with the slide switch)
+## Case (printed and fitted, 2026-11-17)
+**State:** the owner confirms the case fits well, the charger and ESP32 lights show through
+the clear 1.5 mm lid, and the knob fits the shaft very well. Base, lid and knob in
+`hardware/case/paata_case.py` are the fitted versions; treat their dimensions as verified.
+The jack hole will have to move when the headphone amplifier and its own jack are added
+(v2). The rest of this section is the history of how the case got there.
+
 Board is built and wired (2026-11-15). Owner's caliper readings of the finished board, mm
 (photos in `hardware/assembly/`):
 | What | mm |
@@ -172,11 +181,11 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
 - The switch keeps its two mounting ears: it is screwed to the case wall from inside
   (owner, 2026-11-15). Owner's figures: 20 mm across the ears, holes 2 mm diameter, hole
   edge 1 mm from the ear's end. From those I derive 16 mm between hole centres.
-- Not measured yet (ask before modelling): encoder shaft height above the perf board and
-  shaft diameter, slider size and travel, jack centre and USB-C centre positions, perf
-  board thickness, screen window position from the top and side edges.
+- Never measured directly, settled by test prints instead: slider size and travel, perf
+  board thickness, screen window position. Shaft, jack and USB-C positions are in the
+  history below.
 - The assembly photos were cropped and captioned by a one-off script (not kept in the repo).
-- **Concept v1 (2026-11-15, awaiting the owner's verdict):** `hardware/case/paata_case.py`
+- **Design (first concept 2026-11-15, fitted after four prints):** `hardware/case/paata_case.py`
   (build123d model + pyvista renders; run with
   `uv run --python 3.12 --with build123d --with pyvista hardware/case/paata_case.py`)
   writes `concept-*.png` and git-ignored STLs. Base tray + flat lid held by four M3
@@ -191,7 +200,7 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   8.2 tall plus the lid, 45° underside so it prints without support. Slider out sideways,
   ears screwed to the pod's outer wall. About
   83 × 108 × 20.5 mm over lugs and pod. Port, window and knob positions are estimates
-  from photos; no board supports yet. Not printable until those are measured.
+  from photos at that point; no board supports.
   Pod made shallower after the second print (owner: too much gap behind the switch
   terminals): pocket 6 out instead of 10, so the pod stands 8.5 out and the case is about
   79 wide. The terminals sit in the wall opening and the gap beside the charger.
@@ -204,13 +213,14 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
   pocket. Treat those positions as verified. The matching lid was printed the same day.
   Lid plate is 1.5 mm thick (was 2.0; owner, 2026-11-16) so that a clear filament shows
   the charger and ESP32 lights; case is 20.0 tall. `hardware/case/transparency_coupons.py`
-  makes 2.0 / 1.5 / 1.0 mm test plates for judging a clear filament.
+  makes 2.0 / 1.5 / 1.0 mm test plates for judging a clear filament. Owner, 2026-11-17:
+  the 1.5 mm clear lid fits and the lights are visible through it.
   Knob (2026-11-16): `knob.stl`, 10 mm radius (owner's figure), 16 tall, push fit on the
   D-shaft, printed top face down, 1 mm above the lid. Owner's readings: shaft tip 15 above
   the 1.5 mm lid, of which 2 is threaded bush and 13 is shaft; 4.5 across the flat; 6.9
   (taken as the bush thread; shaft assumed 6.0). The flat is only on the upper half of the
   shaft (about 7, read from a photo), so the bore is round below and D-shaped for the top
-  6.5. Not yet tried on the encoder.
+  6.5. Owner, 2026-11-17: fits the shaft very well.
   Support-free printing (2026-11-15): base prints floor down, lid prints outside face down
   (`lid.stl` is exported in that orientation). Pod underside is a real 45° slope (it was
   missing from the model before), slider slot is open to the top, jack hole has a 45°
@@ -242,10 +252,11 @@ Note: repo was initialised with an MIT LICENSE at the root. Licence split below 
 ```
 paata/
 ├── firmware/     PlatformIO project        GPL-3.0 (ESP32-audioI2S is GPL-3)
-├── hardware/     components/, wiring/, assembly/  CERN-OHL-P-2.0
+├── assets/       logo (made by .claude/tools/logo.py)
+├── hardware/     components/, wiring/, assembly/, case/  CERN-OHL-P-2.0
 ├── README.md
 ├── LICENSE       GPL-3.0
-└── .claude/      everything for Claude Code: this file, skills, and
+└── .claude/      everything for Claude Code: this file, tools/ (generators), and
                   docs/DESIGN_NOTES.md (full design history and the reasoning
                   behind every choice — read it when a decision here needs context)
 ```

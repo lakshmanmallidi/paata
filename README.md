@@ -6,7 +6,7 @@ A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu
 
 It plays music from an SD card through an I2S DAC, with a small colour screen and a single rotary knob. No touchscreen, no phone app, no account.
 
-> **Status: early.** The board is built and the v1 firmware runs on it: browsing and FLAC playback from the SD card work. A 3D-printed case is being fitted to the board: the base has been printed and fits, the lid and knob are on their first prints. Expect changes to the code.
+> **Status: early.** The board is built and the v1 firmware runs on it: browsing and FLAC playback from the SD card work. The 3D-printed case, lid and knob are printed and fit the board. The line output is clean into headphones but distorts into low-impedance IEMs until the planned amplifier is added. Expect changes to the code.
 
 ## Features (v1)
 
@@ -94,7 +94,7 @@ After the last track of an album the next album starts, and going back from the 
 - **v1** (current): play from SD, browse folders, album art from `cover.jpg`, the screen and the knob
 - **v2**: headphone amplifier after the DAC for low-impedance IEMs, and the battery percentage on the screen
 - **v3**: copy songs onto the card over Wi-Fi
-- **In progress**: 3D-printed case with a knob ([hardware/case](hardware/case/)), prints without supports
+- **Done**: 3D-printed case with a knob ([hardware/case](hardware/case/)), prints without supports
 - **Later**: `.m3u` playlists, backlight dimming, optional higher-end DAC board
 
 ## Repository layout
@@ -103,7 +103,7 @@ After the last track of an album the next album starts, and going back from the 
 assets/     logo
 firmware/   PlatformIO project (src/main.cpp, platformio.ini)
 hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables),
-            assembly/ (finished board and its measurements), case/ (3D-printed case and knob, still being fitted)
+            assembly/ (finished board and its measurements), case/ (3D-printed case and knob)
 .claude/    Project notes used by the Claude Code assistant; not needed to build
 ```
 
