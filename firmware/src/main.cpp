@@ -3,6 +3,7 @@
  * Hardware: Waveshare ESP32-S3-Zero, Adafruit PCM5102A (I2S),
  *           1.8" ST7735 128x160 TFT with SD slot, KY-040/M274 encoder (its push switch is the only button).
  * Build:    PlatformIO, see ../platformio.ini  (pio run -t upload && pio device monitor)
+ * Serial:   silent unless built with -DPAATA_LOG (folder, cover, track and audio library messages).
  */
 
 #include <Arduino.h>
@@ -14,6 +15,12 @@
 #include <TJpg_Decoder.h>
 #include <ESP32Encoder.h>
 #include <vector>
+
+#ifdef PAATA_LOG
+#define LOG(...) Serial.printf(__VA_ARGS__)
+#else
+#define LOG(...) do {} while (0)
+#endif
 
 // ---------- pins ----------
 #define I2S_BCLK   5
@@ -93,9 +100,9 @@ void loadCover(const String& dir) {
   }
   if (!path.length()) return;
   File f = SD.open(path); uint32_t bytes = f.size(); f.close();
-  if (bytes > COVER_MAX_BYTES) { Serial.printf("cover: %s is %u bytes, skipped\n", path.c_str(), bytes); return; }
+  if (bytes > COVER_MAX_BYTES) { LOG("cover: %s is %u bytes, skipped\n", path.c_str(), bytes); return; }
   uint16_t w = 0, h = 0;
-  if (TJpgDec.getSdJpgSize(&w, &h, path) != JDR_OK || !w || !h) { Serial.printf("cover: cannot read %s\n", path.c_str()); return; }
+  if (TJpgDec.getSdJpgSize(&w, &h, path) != JDR_OK || !w || !h) { LOG("cover: cannot read %s\n", path.c_str()); return; }
   int scale = 1;                                   // largest reduction that still leaves 84 px
   while (scale < 8 && min(w, h) / (scale * 2) >= COVER) scale *= 2;
   cvW = w / scale; cvH = h / scale; cvSide = min(cvW, cvH);
@@ -103,10 +110,10 @@ void loadCover(const String& dir) {
   memset(coverBuf, 0, sizeof(coverBuf));
   TJpgDec.setJpgScale(scale);
   TJpgDec.setCallback(coverBlock);
-  uint32_t t0 = millis();
+  [[maybe_unused]] uint32_t t0 = millis();
   JRESULT r = TJpgDec.drawSdJpg(0, 0, path);
   coverOk = r == JDR_OK;
-  Serial.printf("cover: %s %ux%u, %u bytes, 1/%d, %s in %lu ms\n", path.c_str(), w, h, bytes, scale,
+  LOG("cover: %s %ux%u, %u bytes, 1/%d, %s in %lu ms\n", path.c_str(), w, h, bytes, scale,
                 coverOk ? "decoded" : "failed", millis() - t0);
 }
 
@@ -122,25 +129,31 @@ bool isAudio(const String& n) {
 struct DirState { String path; std::vector<Entry> entries; int sel, top; };
 std::vector<DirState> dirStack;
 
-void loadDir(const String& path) {
-  uint32_t t0 = millis();
-  entries.clear();
+// Folders and audio files in a folder: folders first, each group by name.
+bool listDir(const String& path, std::vector<Entry>& out) {
+  out.clear();
   File d = SD.open(path);
-  if (!d || !d.isDirectory()) return;
+  if (!d || !d.isDirectory()) return false;
   bool isDir = false;                              // names only: opening every entry took seconds on a big folder
   for (String n = d.getNextFileName(&isDir); n.length(); n = d.getNextFileName(&isDir)) {
     int s = n.lastIndexOf('/'); if (s >= 0) n = n.substring(s + 1);
     if (n.startsWith(".") || n.startsWith("_")) continue;
-    if (isDir || isAudio(n)) entries.push_back({n, isDir});
+    if (isDir || isAudio(n)) out.push_back({n, isDir});
   }
   d.close();
-  std::sort(entries.begin(), entries.end(), [](const Entry& a, const Entry& b) {
+  std::sort(out.begin(), out.end(), [](const Entry& a, const Entry& b) {
     if (a.isDir != b.isDir) return a.isDir;
     return a.name.compareTo(b.name) < 0;
   });
+  return true;
+}
+
+void loadDir(const String& path) {
+  [[maybe_unused]] uint32_t t0 = millis();
+  if (!listDir(path, entries)) return;
   sel = top = 0;
   needRedraw = true;
-  Serial.printf("dir: %s, %u entries, read in %lu ms\n", path.c_str(), (unsigned)entries.size(), millis() - t0);
+  LOG("dir: %s, %u entries, read in %lu ms\n", path.c_str(), (unsigned)entries.size(), millis() - t0);
 }
 
 String joinPath(const String& dir, const String& name) {
@@ -215,7 +228,7 @@ void drawBrowser() {
 // Player screen: status line, cover, title, artist and album, progress bar, times and volume.
 void drawStatus() {
   tft.fillRect(0, 0, 128, 14, C_BG);
-  tft.setFont(); tft.setTextSize(1);
+  tft.setTextSize(1);
   tft.setTextColor(paused ? C_HL : C_DIM);
   tft.setCursor(6, 5); tft.print(paused ? "PAUSED" : "PLAYING");
   String n = String(trackIdx + 1) + "/" + String(playlist.size());
@@ -251,7 +264,7 @@ void drawProgress() {
   tft.fillRect(6, 143, 116, 3, C_TRACK);
   if (dur) tft.fillRect(6, 143, min(116UL, (116UL * cur) / dur), 3, C_HL);
   tft.fillRect(0, 149, 44, 9, C_BG); tft.fillRect(84, 149, 44, 9, C_BG);
-  tft.setFont(); tft.setTextColor(C_DIM);
+  tft.setTextColor(C_DIM);
   char b[12];
   snprintf(b, sizeof b, "%u:%02u", (unsigned)(cur / 60), (unsigned)(cur % 60));
   tft.setCursor(6, 150); tft.print(b);
@@ -268,17 +281,45 @@ void drawPlayer() {
 uint32_t trackStartMs = 0;
 int failedInARow = 0;           // tracks that ended within seconds of starting
 
+// Replace the playlist with the next (step = 1) or previous (step = -1) album: the
+// neighbouring folder beside the one being played, in browser order, going round at the
+// ends and passing over folders with no audio in them. False if there is no other album.
+bool stepAlbum(int step) {
+  String dir = playlist[0].substring(0, playlist[0].lastIndexOf('/'));
+  if (dir.length() <= rootDir.length()) return false;              // tracks lying in the root folder
+  String parent = dir.substring(0, dir.lastIndexOf('/'));
+  if (!parent.length()) parent = "/";
+  String name = dir.substring(dir.lastIndexOf('/') + 1);
+  std::vector<Entry> sib, files;
+  if (!listDir(parent, sib)) return false;
+  sib.erase(std::remove_if(sib.begin(), sib.end(), [](const Entry& e) { return !e.isDir; }), sib.end());
+  int n = sib.size(), cur = -1;
+  for (int i = 0; i < n; i++) if (sib[i].name == name) cur = i;
+  if (cur < 0) return false;
+  for (int i = 1; i < n; i++) {
+    String cand = joinPath(parent, sib[((cur + step * i) % n + n) % n].name);
+    listDir(cand, files);
+    std::vector<String> list;
+    for (auto& e : files) if (!e.isDir) list.push_back(joinPath(cand, e.name));
+    if (list.empty()) continue;
+    playlist = std::move(list);
+    LOG("album: %s\n", cand.c_str());
+    return true;
+  }
+  return false;
+}
+
 void playTrack(int idx) {
   if (playlist.empty()) return;
-  if (idx < 0) idx = playlist.size() - 1;
-  if (idx >= (int)playlist.size()) idx = 0;
+  if (idx < 0) { stepAlbum(-1); idx = playlist.size() - 1; }                    // before the first: last track of the album before
+  else if (idx >= (int)playlist.size()) { stepAlbum(1); idx = 0; }             // after the last: first track of the album after
   trackIdx = idx;
   nowTitle = ""; nowArtist = "";
   paused = false;
   String dir = playlist[idx].substring(0, playlist[idx].lastIndexOf('/'));
   if (dir != coverDir) loadCover(dir);            // once per folder, before the track starts
   trackStartMs = millis();
-  Serial.printf("play: %s (free heap %u, largest block %u, psram %u)\n", playlist[idx].c_str(),
+  LOG("play: %s (free heap %u, largest block %u, psram %u)\n", playlist[idx].c_str(),
                 (unsigned)ESP.getFreeHeap(), (unsigned)ESP.getMaxAllocHeap(), (unsigned)ESP.getFreePsram());
   audio.connecttoFS(SD, playlist[idx].c_str());
   mode = PLAYING; needRedraw = true;
@@ -303,23 +344,25 @@ void onAudioInfo(Audio::msg_t m) {
       break;
     }
     case Audio::evt_eof:  trackEnded = true; break;   // advance from loop(), not from inside the library
-    case Audio::evt_info: Serial.printf("audio: %s\n", m.msg); break;
-    case Audio::evt_log:  Serial.printf("audio log: %s\n", m.msg); break;
+    case Audio::evt_info: LOG("audio: %s\n", m.msg); break;
+    case Audio::evt_log:  LOG("audio log: %s\n", m.msg); break;
     default: break;
   }
 }
 
 // ---------- input ----------
-struct Btn { int pin; bool last = true; uint32_t downAt = 0; bool longFired = false; };
+struct Btn { int pin; bool last = true; uint32_t downAt = 0; bool longFired = false; };   // longFired: this press was used for a skip
 Btn bSw{ENC_SW};
 
-// returns 0 none, 1 short press, 2 long press
+// returns 0 none, 1 short press, 2 long press (held 0.6 s, reported when released)
 int pollBtn(Btn& b) {
   bool v = digitalRead(b.pin);
   int r = 0;
   if (!v && b.last) { b.downAt = millis(); b.longFired = false; }
-  if (!v && !b.last && !b.longFired && millis() - b.downAt > 600) { b.longFired = true; r = 2; }
-  if (v && !b.last && !b.longFired && millis() - b.downAt > 30) r = 1;
+  if (v && !b.last && !b.longFired) {               // decided on release, so a hold can still become a hold-and-turn
+    uint32_t held = millis() - b.downAt;
+    if (held > 600) r = 2; else if (held > 30) r = 1;
+  }
   b.last = v;
   return r;
 }
@@ -342,7 +385,7 @@ void goBack() {
 // One control, the encoder:
 //   turn           scroll (browser) / volume (playing)
 //   click          open folder, play file / play-pause
-//   hold           back: up a folder, or from the player to the browser
+//   hold, release  back: up a folder, or from the player to the browser
 //   hold and turn  next / previous track
 void handleInput() {
   long d = enc.getCount();
@@ -429,7 +472,7 @@ void loop() {
     failedInARow = (millis() - trackStartMs < 10000) ? failedInARow + 1 : 0;
     if (failedInARow >= (int)playlist.size()) {       // the whole folder failed: stop instead of looping forever
       failedInARow = 0; trackIdx = -1; mode = BROWSE; needRedraw = true;
-      Serial.println("no playable track in this folder");
+      LOG("no playable track in this folder\n");
     } else playTrack(trackIdx + 1);
   }
   handleInput();

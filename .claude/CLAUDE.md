@@ -54,8 +54,16 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   ESP32Encoder (madhephaestus).
 - v1 (`firmware/src/main.cpp`): FLAC/MP3/WAV/AAC/OGG from
   `/Music` on SD; folder browser; encoder only: turn = scroll (browser) /
-  volume (playing); click = select / play-pause; hold (600 ms) = up a folder / back to
-  browser; hold and turn = next / previous track; auto-advance; progress bar.
+  volume (playing); click = select / play-pause; hold 600 ms and release = up a folder /
+  back to browser (decided on release, so a slow hold-and-turn is not taken as back;
+  owner's request 2026-11-16); hold and turn = next / previous track; auto-advance.
+  After the last track the next album folder starts, and back from the first track plays
+  the last track of the album before, going round at the ends of the library (owner's
+  request 2026-11-16; flashed, not yet confirmed on hardware). The owner tried double
+  click for next track and preferred hold and turn, so there is no double click.
+- Serial output is off unless built with `-DPAATA_LOG` (folder, cover, track start with
+  free memory, audio library messages). One play that hung on 2026-11-16 was never
+  explained: its log was lost and it did not recur. Free heap at a track start was 257 KB.
 - Build/flash/monitor from `firmware/`: `pio run -t upload && pio device monitor`. First flash:
   hold B, tap R, release B. Board appears as `/dev/cu.usbmodem*` on macOS.
 - First run on hardware 2026-11-15: flashed, boots, screen, SD,

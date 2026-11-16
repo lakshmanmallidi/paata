@@ -80,9 +80,11 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 |---|---|---|
 | Turn knob | Scroll | Volume |
 | Click knob | Open folder / play file | Pause / resume |
-| Hold knob | Up one folder | Back to browser (music keeps playing) |
+| Hold knob 0.6 s, then release | Up one folder | Back to browser (music keeps playing) |
 | Hold and turn right | Next track | Next track |
 | Hold and turn left | Previous track (restarts the current one after 3 s) | same |
+
+After the last track of an album the next album starts, and going back from the first track plays the last track of the album before. Names that do not fit on the screen scroll.
 
 ## Roadmap
 
