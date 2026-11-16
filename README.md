@@ -72,6 +72,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 - Put music in a `/Music` folder, one folder per album: `/Music/<Album>/01 - Artist - Title.flac`.
 - Files and folders starting with `.` or `_` are hidden from the browser.
 - The built-in font covers Latin characters only, so tags and file names in other scripts will not display correctly.
+- Album art is read from `cover.jpg` in the album folder. Keep it a baseline (not progressive) JPEG of about 600 px: larger files slow the start of an album, and progressive ones are not shown. With ffmpeg: `ffmpeg -i in.jpg -vf "scale='min(600,iw)':'min(600,ih)':force_original_aspect_ratio=decrease" -pix_fmt yuvj420p -q:v 3 cover.jpg`.
 
 ## Controls
 
