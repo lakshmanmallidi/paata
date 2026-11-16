@@ -157,10 +157,13 @@ def dummies():
     }
 
 
-KNOB_R, KNOB_H = 10.0, 15.0           # owner asked for a 10 mm radius
-SHAFT_D, SHAFT_FLAT, SHAFT_TOP = 6.0, 4.5, ENC_BODY_Z + 20.0   # standard KY-040 D-shaft, not measured on this part
-BUSH_D, BUSH_H = 7.0, 7.0             # threaded bush, also the standard figures
-KNOB_BORE = 13.5                      # from the knob's underside to where the shaft end stops
+KNOB_R, KNOB_GAP = 10.0, 1.0          # owner asked for a 10 mm radius; gap between knob and lid
+SHAFT_OUT, BUSH_OUT = 15.0, 2.0       # above the 1.5 mm lid: shaft tip, and the threaded bush (owner, 2026-11-16)
+SHAFT_D, SHAFT_FLAT = 6.0, 4.5        # 4.5 across the flat measured; 6.0 is the standard figure
+FLAT_LEN = 6.5                        # the flat is on the upper half of the shaft only (about 7, read from a photo)
+BUSH_D = 6.9                          # measured
+KNOB_BORE = SHAFT_OUT - KNOB_GAP      # the shaft tip stops against the end of the bore
+KNOB_H = KNOB_BORE + 2.0
 
 
 def knob_part():
@@ -171,14 +174,16 @@ def knob_part():
         k -= Rot(0, 0, i * 15) * Pos(KNOB_R + 0.4, 0, KNOB_H / 2) * Cylinder(1.0, KNOB_H + 2)
     r = SHAFT_D / 2 + 0.1
     bore = Pos(0, 0, KNOB_BORE / 2) * Cylinder(r, KNOB_BORE)
-    bore -= Pos(SHAFT_FLAT + 0.2 - r + 5, 0, KNOB_BORE / 2) * Box(10, 10, KNOB_BORE + 1)   # the flat
+    z0 = KNOB_BORE - FLAT_LEN                                             # round below this, D-shaped above
+    bore -= Pos(SHAFT_FLAT + 0.2 - r + 5, 0, z0 + FLAT_LEN / 2 + 0.5) * Box(10, 10, FLAT_LEN + 1)
     k -= bore
-    k -= Pos(0, 0, 1.75) * Cylinder(BUSH_D / 2 + 1.0, 3.5)                # clears the bush above the lid
+    rec = BUSH_OUT - KNOB_GAP + 1.2                                       # clears the bush, with room for the push
+    k -= Pos(0, 0, rec / 2) * Cylinder(BUSH_D / 2 + 0.8, rec)
     return k
 
 
 def knob():
-    return Pos(ENC_X, ENC_Y, SHAFT_TOP - KNOB_BORE) * knob_part()
+    return Pos(ENC_X, ENC_Y, ZTOP + LID + KNOB_GAP) * knob_part()
 
 
 def render():
@@ -230,7 +235,6 @@ if __name__ == "__main__":
         export_stl(part, str(OUT / name), tolerance=0.02)
     export_stl(Rot(180, 0, 0) * lid(), str(OUT / "lid.stl"), tolerance=0.02)      # print orientation: outside face on the bed
     export_stl(Rot(180, 0, 0) * knob_part(), str(OUT / "knob.stl"), tolerance=0.01)   # prints top face down, bore open upwards
-    print("knob underside is", round(SHAFT_TOP - KNOB_BORE - ZTOP - LID, 1), "mm above the lid")
     bb, lb = base().bounding_box(), lid().bounding_box()
     print("base", [round(v, 1) for v in (bb.size.X, bb.size.Y, bb.size.Z)], "lid", [round(v, 1) for v in (lb.size.X, lb.size.Y, lb.size.Z)])
     render()
