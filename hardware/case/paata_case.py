@@ -122,10 +122,13 @@ def test_ends(depth=6.0):
 def lid():
     l = Pos(0, 0, ZTOP) * extrude(outline() + pod_footprint(), LID)
     zb = SCREEN_Z + 0.5                                                   # the shroud stops just above the screen
-    top_w, top_h, t = WIN_W + 2.2, WIN_H + 4, 1.0           # 1 mm shroud wall on all four sides; the opening is 0.8 narrower at the top so the wall clears the case side
-    shroud = B(WIN_X - top_w / 2 - t, min(WIN_X + top_w / 2 + t, X1 - 0.2), WIN_Y - top_h / 2 - t, WIN_Y + top_h / 2 + t, zb, ZTOP)
-    cut = loft([Pos(WIN_X, WIN_Y, zb - 0.1) * Rectangle(WIN_W, WIN_H),
-                Pos(WIN_X, WIN_Y, ZTOP + LID + 0.1) * Rectangle(top_w, top_h)])
+    top_w, top_h, t = WIN_W + 3, WIN_H + 4, 1.0             # shroud wall, the same thickness on all four sides and at every depth
+    za, zc = zb - 0.1, ZTOP + LID + 0.1
+    cut = loft([Pos(WIN_X, WIN_Y, za) * Rectangle(WIN_W, WIN_H),
+                Pos(WIN_X, WIN_Y, zc) * Rectangle(top_w, top_h)])
+    outer = loft([Pos(WIN_X, WIN_Y, za) * Rectangle(WIN_W + 2 * t, WIN_H + 2 * t),
+                  Pos(WIN_X, WIN_Y, zc) * Rectangle(top_w + 2 * t, top_h + 2 * t)])
+    shroud = outer & B(X0, X1 - 0.2, Y0, Y1, zb, ZTOP)        # follows the taper of the opening, so it narrows towards the screen
     l = l + shroud - cut
     l -= Pos(ENC_X, ENC_Y, ZTOP + LID / 2) * Cylinder(3.8, LID + 2)       # encoder bush
     for x, y in lugs():
