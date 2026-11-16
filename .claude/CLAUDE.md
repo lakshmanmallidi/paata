@@ -117,8 +117,11 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   a long press on the main menu (the top folder, where a hold has nothing to go up to
   today) opens Settings; first entry: **Shuffle on/off**, kept across reboots (NVS). Deeper
   in the browser a hold stays "up one folder". Not designed further yet.
-- v3: play over Bluetooth (headphones and speakers; A2DP source on the ESP32-S3 needs
-  checking against the I2S DAC pipeline), and copy songs onto the card over Wi-Fi
+- v3: play over Bluetooth (headphones and speakers), and copy songs onto the card over
+  Wi-Fi. **Bluetooth cannot be done on this chip alone:** the ESP32-S3 has Bluetooth LE
+  only, no Bluetooth Classic, so no A2DP, which is what headphones and speakers use. It
+  needs an added part: a Bluetooth audio transmitter module after the DAC, or a classic
+  ESP32 as an A2DP source fed over I2S. Raised with the owner 2026-11-17, undecided.
 - In progress: 3D-printed case with the knob
 - Later: .m3u playlist support, backlight dimming, optional ES9038Q2M+TPA6138 I2S
   board upgrade with IP5306 power module instead of TP4056
