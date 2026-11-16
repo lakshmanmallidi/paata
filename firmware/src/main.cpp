@@ -15,6 +15,7 @@
 #include <TJpg_Decoder.h>
 #include <ESP32Encoder.h>
 #include <vector>
+#include "boot_logo.h"
 
 #ifdef PAATA_LOG
 #define LOG(...) Serial.printf(__VA_ARGS__)
@@ -259,8 +260,13 @@ void drawVolume() {
   tft.fillRect(57, 152, (22 * volume) / 21, 3, volume >= 19 ? C_HL : C_DIM);
 }
 
+// While the knob is held and turned the bar shows where the track will jump to.
+const int SEEK_STEP = 5;        // seconds per notch
+int32_t seekTo = -1;            // target in seconds, -1 when not seeking
+uint32_t seekApplyAt = 0, seekShowUntil = 0;
+
 void drawProgress() {
-  uint32_t cur = audio.getAudioCurrentTime(), dur = audio.getAudioFileDuration();
+  uint32_t cur = seekTo >= 0 ? seekTo : audio.getAudioCurrentTime(), dur = audio.getAudioFileDuration();
   tft.fillRect(6, 143, 116, 3, C_TRACK);
   if (dur) tft.fillRect(6, 143, min(116UL, (116UL * cur) / dur), 3, C_HL);
   tft.fillRect(0, 149, 44, 9, C_BG); tft.fillRect(84, 149, 44, 9, C_BG);
@@ -314,6 +320,7 @@ void playTrack(int idx) {
   if (idx < 0) { stepAlbum(-1); idx = playlist.size() - 1; }                    // before the first: last track of the album before
   else if (idx >= (int)playlist.size()) { stepAlbum(1); idx = 0; }             // after the last: first track of the album after
   trackIdx = idx;
+  seekTo = -1; seekApplyAt = seekShowUntil = 0;
   nowTitle = ""; nowArtist = "";
   paused = false;
   String dir = playlist[idx].substring(0, playlist[idx].lastIndexOf('/'));
@@ -385,8 +392,19 @@ void goBack() {
 // One control, the encoder:
 //   turn           scroll (browser) / volume (playing)
 //   click          open folder, play file / play-pause
+//   double click   next track          (player screen; a click there waits CLICK_MS for more clicks)
+//   triple click   previous track
 //   hold, release  back: up a folder, or from the player to the browser
-//   hold and turn  next / previous track
+//   hold and turn  move within the track, SEEK_STEP seconds per notch
+const uint32_t CLICK_MS = 350;
+int clicks = 0; uint32_t lastClickAt = 0;
+
+void applySeek() {
+  uint32_t cur = audio.getAudioCurrentTime();
+  if (seekTo != (int32_t)cur) audio.setTimeOffset(seekTo - (int32_t)cur);
+  seekApplyAt = 0; seekShowUntil = millis() + 800;   // keep showing the target until the library has caught up
+}
+
 void handleInput() {
   long d = enc.getCount();
   int steps = d / 2;                         // KY-040 gives 2 counts per detent
@@ -396,11 +414,14 @@ void handleInput() {
   bool held = !bSw.last;
 
   if (steps && held) {
-    bSw.longFired = true;                    // this press is a skip, not a click or a hold
-    if (trackIdx >= 0) {
-      if (steps > 0) playTrack(trackIdx + 1);
-      else if (audio.getAudioCurrentTime() > 3) playTrack(trackIdx);   // restart the current track
-      else playTrack(trackIdx - 1);
+    bSw.longFired = true;                    // this press is a seek, not a click or a hold
+    uint32_t dur = audio.getAudioFileDuration();
+    if (trackIdx >= 0 && !paused && dur > 5) {
+      if (seekTo < 0) seekTo = audio.getAudioCurrentTime();
+      seekTo = constrain(seekTo + steps * SEEK_STEP, 0, (int32_t)dur - 3);
+      seekApplyAt = millis() + 300;          // one jump once the knob rests
+      seekShowUntil = 0;
+      if (mode == PLAYING) drawProgress();
     }
   } else if (steps) {
     if (mode == BROWSE && !entries.empty()) {
@@ -414,6 +435,8 @@ void handleInput() {
       needVol = true;
     }
   }
+  if (seekApplyAt && millis() >= seekApplyAt) applySeek();
+  if (seekShowUntil && millis() >= seekShowUntil) { seekShowUntil = 0; seekTo = -1; }
 
   if (sw == 1) {
     if (mode == BROWSE && !entries.empty()) {
@@ -423,12 +446,25 @@ void handleInput() {
         dirStack.push_back({curDir, std::move(entries), sel, top});
         curDir = next; loadDir(curDir);
       }
-      else playFolderFrom(joinPath(curDir, e.name));
+      else {
+        String file = joinPath(curDir, e.name);
+        if (trackIdx >= 0 && trackIdx < (int)playlist.size() && playlist[trackIdx] == file) {
+          mode = PLAYING; needRedraw = true;       // already the current track: show the player, leave it playing
+        } else playFolderFrom(file);
+      }
     } else if (mode == PLAYING) {
-      audio.pauseResume(); paused = !paused; needStatus = true;
+      clicks++; lastClickAt = millis();      // counted; acted on when no further click follows
     }
   } else if (sw == 2) {
+    clicks = 0;
     goBack();
+  }
+  if (clicks && millis() - lastClickAt >= CLICK_MS) {
+    int n = clicks; clicks = 0;
+    if (mode != PLAYING) return;
+    if (n == 1) { audio.pauseResume(); paused = !paused; needStatus = true; }
+    else if (n == 2) playTrack(trackIdx + 1);
+    else playTrack(trackIdx - 1);
   }
 }
 
@@ -441,8 +477,8 @@ void setup() {
   SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
   tft.initR(INITR_BLACKTAB);
   tft.setRotation(0);
-  tft.fillScreen(C_BG);
-  tft.setTextColor(C_FG); tft.setCursor(10, 70); tft.print("Starting...");
+  tft.drawRGBBitmap(0, 0, BOOT_LOGO, 128, 160);   // logo while the card is read
+  uint32_t logoAt = millis();
   strip = new GFXcanvas16(STRIP_W, 8);
   strip->setTextWrap(false);
 
@@ -451,7 +487,7 @@ void setup() {
   enc.clearCount();
 
   if (!SD.begin(SD_CS, SPI, 20000000)) {
-    tft.fillScreen(C_BG); tft.setCursor(10, 70); tft.print("SD card not found");
+    tft.fillScreen(C_BG); tft.setTextColor(C_FG); tft.setCursor(10, 70); tft.print("SD card not found");
     while (true) delay(1000);
   }
   if (!SD.exists(rootDir)) { rootDir = "/"; curDir = rootDir; }
@@ -462,6 +498,7 @@ void setup() {
   audio.setVolume(volume);
 
   loadDir(curDir);
+  while (millis() - logoAt < 1500) delay(10);     // leave the logo up long enough to be seen
 }
 
 void loop() {

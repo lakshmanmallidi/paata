@@ -1,6 +1,8 @@
+<p align="center"><img src="assets/logo.svg" width="480" alt="Paata"></p>
+
 # Paata (పాట)
 
-A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu for "song".
+A pocket-sized, open-source FLAC player built on the ESP32-S3. *Paata* is Telugu for "song". The logo is a *muggu*, the dot-and-line pattern drawn at the doorstep of Telugu homes.
 
 It plays music from an SD card through an I2S DAC, with a small colour screen and a single rotary knob. No touchscreen, no phone app, no account.
 
@@ -80,9 +82,10 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 |---|---|---|
 | Turn knob | Scroll | Volume |
 | Click knob | Open folder / play file | Pause / resume |
+| Double click | | Next track |
+| Triple click | | Previous track |
 | Hold knob 0.6 s, then release | Up one folder | Back to browser (music keeps playing) |
-| Hold and turn right | Next track | Next track |
-| Hold and turn left | Previous track (restarts the current one after 3 s) | same |
+| Hold and turn | Move within the track, 5 s per notch | same |
 
 After the last track of an album the next album starts, and going back from the first track plays the last track of the album before. Names that do not fit on the screen scroll.
 
@@ -97,6 +100,7 @@ After the last track of an album the next album starts, and going back from the 
 ## Repository layout
 
 ```
+assets/     logo
 firmware/   PlatformIO project (src/main.cpp, platformio.ini)
 hardware/   components/ (part photos with sizes), wiring/ (wiring diagram and pin tables),
             assembly/ (finished board and its measurements), case/ (3D-printed case and knob, still being fitted)

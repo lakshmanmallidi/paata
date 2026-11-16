@@ -56,7 +56,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   `/Music` on SD; folder browser; encoder only: turn = scroll (browser) /
   volume (playing); click = select / play-pause; hold 600 ms and release = up a folder /
   back to browser (decided on release, so a slow hold-and-turn is not taken as back;
-  owner's request 2026-11-16); hold and turn = next / previous track; auto-advance.
+  owner's request 2026-11-16); hold and turn was next / previous track until the control change below; auto-advance.
   After the last track the next album folder starts, and back from the first track plays
   the last track of the album before, going round at the ends of the library (owner's
   request 2026-11-16; flashed, not yet confirmed on hardware). The owner tried double
@@ -94,6 +94,15 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   `openNextFile()`, which made going back out of an album slow. `getNextFileName(&isDir)`
   reads the same folder in 79 ms. Parent folder lists are also kept in memory, so going
   back needs no card read and returns to the row it was left on.
+- **Controls changed 2026-11-16 (owner's idea, flashed, awaiting his confirmation):**
+  double click = next track, triple click = previous track (player screen only, so a
+  single click there waits 350 ms), hold and turn = move within the track, 5 s per notch
+  (`audio.setTimeOffset`, applied once the knob rests; not while paused; position is
+  approximate on FLAC). Opening the track that is already playing only shows the player.
+- **Logo and boot screen (2026-11-16, owner approved):** a four-petal muggu in orange with
+  grey dots and the word "paata" in English; the owner did not want Telugu lettering in
+  the logo. `.claude/tools/logo.py` writes `assets/logo.svg`, `assets/logo-mark.svg` and
+  `firmware/src/boot_logo.h` (128 × 160 RGB565, shown 1.5 s at boot).
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
