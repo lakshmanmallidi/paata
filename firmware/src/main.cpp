@@ -278,6 +278,8 @@ void playTrack(int idx) {
   String dir = playlist[idx].substring(0, playlist[idx].lastIndexOf('/'));
   if (dir != coverDir) loadCover(dir);            // once per folder, before the track starts
   trackStartMs = millis();
+  Serial.printf("play: %s (free heap %u, largest block %u, psram %u)\n", playlist[idx].c_str(),
+                (unsigned)ESP.getFreeHeap(), (unsigned)ESP.getMaxAllocHeap(), (unsigned)ESP.getFreePsram());
   audio.connecttoFS(SD, playlist[idx].c_str());
   mode = PLAYING; needRedraw = true;
 }
