@@ -11,6 +11,7 @@
 #include <Audio.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
+#include <TJpg_Decoder.h>
 #include <ESP32Encoder.h>
 #include <vector>
 
@@ -53,10 +54,61 @@ int trackIdx = -1;
 String nowTitle, nowArtist;
 int volume = 8;                 // 0..21
 bool paused = false;
-bool needRedraw = true;
+bool needRedraw = true;         // whole screen
+bool needMeta = false, needVol = false, needStatus = false;   // parts of the player screen
 
 const int ROWS = 12;            // 160px / 13px rows, minus header
-const uint16_t C_BG = ST77XX_BLACK, C_FG = ST77XX_WHITE, C_HL = 0x051F, C_DIM = 0x7BEF;
+// black, orange and grey
+const uint16_t C_BG = ST77XX_BLACK, C_FG = ST77XX_WHITE, C_HL = 0xF447, C_DIM = 0x8C71, C_TRACK = 0x2965;
+
+// ---------- album cover ----------
+// cover.jpg from the album folder, decoded once per folder into an 84 x 84 buffer.
+// Keep covers small (about 600 px, baseline JPEG): the decode blocks the player and
+// takes longer the bigger the file is. Progressive JPEGs cannot be decoded.
+const int COVER = 84, COVER_X = 22, COVER_Y = 17;
+const uint32_t COVER_MAX_BYTES = 3000000;
+uint16_t coverBuf[COVER * COVER];
+bool coverOk = false;
+String coverDir = "?";          // folder the buffer was loaded from
+int cvW, cvH, cvSide, cvOx, cvOy;   // decoded size, and the centred square taken from it
+
+bool coverBlock(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* px) {
+  for (int j = 0; j < h; j++) for (int i = 0; i < w; i++) {
+    int sx = x + i - cvOx, sy = y + j - cvOy;
+    if (sx < 0 || sy < 0 || sx >= cvSide || sy >= cvSide) continue;
+    int tx, ty;
+    if (cvSide >= COVER) { tx = sx * COVER / cvSide; ty = sy * COVER / cvSide; }     // shrink
+    else { tx = sx + (COVER - cvSide) / 2; ty = sy + (COVER - cvSide) / 2; }         // small picture: centre it
+    coverBuf[ty * COVER + tx] = px[j * w + i];
+  }
+  return true;
+}
+
+void loadCover(const String& dir) {
+  coverDir = dir; coverOk = false;
+  String path;
+  for (const char* n : {"cover.jpg", "folder.jpg"}) {
+    String p = dir.endsWith("/") ? dir + n : dir + "/" + n;
+    if (SD.exists(p)) { path = p; break; }
+  }
+  if (!path.length()) return;
+  File f = SD.open(path); uint32_t bytes = f.size(); f.close();
+  if (bytes > COVER_MAX_BYTES) { Serial.printf("cover: %s is %u bytes, skipped\n", path.c_str(), bytes); return; }
+  uint16_t w = 0, h = 0;
+  if (TJpgDec.getSdJpgSize(&w, &h, path) != JDR_OK || !w || !h) { Serial.printf("cover: cannot read %s\n", path.c_str()); return; }
+  int scale = 1;                                   // largest reduction that still leaves 84 px
+  while (scale < 8 && min(w, h) / (scale * 2) >= COVER) scale *= 2;
+  cvW = w / scale; cvH = h / scale; cvSide = min(cvW, cvH);
+  cvOx = (cvW - cvSide) / 2; cvOy = (cvH - cvSide) / 2;
+  memset(coverBuf, 0, sizeof(coverBuf));
+  TJpgDec.setJpgScale(scale);
+  TJpgDec.setCallback(coverBlock);
+  uint32_t t0 = millis();
+  JRESULT r = TJpgDec.drawSdJpg(0, 0, path);
+  coverOk = r == JDR_OK;
+  Serial.printf("cover: %s %ux%u, %u bytes, 1/%d, %s in %lu ms\n", path.c_str(), w, h, bytes, scale,
+                coverOk ? "decoded" : "failed", millis() - t0);
+}
 
 // ---------- helpers ----------
 bool isAudio(const String& n) {
@@ -97,58 +149,113 @@ String baseName(const String& p) {
 }
 
 // ---------- drawing ----------
-void drawHeader(const String& t) {
-  tft.fillRect(0, 0, 128, 13, C_HL);
-  tft.setTextColor(C_FG); tft.setTextSize(1);
-  tft.setCursor(2, 3); tft.print(t.substring(0, 20));
+// One line of text in a fixed box. If it does not fit it scrolls round and round,
+// drawn into an off-screen strip first so that it does not flicker.
+const int STRIP_W = 124;
+GFXcanvas16* strip;             // STRIP_W x 8, made in setup()
+struct Marquee {
+  String s; int16_t x = 0, y = 0, w = 0; uint16_t fg = 0, bg = 0;
+  int off = 0; uint32_t due = 0; bool scrolls = false, shown = false;
+};
+Marquee mqHead, mqSel, mqTitle, mqSub;    // browser: folder name, selected row; player: title, artist and album
+
+void mqDraw(Marquee& m) {
+  strip->fillScreen(m.bg);
+  strip->setTextColor(m.fg);
+  strip->setCursor(-m.off, 0);
+  strip->print(m.scrolls ? m.s + "    " + m.s : m.s);
+  for (int r = 0; r < 8; r++) tft.drawRGBBitmap(m.x, m.y + r, strip->getBuffer() + r * STRIP_W, m.w, 1);
+}
+
+void mqSet(Marquee& m, const String& s, int x, int y, int w, uint16_t fg, uint16_t bg) {
+  m.s = s; m.x = x; m.y = y; m.w = min(w, STRIP_W); m.fg = fg; m.bg = bg;
+  m.off = 0; m.scrolls = (int)s.length() * 6 > m.w; m.shown = true;
+  m.due = millis() + 1500;                         // hold still before the first move
+  mqDraw(m);
+}
+
+void mqTick(Marquee& m) {
+  if (!m.shown || !m.scrolls || millis() < m.due) return;
+  m.off++;
+  if (m.off >= ((int)m.s.length() + 4) * 6) { m.off = 0; m.due = millis() + 1500; }   // back at the start: rest
+  else m.due = millis() + 40;
+  mqDraw(m);
 }
 
 void drawBrowser() {
   tft.fillScreen(C_BG);
-  String h = curDir == rootDir ? "Music" : baseName(curDir);
-  drawHeader(h);
+  tft.drawFastHLine(0, 13, 128, C_TRACK);
+  mqSet(mqHead, curDir == rootDir ? "Music" : baseName(curDir), 2, 3, 124, C_HL, C_BG);
+  mqSel.shown = false;
   tft.setTextSize(1);
   for (int i = 0; i < ROWS; i++) {
     int idx = top + i;
     if (idx >= (int)entries.size()) break;
-    int y = 15 + i * 12;
-    bool hl = idx == sel;
-    if (hl) tft.fillRect(0, y - 1, 128, 11, C_DIM);
-    tft.setTextColor(hl ? C_BG : C_FG);
-    tft.setCursor(2, y);
+    int y = 16 + i * 12;
     String n = entries[idx].name;
     if (entries[idx].isDir) n = "/" + n;
+    if (idx == sel) {                               // only the selected row scrolls
+      tft.fillRect(0, y - 2, 128, 11, C_HL);
+      mqSet(mqSel, n, 2, y, 124, C_BG, C_HL);
+      continue;
+    }
+    tft.setTextColor(entries[idx].isDir ? C_FG : C_DIM);
+    tft.setCursor(2, y);
     tft.print(n.substring(0, 21));
   }
   if (entries.empty()) { tft.setTextColor(C_DIM); tft.setCursor(10, 70); tft.print("(empty)"); }
 }
 
-void drawPlayer() {
-  tft.fillScreen(C_BG);
-  drawHeader(paused ? "|| paused" : "> playing");
-  tft.setTextColor(C_FG); tft.setTextSize(1);
-  // title, wrapped to 3 lines
-  String t = nowTitle.length() ? nowTitle : baseName(playlist[trackIdx]);
-  for (int l = 0; l < 3 && t.length(); l++) {
-    tft.setCursor(2, 22 + l * 11); tft.print(t.substring(0, 21)); t = t.substring(21);
-  }
+// Player screen: status line, cover, title, artist and album, progress bar, times and volume.
+void drawStatus() {
+  tft.fillRect(0, 0, 128, 14, C_BG);
+  tft.setFont(); tft.setTextSize(1);
+  tft.setTextColor(paused ? C_HL : C_DIM);
+  tft.setCursor(6, 5); tft.print(paused ? "PAUSED" : "PLAYING");
+  String n = String(trackIdx + 1) + "/" + String(playlist.size());
   tft.setTextColor(C_DIM);
-  tft.setCursor(2, 60); tft.print(nowArtist.substring(0, 21));
-  tft.setCursor(2, 76); tft.printf("Track %d / %d", trackIdx + 1, playlist.size());
-  tft.setCursor(2, 88); tft.print(baseName(curDir).substring(0, 21));
-  // volume bar
-  tft.setTextColor(C_FG);
-  tft.setCursor(2, 140); tft.printf("Vol %2d", volume);
-  tft.drawRect(44, 140, 82, 8, C_FG);
-  tft.fillRect(45, 141, (80 * volume) / 21, 6, C_HL);
+  tft.setCursor(122 - n.length() * 6, 5); tft.print(n);
+}
+
+void drawCover() {
+  if (coverOk) { tft.drawRGBBitmap(COVER_X, COVER_Y, coverBuf, COVER, COVER); return; }
+  tft.fillRoundRect(COVER_X, COVER_Y, COVER, COVER, 4, C_TRACK);        // no cover: a plain tile with a note
+  int cx = COVER_X + COVER / 2, cy = COVER_Y + COVER / 2;
+  tft.fillCircle(cx - 5, cy + 10, 6, C_DIM);
+  tft.fillRect(cx - 1, cy - 16, 3, 27, C_DIM);
+  tft.fillRect(cx - 1, cy - 16, 12, 4, C_DIM);
+}
+
+void drawMeta() {
+  tft.fillRect(0, 103, 128, 34, C_BG);
+  mqSet(mqTitle, nowTitle.length() ? nowTitle : baseName(playlist[trackIdx]), 6, 109, 116, C_FG, C_BG);
+  mqSet(mqSub, nowArtist.length() ? nowArtist + " - " + baseName(coverDir) : baseName(coverDir), 6, 123, 116, C_DIM, C_BG);
+}
+
+void drawVolume() {
+  tft.fillRect(46, 149, 36, 9, C_BG);
+  tft.fillRect(48, 152, 2, 3, C_DIM);                                   // speaker
+  tft.fillTriangle(50, 153, 53, 150, 53, 156, C_DIM);
+  tft.fillRect(57, 152, 22, 3, C_TRACK);
+  tft.fillRect(57, 152, (22 * volume) / 21, 3, volume >= 19 ? C_HL : C_DIM);
 }
 
 void drawProgress() {
   uint32_t cur = audio.getAudioCurrentTime(), dur = audio.getAudioFileDuration();
-  tft.fillRect(0, 120, 128, 14, C_BG);
-  tft.setTextColor(C_DIM); tft.setCursor(2, 122);
-  tft.printf("%02u:%02u / %02u:%02u", cur / 60, cur % 60, dur / 60, dur % 60);
-  if (dur) { tft.drawRect(2, 131, 124, 3, C_DIM); tft.fillRect(2, 131, (124UL * cur) / dur, 3, C_HL); }
+  tft.fillRect(6, 143, 116, 3, C_TRACK);
+  if (dur) tft.fillRect(6, 143, min(116UL, (116UL * cur) / dur), 3, C_HL);
+  tft.fillRect(0, 149, 44, 9, C_BG); tft.fillRect(84, 149, 44, 9, C_BG);
+  tft.setFont(); tft.setTextColor(C_DIM);
+  char b[12];
+  snprintf(b, sizeof b, "%u:%02u", (unsigned)(cur / 60), (unsigned)(cur % 60));
+  tft.setCursor(6, 150); tft.print(b);
+  snprintf(b, sizeof b, "%u:%02u", (unsigned)(dur / 60), (unsigned)(dur % 60));
+  tft.setCursor(122 - strlen(b) * 6, 150); tft.print(b);
+}
+
+void drawPlayer() {
+  tft.fillScreen(C_BG);
+  drawStatus(); drawCover(); drawMeta(); drawVolume(); drawProgress();
 }
 
 // ---------- playback ----------
@@ -162,6 +269,8 @@ void playTrack(int idx) {
   trackIdx = idx;
   nowTitle = ""; nowArtist = "";
   paused = false;
+  String dir = playlist[idx].substring(0, playlist[idx].lastIndexOf('/'));
+  if (dir != coverDir) loadCover(dir);            // once per folder, before the track starts
   trackStartMs = millis();
   audio.connecttoFS(SD, playlist[idx].c_str());
   mode = PLAYING; needRedraw = true;
@@ -181,8 +290,8 @@ void onAudioInfo(Audio::msg_t m) {
   switch (m.e) {
     case Audio::evt_id3data: {
       String s = m.msg;
-      if (s.startsWith("Title: "))       { nowTitle  = s.substring(7); needRedraw = true; }
-      else if (s.startsWith("Artist: ")) { nowArtist = s.substring(8); needRedraw = true; }
+      if (s.startsWith("Title: "))       { nowTitle  = s.substring(7); needMeta = true; }
+      else if (s.startsWith("Artist: ")) { nowArtist = s.substring(8); needMeta = true; }
       break;
     }
     case Audio::evt_eof:  trackEnded = true; break;   // advance from loop(), not from inside the library
@@ -241,11 +350,12 @@ void handleInput() {
       sel = constrain(sel + steps, 0, (int)entries.size() - 1);
       if (sel < top) top = sel;
       if (sel >= top + ROWS) top = sel - ROWS + 1;
+      needRedraw = true;
     } else if (mode == PLAYING) {
       volume = constrain(volume + steps, 0, 21);
       audio.setVolume(volume);
+      needVol = true;
     }
-    needRedraw = true;
   }
 
   if (sw == 1) {
@@ -254,7 +364,7 @@ void handleInput() {
       if (e.isDir) { curDir = joinPath(curDir, e.name); loadDir(curDir); }
       else playFolderFrom(joinPath(curDir, e.name));
     } else if (mode == PLAYING) {
-      audio.pauseResume(); paused = !paused; needRedraw = true;
+      audio.pauseResume(); paused = !paused; needStatus = true;
     }
   } else if (sw == 2) {
     goBack();
@@ -272,6 +382,8 @@ void setup() {
   tft.setRotation(0);
   tft.fillScreen(C_BG);
   tft.setTextColor(C_FG); tft.setCursor(10, 70); tft.print("Starting...");
+  strip = new GFXcanvas16(STRIP_W, 8);
+  strip->setTextWrap(false);
 
   ESP32Encoder::useInternalWeakPullResistors = puType::up;
   enc.attachHalfQuad(ENC_DT, ENC_CLK);
@@ -306,9 +418,16 @@ void loop() {
 
   static uint32_t lastProg = 0;
   if (needRedraw) {
-    needRedraw = false;
-    if (mode == BROWSE) drawBrowser(); else { drawPlayer(); drawProgress(); }
-  } else if (mode == PLAYING && millis() - lastProg > 1000) {
-    lastProg = millis(); drawProgress();
+    needRedraw = needMeta = needVol = needStatus = false;
+    if (mode == BROWSE) drawBrowser(); else drawPlayer();
+  } else if (mode == PLAYING) {
+    if (needMeta)   { needMeta = false;   drawMeta(); }
+    if (needVol)    { needVol = false;    drawVolume(); }
+    if (needStatus) { needStatus = false; drawStatus(); }
+    if (millis() - lastProg > 1000) { lastProg = millis(); drawProgress(); }
+    mqTick(mqTitle); mqTick(mqSub);
+  } else {
+    needMeta = needVol = needStatus = false;
+    mqTick(mqHead); mqTick(mqSel);
   }
 }

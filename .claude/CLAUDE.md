@@ -73,6 +73,15 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   input. The PCM5102A line output (meant for loads of 1 kΩ or more) distorts on peaks into
   16–32 Ω IEMs at higher volume steps. Fix is a headphone amp board after the DAC
   (TPA6132A2 / MAX97220), or a volume cap in firmware as a stopgap.
+- **Now-playing screen (2026-11-16, owner approved on hardware):** black, orange and grey
+  theme (owner's choice). Status and track count, 84 × 84 cover, title, artist and album,
+  thin progress bar, times and a small volume bar. The cover is `cover.jpg` (or
+  `folder.jpg`) decoded with TJpg_Decoder once per folder, before the track starts, into
+  an 84 × 84 buffer (centre square, shrunk); a 600 px cover of about 100 KB takes 0.4 s.
+  Missing, progressive or over 3 MB covers show a grey tile. Text that does not fit
+  scrolls continuously (owner's request): title and artist line in the player, the
+  selected row and the folder name in the browser; the owner found a 9 pt bold title too
+  big, so all text is the built-in 6 × 8 font. Volume and pause redraw only their own part.
 - If every track in a folder fails within 10 s, the player returns to the browser
   instead of looping (added 2026-11-15, not yet seen working on hardware).
 - Known first-run tweaks: `INITR_BLACKTAB` vs `GREENTAB`/`REDTAB` for screen
@@ -82,7 +91,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
 
 ## Roadmap
 - v1: play from SD, browse, basic UI  ← current
-- v2: cover.jpg display (TJpg_Decoder), .m3u playlist support, backlight dimming,
+- v2: cover.jpg display (done 2026-11-16), .m3u playlist support, backlight dimming,
   battery voltage on screen
 - v3: load music onto the card over Wi-Fi
 - Later: 3D-printed case, optional ES9038Q2M+TPA6138 I2S
@@ -194,8 +203,9 @@ Board is built and wired (2026-11-15). Owner's caliper readings of the finished 
 - Track files are named `NN - Artist - Title.flac`, one folder per album.
 - FLAC only for lossless. ALAC and WAV are converted with ffmpeg
   (`-c:a flac -map_metadata 0`), source deleted only on success. AAC/MP3 kept as is.
-- Cover art: `cover.jpg` in each album folder, ~600 px, JPEG. `Back.jpg`, `CD.jpg`
-  may also exist and are ignored by the player. `.cue .log .m3u .nfo .txt` deleted.
+- Cover art: `cover.jpg` in each album folder, baseline (not progressive) JPEG, longer
+  side 600 px. `CD.jpg` (disc picture, same format) may also exist; the player ignores it
+  for now, the owner may want it on screen later. `.cue .log .m3u .nfo .txt` deleted.
 - Keep tags and file names in Latin script (the player font has no other glyphs).
 - SD card: FAT32, `/Music/<Album>/` folders.
 

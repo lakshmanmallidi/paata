@@ -86,7 +86,7 @@ If the screen colours look wrong, change `INITR_BLACKTAB` in [firmware/src/main.
 ## Roadmap
 
 - **v1**: play from SD, browse folders, basic screen (current)
-- **v2**: album art from `cover.jpg`, `.m3u` playlists, backlight dimming, battery level
+- **v2**: album art from `cover.jpg` (done), `.m3u` playlists, backlight dimming, battery level
 - **v3**: load music onto the card over Wi-Fi
 - **In progress**: 3D-printed case with a knob ([hardware/case](hardware/case/)), prints without supports
 - **Later**: headphone amplifier after the DAC for low-impedance IEMs, optional higher-end DAC board
