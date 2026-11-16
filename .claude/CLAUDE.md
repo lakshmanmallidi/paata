@@ -60,7 +60,7 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   hold and turn = move within the track (see "Controls changed" below); auto-advance.
   After the last track the next album folder starts, and back from the first track plays
   the last track of the album before, going round at the ends of the library (owner's
-  request 2026-11-16; flashed, not yet confirmed on hardware).
+  request 2026-11-16; owner confirmed it works, 2026-11-17).
 - Serial output is off unless built with `-DPAATA_LOG` (folder, cover, track start with
   free memory, audio library messages). One play that hung on 2026-11-16 was never
   explained: its log was lost and it did not recur. Free heap at a track start was 257 KB.
@@ -94,8 +94,8 @@ inner pad 14: the owner turned down moving it to the RX header pin.
   `openNextFile()`, which made going back out of an album slow. `getNextFileName(&isDir)`
   reads the same folder in 79 ms. Parent folder lists are also kept in memory, so going
   back needs no card read and returns to the row it was left on.
-- **Controls changed 2026-11-16 (owner's idea, flashed and published, awaiting his
-  confirmation after a few days of use).** History: hold and turn was next / previous
+- **Controls changed 2026-11-16 (owner's idea; he confirmed on 2026-11-17 that double
+  click, triple click and hold-and-turn seeking all work).** History: hold and turn was next / previous
   track at first; he then tried double click, went back to hold and turn, and finally
   chose this:
   double click = next track, triple click = previous track (player screen only, so a
